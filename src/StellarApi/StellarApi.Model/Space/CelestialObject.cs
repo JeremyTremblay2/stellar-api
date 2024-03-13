@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
 
 namespace StellarApi.Model.Space
 {
-    using StellarApi.Model.Geometry;
-    using System;
-    using System.Globalization;
-
     /// <summary>
     /// Represents a celestial object.
     /// </summary>

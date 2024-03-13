@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StellarApi.Model.Geometry
+﻿namespace StellarApi.Model.Geometry
 {
     /// <summary>
     /// Represents a position in 3D space.

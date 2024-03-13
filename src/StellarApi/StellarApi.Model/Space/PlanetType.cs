@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StellarApi.Model.Space
+﻿namespace StellarApi.Model.Space
 {
     /// <summary>
     /// Represents the type of a planet.
@@ -21,5 +15,4 @@ namespace StellarApi.Model.Space
         /// </summary>
         Gas
     }
-
 }

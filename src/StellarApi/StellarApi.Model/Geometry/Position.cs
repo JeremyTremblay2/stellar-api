@@ -62,9 +62,6 @@ namespace StellarApi.Model.Geometry
             => HashCode.Combine(X, Y, Z);
 
         /// <inheritdoc/>
-        public override string ToString() => $"({X}; {Y}; {Z})";
-
-        /// <inheritdoc/>
         public int CompareTo(object? obj)
         {
             if (obj == null) return 1;
@@ -80,6 +77,9 @@ namespace StellarApi.Model.Geometry
             if (Y != other.Y) return Y.CompareTo(other.Y);
             return Z.CompareTo(other.Z);
         }
+
+        /// <inheritdoc/>
+        public override string ToString() => $"({X}; {Y}; {Z})";
 
         /// <summary>
         /// Determines whether two Position objects are equal.

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StellarApi.RestApi", "StellarApi.RestApi\StellarApi.RestApi.csproj", "{2CF32622-959D-48C3-8027-32636F07A254}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StellarApi.Model", "StellarApi.Model\StellarApi.Model.csproj", "{87A5A5E1-62F9-4DCB-90A5-8B44BF60A389}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2CF32622-959D-48C3-8027-32636F07A254}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CF32622-959D-48C3-8027-32636F07A254}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CF32622-959D-48C3-8027-32636F07A254}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CF32622-959D-48C3-8027-32636F07A254}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87A5A5E1-62F9-4DCB-90A5-8B44BF60A389}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87A5A5E1-62F9-4DCB-90A5-8B44BF60A389}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87A5A5E1-62F9-4DCB-90A5-8B44BF60A389}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87A5A5E1-62F9-4DCB-90A5-8B44BF60A389}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1D562958-5490-4406-BDAF-73ACE253521F}
+	EndGlobalSection
+EndGlobal

@@ -65,10 +65,28 @@ namespace StellarApi.Model.Space
         /// </summary>
         public DateTime ModificationDate { get; private set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CelestialObject"/> class with specified properties.
+        /// </summary>
+        /// <param name="id">The unique identifier of the celestial object.</param>
+        /// <param name="name">The name of the celestial object.</param>
+        /// <param name="description">The description of the celestial object.</param>
+        /// <param name="image">The image path of the celestial object.</param>
+        /// <param name="mass">The mass of the celestial object.</param>
+        /// <param name="temperature">The temperature of the celestial object.</param>
+        /// <param name="radius">The radius of the celestial object.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="name"/> is null or empty.</exception>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="radius"/> or <paramref name="mass"/> is less than or equal to 0.</exception>
         public CelestialObject(int id, string name, string description, string image, double mass, double temperature, double radius)
         {
-            if (string.IsNullOrWhiteSpace(name)) 
+            if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name), "The name of the object cannot be null or empty.");
+
+            if (radius <= 0)
+                throw new ArgumentException("The radius of the object cannot be less than or equal to 0.", nameof(radius));
+
+            if (mass <= 0)
+                throw new ArgumentException("The mass of the object cannot be less than or equal to 0.", nameof(mass));
 
             Id = id;
             Name = name;

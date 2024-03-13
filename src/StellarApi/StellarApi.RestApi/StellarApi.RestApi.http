@@ -1,0 +1,6 @@
+@StellarApi.RestApi_HostAddress = http://localhost:5097
+
+GET {{StellarApi.RestApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -138,7 +138,7 @@ namespace StellarApi.Model.Space
         /// <inheritdoc/>
         public override string ToString()
         {
-            return $"{Id}: {Name}, (Description: {Description}), Mass: {Mass}, Temperature: {Temperature}, Radius: {Radius}, Image: {Image}, CreationDate: {CreationDate}, ModificationDate: {ModificationDate}";
+            return $"{Id} - {Name}, (Description: {Description}), Mass: {Mass}, Temperature: {Temperature}, Radius: {Radius}, Image: {Image}, CreationDate: {CreationDate}, ModificationDate: {ModificationDate}";
         }
     }
 }

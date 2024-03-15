@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>true</InvariantGlobalization>
+	  <ContainerRepository>stellar-api</ContainerRepository>
   </PropertyGroup>
 
   <ItemGroup>

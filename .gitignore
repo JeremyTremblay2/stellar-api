@@ -398,5 +398,5 @@ FodyWeavers.xsd
 *.sln.iml
 
 # Database files and folders
-*.db
+*.db*
 **/Migrations

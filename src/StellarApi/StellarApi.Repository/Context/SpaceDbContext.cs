@@ -19,7 +19,7 @@ namespace StellarApi.Repository.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlite(@"Data Source=C:\Users\jerem\Documents\Cours\Webservices\stellar-api\src\StellarApi\StellarApi.Repository\Database\SpaceDatabase.db");
+                optionsBuilder.UseSqlite(@"Data Source=..\StellarApi.Repository\Database\SpaceDatabase.db");
             }
         }
     }

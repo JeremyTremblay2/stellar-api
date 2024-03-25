@@ -29,7 +29,7 @@ builder.Services.AddApiVersioning(options =>
 });
 
 builder.Services.AddDbContext<SpaceDbContext>(options => 
-    options.UseSqlite(@"Data Source=C:\Users\jerem\Documents\Cours\Webservices\stellar-api\src\StellarApi\StellarApi.Repository\Database\SpaceDatabase.db")
+    options.UseSqlite(@"Data Source=..\StellarApi.Repository\Database\SpaceDatabase.db")
 );
 
 builder.Services.AddTransient<ICelestialObjectService, CelestialObjectService>();

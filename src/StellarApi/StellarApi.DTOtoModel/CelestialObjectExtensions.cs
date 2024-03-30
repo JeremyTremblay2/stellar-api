@@ -44,8 +44,8 @@ namespace StellarApi.DTOtoModel
                 Mass = model.Mass,
                 Temperature = model.Temperature,
                 Radius = model.Radius,
-                CreationDate = model.CreationDate,
-                ModificationDate = model.ModificationDate
+                CreationDate = (DateTime)model.CreationDate,
+                ModificationDate = (DateTime)model.ModificationDate
             };
 
             if (model is Planet planet)

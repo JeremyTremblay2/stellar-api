@@ -58,12 +58,12 @@ namespace StellarApi.Model.Space
         /// <summary>
         /// Gets the creation date of the celestial object.
         /// </summary>
-        public DateTime CreationDate { get; set; }
+        public DateTime? CreationDate { get; set; }
 
         /// <summary>
         /// Gets the last modification date of the celestial object.
         /// </summary>
-        public DateTime ModificationDate { get; set; }
+        public DateTime? ModificationDate { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CelestialObject"/> class with specified properties.

@@ -33,9 +33,11 @@
         /// <param name="isWater">A value indicating whether the planet has water.</param>
         /// <param name="isLife">A value indicating whether the planet supports life.</param>
         /// <param name="planetType">The type of the planet.</param>
+        /// <param name="creationDate">The creation date of the planet.</param>
+        /// <param name="modificationDate">The last modification date of the planet.</param>
         public Planet(int id, string name, string description, string image, double mass, double temperature, 
-            double radius, bool isWater, bool isLife, PlanetType planetType) 
-            : base(id, name, description, image, mass, temperature, radius)
+            double radius, bool isWater, bool isLife, PlanetType planetType, DateTime? creationDate = null, DateTime? modificationDate = null) 
+            : base(id, name, description, image, mass, temperature, radius, creationDate, modificationDate)
         {
             IsWater = isWater;
             IsLife = isLife;

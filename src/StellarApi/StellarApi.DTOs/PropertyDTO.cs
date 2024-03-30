@@ -26,11 +26,19 @@
         /// <param name="name">The name of the property.</param>
         /// <param name="value">The value of the property.</param>
         /// <param name="type">The type of the property.</param>
-        public PropertyDTO(string name, string value, string type)
+        public PropertyDTO(string name, string type, string value)
         {
             Name = name;
-            Value = value;
             Type = type;
+            Value = value;
+        }
+
+        /// <summary>
+        /// Create a new instance of the <see cref="PropertyDTO"/> class without values.
+        /// </summary>
+        public PropertyDTO()
+        {
+
         }
     }
 }

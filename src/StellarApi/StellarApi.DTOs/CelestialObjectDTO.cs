@@ -8,7 +8,7 @@
         /// <summary>
         /// Gets or sets the unique identifier of the celestial object.
         /// </summary>
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the celestial object.
@@ -81,7 +81,7 @@
         /// <param name="creationDate">The creation date of the celestial object.</param>
         /// <param name="modificationDate">The last modification date of the celestial object.</param>
         /// <param name="metadata">The list of inherited properties of the object.</param>
-        public CelestialObjectDTO(string id, string name, string description, double mass, double temperature, double radius, 
+        public CelestialObjectDTO(int id, string name, string description, double mass, double temperature, double radius, 
             string image, DateTime creationDate, DateTime modificationDate, string type, IEnumerable<PropertyDTO> metadata)
         {
             Id = id;

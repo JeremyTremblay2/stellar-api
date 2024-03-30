@@ -3,23 +3,29 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StellarApi.RestApi", "StellarApi.RestApi\StellarApi.RestApi.csproj", "{2CF32622-959D-48C3-8027-32636F07A254}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StellarApi.RestApi", "StellarApi.RestApi\StellarApi.RestApi.csproj", "{2CF32622-959D-48C3-8027-32636F07A254}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StellarApi.Model", "StellarApi.Model\StellarApi.Model.csproj", "{87A5A5E1-62F9-4DCB-90A5-8B44BF60A389}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StellarApi.Model", "StellarApi.Model\StellarApi.Model.csproj", "{87A5A5E1-62F9-4DCB-90A5-8B44BF60A389}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StellarApi.DTOs", "StellarApi.DTOs\StellarApi.DTOs.csproj", "{8A171F67-7AFF-43D8-A7B6-CC23BFC2D45E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StellarApi.DTOs", "StellarApi.DTOs\StellarApi.DTOs.csproj", "{8A171F67-7AFF-43D8-A7B6-CC23BFC2D45E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StellarApi.DTOtoModel", "StellarApi.DTOtoModel\StellarApi.DTOtoModel.csproj", "{BF8E6917-36B9-4868-8196-DE2A5C914FE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StellarApi.DTOtoModel", "StellarApi.DTOtoModel\StellarApi.DTOtoModel.csproj", "{BF8E6917-36B9-4868-8196-DE2A5C914FE5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D306CE81-A054-41BB-B852-25DDBA9ECDE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StellarApi.ApiUnitTests", "StellarApi.ApiUnitTests\StellarApi.ApiUnitTests.csproj", "{16B7E218-C449-4C3F-8B72-17F5E7583D15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StellarApi.ApiUnitTests", "StellarApi.ApiUnitTests\StellarApi.ApiUnitTests.csproj", "{16B7E218-C449-4C3F-8B72-17F5E7583D15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StellarApi.EntityToModel", "StellarApi.EntityToModel\StellarApi.EntityToModel.csproj", "{5192C25C-E59D-4B95-844E-A5F75913D4EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StellarApi.EntityToModel", "StellarApi.EntityToModel\StellarApi.EntityToModel.csproj", "{5192C25C-E59D-4B95-844E-A5F75913D4EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StellarApi.Entities", "StellarApi.Entities\StellarApi.Entities.csproj", "{B90E94D7-1974-4D7D-B1E8-980566BD807F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StellarApi.Entities", "StellarApi.Entities\StellarApi.Entities.csproj", "{B90E94D7-1974-4D7D-B1E8-980566BD807F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StellarApi.ApiGateway", "StellarApi.ApiGateway\StellarApi.ApiGateway.csproj", "{488ABD1D-1587-4751-8B3D-80C159A9AD56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StellarApi.ApiGateway", "StellarApi.ApiGateway\StellarApi.ApiGateway.csproj", "{488ABD1D-1587-4751-8B3D-80C159A9AD56}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StellarApi.Business", "StellarApi.Business\StellarApi.Business.csproj", "{71873156-E75B-4003-8A3F-59E9A2B2FA49}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StellarApi.Repository", "StellarApi.Repository\StellarApi.Repository.csproj", "{61011F0E-1E2A-4FEF-B22C-EA81BE393C8D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StellarApi.Infrastructure", "StellarApi.Infrastructure\StellarApi.Infrastructure.csproj", "{B1E8AF8F-A838-4306-9D1A-6AB46D209659}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +65,18 @@ Global
 		{488ABD1D-1587-4751-8B3D-80C159A9AD56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{488ABD1D-1587-4751-8B3D-80C159A9AD56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{488ABD1D-1587-4751-8B3D-80C159A9AD56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71873156-E75B-4003-8A3F-59E9A2B2FA49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71873156-E75B-4003-8A3F-59E9A2B2FA49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71873156-E75B-4003-8A3F-59E9A2B2FA49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71873156-E75B-4003-8A3F-59E9A2B2FA49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61011F0E-1E2A-4FEF-B22C-EA81BE393C8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61011F0E-1E2A-4FEF-B22C-EA81BE393C8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61011F0E-1E2A-4FEF-B22C-EA81BE393C8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61011F0E-1E2A-4FEF-B22C-EA81BE393C8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1E8AF8F-A838-4306-9D1A-6AB46D209659}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1E8AF8F-A838-4306-9D1A-6AB46D209659}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1E8AF8F-A838-4306-9D1A-6AB46D209659}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1E8AF8F-A838-4306-9D1A-6AB46D209659}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

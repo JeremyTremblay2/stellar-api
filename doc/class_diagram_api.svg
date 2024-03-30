@@ -1,208 +1,107 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-    width="1157.59619140625" height="1237">
+    width="1472.28173828125" height="1821">
     <defs />
     <g>
         <g>
-            <rect fill="#C0C0C0" stroke="none" x="407" y="287" width="111.12451171875" height="73"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
+            <rect fill="#C0C0C0" stroke="none" x="511" y="31" width="587.00830078125" height="118"
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
         </g>
         <g>
-            <rect fill="#ffffff" stroke="none" x="400" y="280" width="111.12451171875" height="73"
-                transform="matrix(1 0 0 1 -70 -118)" />
+            <rect fill="#ffffff" stroke="none" x="504" y="24" width="587.00830078125" height="118"
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 330 162 L 441.12451171875 162 L 441.12451171875 235 L 330 235 L 330 162 Z Z"
+                d=" M 354 10 L 941.00830078125 10 L 941.00830078125 128 L 354 128 L 354 10 Z Z"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 330 187 L 441.12451171875 187" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 354 35 L 941.00830078125 35" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 330 197 L 441.12451171875 197" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 354 45 L 941.00830078125 45" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="bold" text-decoration="undefined"
-                    x="456.062255859375" y="293.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">PlanetController</text>
+                    x="798.004150390625" y="37.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">CelestialObjectController</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="405"
-                    y="326.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+AddPlanet()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="509"
+                    y="70.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+GetCelestialObject(id: int):
+                    Task&lt;ActionResult&lt;CelestialObject?&gt;&gt;</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="405"
-                    y="341.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+EditPlanet()</text>
-            </g>
-        </g>
-        <g>
-            <rect fill="#C0C0C0" stroke="none" x="599" y="287" width="97.40087890625" height="73"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
-        </g>
-        <g>
-            <rect fill="#ffffff" stroke="none" x="592" y="280" width="97.40087890625" height="73"
-                transform="matrix(1 0 0 1 -70 -118)" />
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 522 162 L 619.40087890625 162 L 619.40087890625 235 L 522 235 L 522 162 Z Z"
-                stroke-miterlimit="10" stroke-dasharray="" />
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 522 187 L 619.40087890625 187" stroke-miterlimit="10" stroke-dasharray="" />
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 522 197 L 619.40087890625 197" stroke-miterlimit="10" stroke-dasharray="" />
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="bold" text-decoration="undefined"
-                    x="641.200439453125" y="293.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">StarController</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="509"
+                    y="85.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+GetCelestialObjects(page: int, pageSize:
+                    int): Task&lt;ActionResult&lt;IEnumerable&lt;CelestialObject&gt;&gt;&gt;</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="597"
-                    y="326.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+AddStar()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="509"
+                    y="100.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+PostCelestialObject(celestialObject:
+                    CelestialObject): Task&lt;ActionResult&lt;bool&gt;&gt;</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="597"
-                    y="341.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+EditStar()</text>
-            </g>
-        </g>
-        <g>
-            <rect fill="#C0C0C0" stroke="none" x="495" y="135" width="166.0380859375" height="88"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
-        </g>
-        <g>
-            <rect fill="#ffffff" stroke="none" x="488" y="128" width="166.0380859375" height="88"
-                transform="matrix(1 0 0 1 -70 -118)" />
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 418 10 L 584.0380859375 10 L 584.0380859375 98 L 418 98 L 418 10 Z Z"
-                stroke-miterlimit="10" stroke-dasharray="" />
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 418 35 L 584.0380859375 35" stroke-miterlimit="10" stroke-dasharray="" />
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 418 45 L 584.0380859375 45" stroke-miterlimit="10" stroke-dasharray="" />
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="bold" text-decoration="undefined"
-                    x="571.51904296875" y="141.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">CelestialObjectController</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="509"
+                    y="115.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+PutCelestialObject(id: int,
+                    celestialObject: CelestialObject): Task&lt;ActionResult&lt;bool&gt;&gt;</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="493"
-                    y="174.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+DeleteCelestialObject()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="509"
+                    y="130.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+DeleteCelestialObject(id: int):
+                    Task&lt;ActionResult&lt;bool&gt;&gt;</text>
             </g>
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="493"
-                    y="189.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+GetCelestialObjectById()</text>
-            </g>
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="493"
-                    y="204.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+GetAll()</text>
-            </g>
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 386 161 L 386 130 L 498 130 L 499 99" stroke-miterlimit="10"
-                stroke-dasharray="" />
-        </g>
-        <g>
-            <path fill="#FFFFFF" stroke="none" paint-order="stroke fill markers"
-                d=" M 506.7593430001508 119.58622345662289 L 499 99 L 489.93002584775945 119.04334225815865" />
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 506.7593430001508 119.58622345662289 L 499 99 L 489.93002584775945 119.04334225815865 L 506.7593430001508 119.58622345662289"
-                stroke-miterlimit="10" stroke-dasharray="" />
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 570 161 L 570 130 L 498 130 L 499 99" stroke-miterlimit="10"
-                stroke-dasharray="" />
-        </g>
-        <g>
-            <path fill="#FFFFFF" stroke="none" paint-order="stroke fill markers"
-                d=" M 506.7593430001508 119.58622345662289 L 499 99 L 489.93002584775945 119.04334225815865" />
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 506.7593430001508 119.58622345662289 L 499 99 L 489.93002584775945 119.04334225815865 L 506.7593430001508 119.58622345662289"
-                stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <rect fill="#C0C0C0" stroke="none" x="175" y="231" width="150.15625" height="58"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
         </g>
         <g>
             <rect fill="#ffffff" stroke="none" x="168" y="224" width="150.15625" height="58"
-                transform="matrix(1 0 0 1 -70 -118)" />
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 98 106 L 248.15625 106 L 248.15625 164 L 98 164 L 98 106 Z Z"
+                d=" M 18 210 L 168.15625 210 L 168.15625 268 L 18 268 L 18 210 Z Z"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 98 131 L 248.15625 131" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 18 235 L 168.15625 235" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 98 141 L 248.15625 141" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 18 245 L 168.15625 245" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <g>
@@ -210,7 +109,7 @@
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="bold" text-decoration="undefined"
                     x="243.578125" y="237.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">SpaceImageController</text>
+                    transform="matrix(1 0 0 1 -150 -14)">SpaceImageController</text>
             </g>
         </g>
         <g>
@@ -219,104 +118,104 @@
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="normal" text-decoration="undefined" x="173"
                     y="270.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+GetDailyImage()</text>
+                    transform="matrix(1 0 0 1 -150 -14)">+GetDailyImage()</text>
             </g>
         </g>
         <g>
-            <rect fill="#C0C0C0" stroke="none" x="823" y="215" width="168.59619140625" height="118"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
+            <rect fill="#C0C0C0" stroke="none" x="1207" y="255" width="168.59619140625" height="118"
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
         </g>
         <g>
-            <rect fill="#ffffff" stroke="none" x="816" y="208" width="168.59619140625" height="118"
-                transform="matrix(1 0 0 1 -70 -118)" />
+            <rect fill="#ffffff" stroke="none" x="1200" y="248" width="168.59619140625" height="118"
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 746 90 L 914.59619140625 90 L 914.59619140625 208 L 746 208 L 746 90 Z Z"
+                d=" M 1050 234 L 1218.59619140625 234 L 1218.59619140625 352 L 1050 352 L 1050 234 Z Z"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 746 115 L 914.59619140625 115" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 1050 259 L 1218.59619140625 259" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 746 125 L 914.59619140625 125" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 1050 269 L 1218.59619140625 269" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="bold" text-decoration="undefined"
-                    x="900.798095703125" y="221.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">MapController</text>
+                    x="1284.798095703125" y="261.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">MapController</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="821"
-                    y="254.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+AddMap()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1205"
+                    y="294.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+AddMap()</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="821"
-                    y="269.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+DeleteMap()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1205"
+                    y="309.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+DeleteMap()</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="821"
-                    y="284.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+AddCelestialObject()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1205"
+                    y="324.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+AddCelestialObject()</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="821"
-                    y="299.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+SuppressCelestialObject()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1205"
+                    y="339.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+SuppressCelestialObject()</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="821"
-                    y="314.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+EditMap()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1205"
+                    y="354.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+EditMap()</text>
             </g>
         </g>
         <g>
             <rect fill="#C0C0C0" stroke="none" x="183" y="511" width="132.13525390625" height="58"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
         </g>
         <g>
             <rect fill="#ffffff" stroke="none" x="176" y="504" width="132.13525390625" height="58"
-                transform="matrix(1 0 0 1 -70 -118)" />
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 106 386 L 238.13525390625 386 L 238.13525390625 444 L 106 444 L 106 386 Z Z"
+                d=" M 26 490 L 158.13525390625 490 L 158.13525390625 548 L 26 548 L 26 490 Z Z"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 106 411 L 238.13525390625 411" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 26 515 L 158.13525390625 515" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 106 421 L 238.13525390625 421" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 26 525 L 158.13525390625 525" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <g>
@@ -324,7 +223,7 @@
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="bold" text-decoration="undefined"
                     x="242.567626953125" y="517.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">SpaceImageService</text>
+                    transform="matrix(1 0 0 1 -150 -14)">SpaceImageService</text>
             </g>
         </g>
         <g>
@@ -333,21 +232,21 @@
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="normal" text-decoration="undefined" x="181"
                     y="550.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+GetDailyImage()</text>
+                    transform="matrix(1 0 0 1 -150 -14)">+GetDailyImage()</text>
             </g>
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 173 165 L 173 273" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 93 269 L 93 377" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 168.790482243984 262.83732514237585 L 173 273 L 177.209517756016 262.83732514237585"
+                d=" M 88.790482243984 366.83732514237585 L 93 377 L 97.209517756016 366.83732514237585"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <rect fill="#ffffff" stroke="none" x="233" y="330" width="48.76904296875" height="13"
-                transform="matrix(1 0 0 1 -70 -118)" />
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <g>
@@ -355,12 +254,12 @@
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="normal" text-decoration="undefined"
                     x="257.384521484375" y="336.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+service</text>
+                    transform="matrix(1 0 0 1 -150 -14)">-service</text>
             </g>
         </g>
         <g>
             <rect fill="#ffffff" stroke="none" x="227" y="363" width="7.22998046875" height="13"
-                transform="matrix(1 0 0 1 -70 -118)" />
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <g>
@@ -368,29 +267,29 @@
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="normal" text-decoration="undefined"
                     x="230.614990234375" y="369.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">1</text>
+                    transform="matrix(1 0 0 1 -150 -14)">1</text>
             </g>
         </g>
         <g>
             <rect fill="#C0C0C0" stroke="none" x="167" y="735" width="162.4453125" height="58"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
         </g>
         <g>
             <rect fill="#ffffff" stroke="none" x="160" y="728" width="162.4453125" height="58"
-                transform="matrix(1 0 0 1 -70 -118)" />
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 90 610 L 252.4453125 610 L 252.4453125 668 L 90 668 L 90 610 Z Z"
+                d=" M 10 714 L 172.4453125 714 L 172.4453125 772 L 10 772 L 10 714 Z Z"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 90 635 L 252.4453125 635" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 10 739 L 172.4453125 739" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 90 645 L 252.4453125 645" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 10 749 L 172.4453125 749" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <g>
@@ -398,7 +297,7 @@
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="bold" text-decoration="undefined"
                     x="241.72265625" y="741.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">SpaceImageRepository</text>
+                    transform="matrix(1 0 0 1 -150 -14)">SpaceImageRepository</text>
             </g>
         </g>
         <g>
@@ -407,171 +306,181 @@
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="normal" text-decoration="undefined" x="165"
                     y="774.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+GetDailyImage()</text>
+                    transform="matrix(1 0 0 1 -150 -14)">+GetDailyImage()</text>
             </g>
         </g>
         <g>
-            <rect fill="#C0C0C0" stroke="none" x="607" y="511" width="160.642578125" height="118"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
+            <rect fill="#C0C0C0" stroke="none" x="623" y="375" width="498.845703125" height="118"
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
         </g>
         <g>
-            <rect fill="#ffffff" stroke="none" x="600" y="504" width="160.642578125" height="118"
-                transform="matrix(1 0 0 1 -70 -118)" />
+            <rect fill="#ffffff" stroke="none" x="616" y="368" width="498.845703125" height="118"
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 530 386 L 690.642578125 386 L 690.642578125 504 L 530 504 L 530 386 Z Z"
+                d=" M 466 354 L 964.845703125 354 L 964.845703125 472 L 466 472 L 466 354 Z Z"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 530 411 L 690.642578125 411" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 466 379 L 964.845703125 379" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 530 421 L 690.642578125 421" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 466 389 L 964.845703125 389" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="bold" text-decoration="undefined"
-                    x="680.8212890625" y="517.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">CelestialObjectService</text>
+                    x="865.9228515625" y="381.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">CelestialObjectService</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="605"
-                    y="550.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+AddCelestialObject()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="621"
+                    y="414.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+GetCelestialObject(id: int):
+                    Task&lt;CelestialObject?&gt;</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="605"
-                    y="565.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+EditCelestialObject()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="621"
+                    y="429.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+GetCelestialObjects(page: int, pageSize:
+                    int): Task&lt;IEnumerable&lt;CelestialObject&gt;&gt;</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="605"
-                    y="580.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+DeleteCelestialObject()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="621"
+                    y="444.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+PostCelestialObject(celestialObject:
+                    CelestialObject): Task&lt;bool&gt;</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="605"
-                    y="595.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+GetCelestialObjectById()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="621"
+                    y="459.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+PutCelestialObject(id: int,
+                    celestialObject: CelestialObject): Task&lt;bool&gt;</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="605"
-                    y="610.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+GetAll()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="621"
+                    y="474.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+DeleteCelestialObject(id: int):
+                    Task&lt;bool&gt;</text>
             </g>
         </g>
         <g>
-            <rect fill="#C0C0C0" stroke="none" x="591" y="679" width="171.8271484375" height="118"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
+            <rect fill="#C0C0C0" stroke="none" x="543" y="751" width="498.845703125" height="118"
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
         </g>
         <g>
-            <rect fill="#ffffff" stroke="none" x="584" y="672" width="171.8271484375" height="118"
-                transform="matrix(1 0 0 1 -70 -118)" />
+            <rect fill="#ffffff" stroke="none" x="536" y="744" width="498.845703125" height="118"
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 514 554 L 685.8271484375 554 L 685.8271484375 672 L 514 672 L 514 554 Z Z"
+                d=" M 386 730 L 884.845703125 730 L 884.845703125 848 L 386 848 L 386 730 Z Z"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 514 579 L 685.8271484375 579" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 386 755 L 884.845703125 755" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 514 589 L 685.8271484375 589" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 386 765 L 884.845703125 765" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="bold" text-decoration="undefined"
-                    x="670.41357421875" y="685.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">CelestialObjectRepository</text>
+                    x="785.9228515625" y="757.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">CelestialObjectRepository</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="589"
-                    y="718.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+AddCelestialObject()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="541"
+                    y="790.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+GetCelestialObject(id: int):
+                    Task&lt;CelestialObject?&gt;</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="589"
-                    y="733.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+EditCelestialObject()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="541"
+                    y="805.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+GetCelestialObjects(page: int, pageSize:
+                    int): Task&lt;IEnumerable&lt;CelestialObject&gt;&gt;</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="589"
-                    y="748.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+DeleteCelestialObject()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="541"
+                    y="820.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+AddCelestialObject(celestialObject:
+                    CelestialObject): Task&lt;bool&gt;</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="589"
-                    y="763.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+GetCelestialObjectById()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="541"
+                    y="835.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+EditCelestialObject(id: int,
+                    celestialObject: CelestialObject): Task&lt;bool&gt;</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="589"
-                    y="778.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+GetAll()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="541"
+                    y="850.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+RemoveCelestialObject(id: int):
+                    Task&lt;bool&gt;</text>
             </g>
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 171 445 L 169 505" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 91 549 L 89 609" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 165.13138670550276 494.70272700285943 L 169 505 L 173.54574886967976 494.9832057416654"
+                d=" M 85.13138670550276 598.7027270028594 L 89 609 L 93.54574886967976 598.9832057416654"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <rect fill="#ffffff" stroke="none" x="248" y="576" width="64.669921875" height="13"
-                transform="matrix(1 0 0 1 -70 -118)" />
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <g>
@@ -579,12 +488,12 @@
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="normal" text-decoration="undefined"
                     x="280.3349609375" y="582.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+repository</text>
+                    transform="matrix(1 0 0 1 -150 -14)">-repository</text>
             </g>
         </g>
         <g>
             <rect fill="#ffffff" stroke="none" x="224" y="594" width="7.22998046875" height="13"
-                transform="matrix(1 0 0 1 -70 -118)" />
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <g>
@@ -592,533 +501,483 @@
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="normal" text-decoration="undefined"
                     x="227.614990234375" y="600.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">1</text>
+                    transform="matrix(1 0 0 1 -150 -14)">1</text>
             </g>
         </g>
         <g>
-            <rect fill="#C0C0C0" stroke="none" x="399" y="887" width="106.10986328125" height="45"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
+            <rect fill="#C0C0C0" stroke="none" x="719" y="1119" width="106.10986328125" height="45"
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
         </g>
         <g>
-            <rect fill="#ffffff" stroke="none" x="392" y="880" width="106.10986328125" height="45"
-                transform="matrix(1 0 0 1 -70 -118)" />
+            <rect fill="#ffffff" stroke="none" x="712" y="1112" width="106.10986328125" height="45"
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 322 762 L 428.10986328125 762 L 428.10986328125 807 L 322 807 L 322 762 Z Z"
+                d=" M 562 1098 L 668.10986328125 1098 L 668.10986328125 1143 L 562 1143 L 562 1098 Z Z"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 322 787 L 428.10986328125 787" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 562 1123 L 668.10986328125 1123" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 322 797 L 428.10986328125 797" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 562 1133 L 668.10986328125 1133" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="bold" text-decoration="undefined"
-                    x="445.554931640625" y="893.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">SpaceDatabase</text>
+                    x="765.554931640625" y="1125.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">SpaceDatabase</text>
             </g>
         </g>
         <g>
-            <rect fill="#C0C0C0" stroke="none" x="735" y="847" width="131.05615234375" height="118"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
+            <rect fill="#C0C0C0" stroke="none" x="1055" y="1079" width="159.4619140625" height="118"
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
         </g>
         <g>
-            <rect fill="#ffffff" stroke="none" x="728" y="840" width="131.05615234375" height="118"
-                transform="matrix(1 0 0 1 -70 -118)" />
+            <rect fill="#ffffff" stroke="none" x="1048" y="1072" width="159.4619140625" height="118"
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 658 722 L 789.05615234375 722 L 789.05615234375 840 L 658 840 L 658 722 Z Z"
+                d=" M 898 1058 L 1057.4619140625 1058 L 1057.4619140625 1176 L 898 1176 L 898 1058 Z Z"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 658 747 L 789.05615234375 747" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 898 1083 L 1057.4619140625 1083" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 658 830 L 789.05615234375 830" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 898 1166 L 1057.4619140625 1166" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="bold" text-decoration="undefined"
-                    x="794.028076171875" y="853.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">SpaceImageEntity</text>
+                    x="1128.23095703125" y="1085.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">SpaceImageEntity</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="733"
-                    y="876.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+Id: int</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1053"
+                    y="1108.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Id: int</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="733"
-                    y="891.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+Image: string</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1053"
+                    y="1123.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Image: string</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="733"
-                    y="906.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+Title: string</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1053"
+                    y="1138.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Title: string</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="733"
-                    y="921.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+Description: string</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1053"
+                    y="1153.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Description: string</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="733"
-                    y="936.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+ShootingDate: Date</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1053"
+                    y="1168.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+ShootingDate: DateTime</text>
             </g>
         </g>
         <g>
-            <rect fill="#C0C0C0" stroke="none" x="327" y="1039" width="149.1025390625" height="163"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
+            <rect fill="#C0C0C0" stroke="none" x="679" y="1279" width="177.50830078125" height="268"
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
         </g>
         <g>
-            <rect fill="#ffffff" stroke="none" x="320" y="1032" width="149.1025390625" height="163"
-                transform="matrix(1 0 0 1 -70 -118)" />
+            <rect fill="#ffffff" stroke="none" x="672" y="1272" width="177.50830078125" height="268"
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 250 914 L 399.1025390625 914 L 399.1025390625 1077 L 250 1077 L 250 914 Z Z"
+                d=" M 522 1258 L 699.50830078125 1258 L 699.50830078125 1526 L 522 1526 L 522 1258 Z Z"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 250 939 L 399.1025390625 939" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 522 1283 L 699.50830078125 1283" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 250 1067 L 399.1025390625 1067" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 522 1516 L 699.50830078125 1516" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="bold" text-decoration="undefined"
-                    x="395.05126953125" y="1045.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">CelestialObjectEntity</text>
+                    x="761.254150390625" y="1285.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">CelestialObjectEntity</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="325"
-                    y="1068.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+Id: int</text>
-            </g>
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="325"
-                    y="1083.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+Name: string</text>
-            </g>
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="325"
-                    y="1098.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+Description: string</text>
-            </g>
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="325"
-                    y="1113.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+Mass: double</text>
-            </g>
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="325"
-                    y="1128.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+Temperature: int</text>
-            </g>
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="325"
-                    y="1143.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+Image: string</text>
-            </g>
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="325"
-                    y="1158.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+CreationDate: Date</text>
-            </g>
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="325"
-                    y="1173.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+ModificationDate: Date</text>
-            </g>
-        </g>
-        <g>
-            <rect fill="#C0C0C0" stroke="none" x="231" y="1279" width="93.69384765625" height="73"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
-        </g>
-        <g>
-            <rect fill="#ffffff" stroke="none" x="224" y="1272" width="93.69384765625" height="73"
-                transform="matrix(1 0 0 1 -70 -118)" />
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 154 1154 L 247.69384765625 1154 L 247.69384765625 1227 L 154 1227 L 154 1154 Z Z"
-                stroke-miterlimit="10" stroke-dasharray="" />
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 154 1179 L 247.69384765625 1179" stroke-miterlimit="10" stroke-dasharray="" />
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 154 1217 L 247.69384765625 1217" stroke-miterlimit="10" stroke-dasharray="" />
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="bold" text-decoration="undefined"
-                    x="271.346923828125" y="1285.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">StarEntity</text>
-            </g>
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="229"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="677"
                     y="1308.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+IsLife: bool</text>
+                    transform="matrix(1 0 0 1 -150 -14)">+Id: int</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="229"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="677"
                     y="1323.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+IsWater: bool</text>
+                    transform="matrix(1 0 0 1 -150 -14)">+Name: string</text>
             </g>
         </g>
         <g>
-            <rect fill="#C0C0C0" stroke="none" x="439" y="1279" width="99.96533203125" height="58"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="677"
+                    y="1338.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Description: string</text>
+            </g>
         </g>
         <g>
-            <rect fill="#ffffff" stroke="none" x="432" y="1272" width="99.96533203125" height="58"
-                transform="matrix(1 0 0 1 -70 -118)" />
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="677"
+                    y="1353.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Mass: double</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="677"
+                    y="1368.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Temperature: double</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="677"
+                    y="1383.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Radius: double</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="677"
+                    y="1398.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Image: string</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="677"
+                    y="1413.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+CreationDate: DateTime</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="677"
+                    y="1428.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+ModificationDate: DateTime</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="677"
+                    y="1443.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Type: string</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="677"
+                    y="1458.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+IsLife: bool</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="677"
+                    y="1473.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+IsWater: bool</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="677"
+                    y="1488.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Brightness: int</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="677"
+                    y="1503.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+StarType: string</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="677"
+                    y="1518.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+PlanetType: string</text>
+            </g>
+        </g>
+        <g>
+            <rect fill="#C0C0C0" stroke="none" x="407" y="1087" width="177.50830078125" height="103"
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="400" y="1080" width="177.50830078125" height="103"
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 362 1154 L 461.96533203125 1154 L 461.96533203125 1212 L 362 1212 L 362 1154 Z Z"
+                d=" M 250 1066 L 427.50830078125 1066 L 427.50830078125 1169 L 250 1169 L 250 1066 Z Z"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 362 1179 L 461.96533203125 1179" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 250 1091 L 427.50830078125 1091" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 362 1202 L 461.96533203125 1202" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 250 1159 L 427.50830078125 1159" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="bold" text-decoration="undefined"
-                    x="482.482666015625" y="1285.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">PlanetEntity</text>
+                    x="489.254150390625" y="1093.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">MapEntity</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="437"
-                    y="1308.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+Brightness: int</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="405"
+                    y="1116.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Id: int</text>
             </g>
         </g>
         <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 224 1153 L 271 1078" stroke-miterlimit="10" stroke-dasharray="" />
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="405"
+                    y="1131.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Name: string</text>
+            </g>
         </g>
         <g>
-            <path fill="#FFFFFF" stroke="none" paint-order="stroke fill markers"
-                d=" M 267.3409310960459 1099.6935754258286 L 271 1078 L 253.07297327339995 1090.7523218569704" />
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="405"
+                    y="1146.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+CreationDate: DateTime</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="405"
+                    y="1161.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+ModificationDate: DateTime</text>
+            </g>
+        </g>
+        <g>
+            <rect fill="#C0C0C0" stroke="none" x="1015" y="1311" width="97.38818359375" height="88"
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="1008" y="1304" width="97.38818359375" height="88"
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 267.3409310960459 1099.6935754258286 L 271 1078 L 253.07297327339995 1090.7523218569704 L 267.3409310960459 1099.6935754258286"
+                d=" M 858 1290 L 955.38818359375 1290 L 955.38818359375 1378 L 858 1378 L 858 1290 Z Z"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 397 1153 L 362 1078" stroke-miterlimit="10" stroke-dasharray="" />
-        </g>
-        <g>
-            <path fill="#FFFFFF" stroke="none" paint-order="stroke fill markers"
-                d=" M 378.2244830083754 1092.8582014763208 L 362 1078 L 362.96610693632584 1099.9787769766106" />
+                d=" M 858 1315 L 955.38818359375 1315" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 378.2244830083754 1092.8582014763208 L 362 1078 L 362.96610693632584 1099.9787769766106 L 378.2244830083754 1092.8582014763208"
-                stroke-miterlimit="10" stroke-dasharray="" />
-        </g>
-        <g>
-            <rect fill="#C0C0C0" stroke="none" x="87" y="855" width="149.1025390625" height="103"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
-        </g>
-        <g>
-            <rect fill="#ffffff" stroke="none" x="80" y="848" width="149.1025390625" height="103"
-                transform="matrix(1 0 0 1 -70 -118)" />
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 10 730 L 159.1025390625 730 L 159.1025390625 833 L 10 833 L 10 730 Z Z"
-                stroke-miterlimit="10" stroke-dasharray="" />
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 10 755 L 159.1025390625 755" stroke-miterlimit="10" stroke-dasharray="" />
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 10 823 L 159.1025390625 823" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 858 1368 L 955.38818359375 1368" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="bold" text-decoration="undefined"
-                    x="155.05126953125" y="861.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">MapEntity</text>
+                    x="1057.194091796875" y="1317.5" text-anchor="middle"
+                    dominant-baseline="central" transform="matrix(1 0 0 1 -150 -14)">PositionEntity</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="85"
-                    y="884.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+Id: int</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1013"
+                    y="1340.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+X: int</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="85"
-                    y="899.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+Name: string</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1013"
+                    y="1355.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Y: int</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="85"
-                    y="914.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+CreationDate: Date</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1013"
+                    y="1370.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Z: int</text>
             </g>
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="85"
-                    y="929.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+ModificationDate: Date</text>
-            </g>
-        </g>
-        <g>
-            <rect fill="#C0C0C0" stroke="none" x="599" y="1071" width="97.38818359375" height="88"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
-        </g>
-        <g>
-            <rect fill="#ffffff" stroke="none" x="592" y="1064" width="97.38818359375" height="88"
-                transform="matrix(1 0 0 1 -70 -118)" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 522 946 L 619.38818359375 946 L 619.38818359375 1034 L 522 1034 L 522 946 Z Z"
+                d=" M 669 1120 L 897 1118" stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 886.874640286009 1122.2984986521215 L 897 1118 L 886.8007919384477 1113.8797870301203"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 522 971 L 619.38818359375 971" stroke-miterlimit="10" stroke-dasharray="" />
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 522 1024 L 619.38818359375 1024" stroke-miterlimit="10" stroke-dasharray="" />
+            <rect fill="#ffffff" stroke="none" x="890" y="1112" width="84.91259765625" height="13"
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="bold" text-decoration="undefined"
-                    x="641.194091796875" y="1077.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">PositionEntity</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined"
+                    x="932.456298828125" y="1118.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+spaceImages</text>
             </g>
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="1022" y="1138" width="6.5" height="13"
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="597"
-                    y="1100.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+X: int</text>
-            </g>
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="597"
-                    y="1115.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+Y: int</text>
-            </g>
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="597"
-                    y="1130.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+Z: int</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1025.25"
+                    y="1144.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">*</text>
             </g>
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 429 784 L 657 782" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 561 1119 L 429 1118" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 646.874640286009 786.2984986521215 L 657 782 L 646.8007919384477 777.8797870301202"
+                d=" M 439.19427261248063 1113.8675907871525 L 429 1118 L 439.13049387059164 1122.2863847165072"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
-            <rect fill="#ffffff" stroke="none" x="570" y="880" width="84.91259765625" height="13"
-                transform="matrix(1 0 0 1 -70 -118)" />
+            <rect fill="#ffffff" stroke="none" x="625" y="1141" width="39.380859375" height="13"
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="normal" text-decoration="undefined"
-                    x="612.456298828125" y="886.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+spaceImages</text>
+                    x="644.6904296875" y="1147.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Maps</text>
             </g>
         </g>
         <g>
-            <rect fill="#ffffff" stroke="none" x="703" y="906" width="5.05908203125" height="13"
-                transform="matrix(1 0 0 1 -70 -118)" />
+            <rect fill="#ffffff" stroke="none" x="597" y="1113" width="6.5" height="13"
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined"
-                    x="705.529541015625" y="912.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">*</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="600.25"
+                    y="1119.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">*</text>
             </g>
+        </g>
+        <g>
+            <rect fill="#C0C0C0" stroke="none" x="607" y="943" width="75.71728515625" height="49"
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="600" y="936" width="75.71728515625" height="49"
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 321 783 L 160 782" stroke-miterlimit="10" stroke-dasharray="" />
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 170.18862440029807 777.8536844271509 L 160 782 L 170.13633326291446 786.2725575459125"
-                stroke-miterlimit="10" stroke-dasharray="" />
-        </g>
-        <g>
-            <rect fill="#ffffff" stroke="none" x="290" y="909" width="39.380859375" height="13"
-                transform="matrix(1 0 0 1 -70 -118)" />
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined"
-                    x="309.6904296875" y="915.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+maps</text>
-            </g>
-        </g>
-        <g>
-            <rect fill="#ffffff" stroke="none" x="249" y="881" width="5.05908203125" height="13"
-                transform="matrix(1 0 0 1 -70 -118)" />
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined"
-                    x="251.529541015625" y="887.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">*</text>
-            </g>
-        </g>
-        <g>
-            <rect fill="#C0C0C0" stroke="none" x="415" y="759" width="75.71728515625" height="49"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
-        </g>
-        <g>
-            <rect fill="#ffffff" stroke="none" x="408" y="752" width="75.71728515625" height="49"
-                transform="matrix(1 0 0 1 -70 -118)" />
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 338 634 L 413.71728515625 634 L 413.71728515625 683 L 338 683 L 338 634 Z Z"
+                d=" M 450 922 L 525.71728515625 922 L 525.71728515625 971 L 450 971 L 450 922 Z Z"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
@@ -1126,8 +985,8 @@
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="normal" text-decoration="undefined"
-                    x="446.358642578125" y="763.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">«interface»</text>
+                    x="638.358642578125" y="947.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">«interface»</text>
             </g>
         </g>
         <g>
@@ -1135,388 +994,378 @@
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="bold" text-decoration="undefined"
-                    x="446.358642578125" y="778.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">DbContext</text>
+                    x="638.358642578125" y="962.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">DbContext</text>
             </g>
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 375 761 L 375 684" stroke-miterlimit="10" stroke-dasharray="3" />
+                d=" M 615 1144 L 612 1257" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 379.209517756016 694.1626748576241 L 375 684 L 370.790482243984 694.1626748576241"
+                d=" M 608.061675455312 1246.7291869951446 L 612 1257 L 616.47774553197 1246.9526224839053"
+                stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="727" y="1208" width="101.51806640625" height="13"
+                transform="matrix(1 0 0 1 -150 -14)" />
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined"
+                    x="777.759033203125" y="1214.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+CelestialObjects</text>
+            </g>
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="747" y="1243" width="6.5" height="13"
+                transform="matrix(1 0 0 1 -150 -14)" />
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="750.25"
+                    y="1249.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">*</text>
+            </g>
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 583 129 L 524 185" stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 528.4731092310835 174.95055753751504 L 524 185 L 534.2689947826544 181.05693695792013"
+                stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="688" y="175" width="50.93994140625" height="13"
+                transform="matrix(1 0 0 1 -150 -14)" />
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined"
+                    x="713.469970703125" y="181.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">-service</text>
+            </g>
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="678" y="169" width="7.22998046875" height="13"
+                transform="matrix(1 0 0 1 -150 -14)" />
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined"
+                    x="681.614990234375" y="175.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">1</text>
+            </g>
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 623 473 L 537 529" stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 543.2192811620465 519.9269331630692 L 537 529 L 547.8133229703413 526.9820687972364"
+                stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="706" y="521" width="64.669921875" height="13"
+                transform="matrix(1 0 0 1 -150 -14)" />
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined"
+                    x="738.3349609375" y="527.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">-repository</text>
+            </g>
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="695" y="514" width="7.22998046875" height="13"
+                transform="matrix(1 0 0 1 -150 -14)" />
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined"
+                    x="698.614990234375" y="520.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">1</text>
+            </g>
+        </g>
+        <g>
+            <rect fill="#C0C0C0" stroke="none" x="1447" y="431" width="168.59619140625" height="118"
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="1440" y="424" width="168.59619140625" height="118"
+                transform="matrix(1 0 0 1 -150 -14)" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 1290 410 L 1458.59619140625 410 L 1458.59619140625 528 L 1290 528 L 1290 410 Z Z"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 369 808 L 344 913" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 1290 435 L 1458.59619140625 435" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 342.258839075482 902.138676018324 L 344 913 L 350.4489291432435 904.088697463029"
-                stroke-miterlimit="10" stroke-dasharray="" />
-        </g>
-        <g>
-            <rect fill="#ffffff" stroke="none" x="391" y="975" width="98.6298828125" height="13"
-                transform="matrix(1 0 0 1 -70 -118)" />
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined"
-                    x="440.31494140625" y="981.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+celestialObjects</text>
-            </g>
-        </g>
-        <g>
-            <rect fill="#ffffff" stroke="none" x="404" y="1001" width="5.05908203125" height="13"
-                transform="matrix(1 0 0 1 -70 -118)" />
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined"
-                    x="406.529541015625" y="1007.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">*</text>
-            </g>
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 585 52 L 690 50 L 690 330 L 460 333" stroke-miterlimit="10"
-                stroke-dasharray="" />
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 470.10690838493804 328.65829493188795 L 460 333 L 470.21671255139483 337.0766143602468"
-                stroke-miterlimit="10" stroke-dasharray="" />
-        </g>
-        <g>
-            <rect fill="#ffffff" stroke="none" x="751" y="301" width="48.76904296875" height="13"
-                transform="matrix(1 0 0 1 -70 -118)" />
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined"
-                    x="775.384521484375" y="307.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+service</text>
-            </g>
-        </g>
-        <g>
-            <rect fill="#ffffff" stroke="none" x="548" y="432" width="7.22998046875" height="13"
-                transform="matrix(1 0 0 1 -70 -118)" />
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined"
-                    x="551.614990234375" y="438.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">1</text>
-            </g>
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 529 477 L 450 507" stroke-miterlimit="10" stroke-dasharray="" />
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 458.006275162105 499.4568204297749 L 450 507 L 460.99512488498385 507.3274580333559"
-                stroke-miterlimit="10" stroke-dasharray="" />
-        </g>
-        <g>
-            <rect fill="#ffffff" stroke="none" x="532" y="618" width="64.669921875" height="13"
-                transform="matrix(1 0 0 1 -70 -118)" />
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined"
-                    x="564.3349609375" y="624.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+repository</text>
-            </g>
-        </g>
-        <g>
-            <rect fill="#ffffff" stroke="none" x="532" y="599" width="7.22998046875" height="13"
-                transform="matrix(1 0 0 1 -70 -118)" />
-        </g>
-        <g>
-            <g>
-                <path fill="none" stroke="none" />
-                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined"
-                    x="535.614990234375" y="605.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">1</text>
-            </g>
-        </g>
-        <g>
-            <rect fill="#C0C0C0" stroke="none" x="1055" y="399" width="168.59619140625" height="118"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
-        </g>
-        <g>
-            <rect fill="#ffffff" stroke="none" x="1048" y="392" width="168.59619140625" height="118"
-                transform="matrix(1 0 0 1 -70 -118)" />
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 978 274 L 1146.59619140625 274 L 1146.59619140625 392 L 978 392 L 978 274 Z Z"
-                stroke-miterlimit="10" stroke-dasharray="" />
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 978 299 L 1146.59619140625 299" stroke-miterlimit="10" stroke-dasharray="" />
-        </g>
-        <g>
-            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 978 309 L 1146.59619140625 309" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 1290 445 L 1458.59619140625 445" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="bold" text-decoration="undefined"
-                    x="1132.798095703125" y="405.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">MapService</text>
+                    x="1524.798095703125" y="437.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">MapService</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1053"
-                    y="438.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+AddMap()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1445"
+                    y="470.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+AddMap()</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1053"
-                    y="453.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+DeleteMap()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1445"
+                    y="485.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+DeleteMap()</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1053"
-                    y="468.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+AddCelestialObject()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1445"
+                    y="500.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+AddCelestialObject()</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1053"
-                    y="483.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+SuppressCelestialObject()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1445"
+                    y="515.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+SuppressCelestialObject()</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1053"
-                    y="498.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+EditMap()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1445"
+                    y="530.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+EditMap()</text>
             </g>
         </g>
         <g>
-            <rect fill="#C0C0C0" stroke="none" x="815" y="599" width="168.59619140625" height="118"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
+            <rect fill="#C0C0C0" stroke="none" x="1199" y="639" width="168.59619140625" height="118"
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
         </g>
         <g>
-            <rect fill="#ffffff" stroke="none" x="808" y="592" width="168.59619140625" height="118"
-                transform="matrix(1 0 0 1 -70 -118)" />
+            <rect fill="#ffffff" stroke="none" x="1192" y="632" width="168.59619140625" height="118"
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 738 474 L 906.59619140625 474 L 906.59619140625 592 L 738 592 L 738 474 Z Z"
+                d=" M 1042 618 L 1210.59619140625 618 L 1210.59619140625 736 L 1042 736 L 1042 618 Z Z"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 738 499 L 906.59619140625 499" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 1042 643 L 1210.59619140625 643" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 738 509 L 906.59619140625 509" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 1042 653 L 1210.59619140625 653" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="bold" text-decoration="undefined"
-                    x="892.798095703125" y="605.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">MapRepository</text>
+                    x="1276.798095703125" y="645.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">MapRepository</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="813"
-                    y="638.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+AddMap()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1197"
+                    y="678.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+AddMap()</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="813"
-                    y="653.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+DeleteMap()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1197"
+                    y="693.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+DeleteMap()</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="813"
-                    y="668.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+AddCelestialObject()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1197"
+                    y="708.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+AddCelestialObject()</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="813"
-                    y="683.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+SuppressCelestialObject()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1197"
+                    y="723.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+SuppressCelestialObject()</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="813"
-                    y="698.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+EditMap()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1197"
+                    y="738.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+EditMap()</text>
             </g>
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 213 669 L 343 761" stroke-miterlimit="10" stroke-dasharray="3" />
+                d=" M 111 773 L 242 970 L 561 1098" stroke-miterlimit="10" stroke-dasharray="3" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 332.2727937670005 758.565447385104 L 343 761 L 337.13620839260784 751.6932310663111"
+                d=" M 550.0006791394254 1098.1222317721704 L 561 1098 L 553.1358747160629 1090.3087365460192"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 520 673 L 405 761" stroke-miterlimit="10" stroke-dasharray="3" />
+                d=" M 631 849 L 616 1097" stroke-miterlimit="10" stroke-dasharray="3" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 410.51265702728 751.4810393162079 L 405 761 L 415.6289588157029 758.1671155169878"
+                d=" M 612.411717671095 1086.601719857204 L 616 1097 L 620.815395634068 1087.1100068307708"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 820 593 L 818 666 L 429 770" stroke-miterlimit="10" stroke-dasharray="3" />
+                d=" M 1119 737 L 1098 930 L 669 1099" stroke-miterlimit="10" stroke-dasharray="3" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 437.7306159297988 763.308487055505 L 429 770 L 439.905091907346 771.441863548446"
+                d=" M 676.9125465128584 1091.3585598424215 L 669 1099 L 679.998329449151 1099.1917011422413"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 1062 393 L 1062 473" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 1372 529 L 1368 617" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 1057.7904822439841 462.8373251423759 L 1062 473 L 1066.2095177560159 462.8373251423759"
+                d=" M 1364.256287486245 606.656663177951 L 1368 617 L 1372.6666391016781 607.0389518877435"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
-            <rect fill="#ffffff" stroke="none" x="1114" y="544" width="64.669921875" height="13"
-                transform="matrix(1 0 0 1 -70 -118)" />
+            <rect fill="#ffffff" stroke="none" x="1502" y="581" width="64.669921875" height="13"
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="normal" text-decoration="undefined"
-                    x="1146.3349609375" y="550.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+repository</text>
+                    x="1534.3349609375" y="587.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">-repository</text>
             </g>
         </g>
         <g>
-            <rect fill="#ffffff" stroke="none" x="1116" y="563" width="7.22998046875" height="13"
-                transform="matrix(1 0 0 1 -70 -118)" />
+            <rect fill="#ffffff" stroke="none" x="1503" y="602" width="7.22998046875" height="13"
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="normal" text-decoration="undefined"
-                    x="1119.614990234375" y="569.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">1</text>
+                    x="1506.614990234375" y="608.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">1</text>
             </g>
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 830 209 L 830 273" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 1134 353 L 1134 417" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 825.790482243984 262.83732514237585 L 830 273 L 834.209517756016 262.83732514237585"
+                d=" M 1129.7904822439841 406.83732514237585 L 1134 417 L 1138.2095177560159 406.83732514237585"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
-            <rect fill="#ffffff" stroke="none" x="890" y="352" width="48.76904296875" height="13"
-                transform="matrix(1 0 0 1 -70 -118)" />
+            <rect fill="#ffffff" stroke="none" x="1274" y="392" width="48.76904296875" height="13"
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="normal" text-decoration="undefined"
-                    x="914.384521484375" y="358.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+service</text>
+                    x="1298.384521484375" y="398.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">-service</text>
             </g>
         </g>
         <g>
-            <rect fill="#ffffff" stroke="none" x="884" y="363" width="7.22998046875" height="13"
-                transform="matrix(1 0 0 1 -70 -118)" />
+            <rect fill="#ffffff" stroke="none" x="1268" y="403" width="7.22998046875" height="13"
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="normal" text-decoration="undefined"
-                    x="887.614990234375" y="369.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">1</text>
+                    x="1271.614990234375" y="409.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">1</text>
             </g>
         </g>
         <g>
             <rect fill="#C0C0C0" stroke="none" x="167" y="631" width="157.38623046875" height="61"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
         </g>
         <g>
             <rect fill="#ffffff" stroke="none" x="160" y="624" width="157.38623046875" height="61"
-                transform="matrix(1 0 0 1 -70 -118)" />
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 90 506 L 247.38623046875 506 L 247.38623046875 567 L 90 567 L 90 506 Z Z"
+                d=" M 10 610 L 167.38623046875 610 L 167.38623046875 671 L 10 671 L 10 610 Z Z"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 90 544 L 247.38623046875 544" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 10 648 L 167.38623046875 648" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <g>
@@ -1524,7 +1373,7 @@
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="normal" text-decoration="undefined"
                     x="239.193115234375" y="635.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">«interface»</text>
+                    transform="matrix(1 0 0 1 -150 -14)">«interface»</text>
             </g>
         </g>
         <g>
@@ -1533,7 +1382,7 @@
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="bold" text-decoration="undefined"
                     x="239.193115234375" y="650.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">ISpaceImageRepository</text>
+                    transform="matrix(1 0 0 1 -150 -14)">ISpaceImageRepository</text>
             </g>
         </g>
         <g>
@@ -1542,33 +1391,33 @@
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="italic" font-weight="normal" text-decoration="undefined" x="165"
                     y="673.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+GetDailyImage()</text>
+                    transform="matrix(1 0 0 1 -150 -14)">+GetDailyImage()</text>
             </g>
         </g>
         <g>
-            <rect fill="#C0C0C0" stroke="none" x="351" y="607" width="175.43896484375" height="121"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
+            <rect fill="#C0C0C0" stroke="none" x="351" y="551" width="499.09326171875" height="121"
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
         </g>
         <g>
-            <rect fill="#ffffff" stroke="none" x="344" y="600" width="175.43896484375" height="121"
-                transform="matrix(1 0 0 1 -70 -118)" />
+            <rect fill="#ffffff" stroke="none" x="344" y="544" width="499.09326171875" height="121"
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 274 482 L 449.43896484375 482 L 449.43896484375 603 L 274 603 L 274 482 Z Z"
+                d=" M 194 530 L 693.09326171875 530 L 693.09326171875 651 L 194 651 L 194 530 Z Z"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 274 520 L 449.43896484375 520" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 194 568 L 693.09326171875 568" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="normal" text-decoration="undefined"
-                    x="432.219482421875" y="611.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">«interface»</text>
+                    x="594.046630859375" y="555.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">«interface»</text>
             </g>
         </g>
         <g>
@@ -1576,8 +1425,8 @@
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="bold" text-decoration="undefined"
-                    x="432.219482421875" y="626.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">ICelestialObjectRepository</text>
+                    x="594.046630859375" y="570.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">ICelestialObjectRepository</text>
             </g>
         </g>
         <g>
@@ -1585,8 +1434,9 @@
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="italic" font-weight="normal" text-decoration="undefined" x="349"
-                    y="649.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+AddCelestialObject()</text>
+                    y="593.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+GetCelestialObject(id: int):
+                    Task&lt;CelestialObject?&gt;</text>
             </g>
         </g>
         <g>
@@ -1594,8 +1444,9 @@
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="italic" font-weight="normal" text-decoration="undefined" x="349"
-                    y="664.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+EditCelestialObject()</text>
+                    y="608.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+GetCelestialObjects(page: int, pageSize:
+                    int): Task&lt;IEnumerable&lt;CelestialObject&gt;&gt;</text>
             </g>
         </g>
         <g>
@@ -1603,8 +1454,9 @@
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="italic" font-weight="normal" text-decoration="undefined" x="349"
-                    y="679.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+DeleteCelestialObject()</text>
+                    y="623.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+AddCelestialObject(celestialObject:
+                    CelestialObject): Task&lt;bool&gt;</text>
             </g>
         </g>
         <g>
@@ -1612,8 +1464,9 @@
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="italic" font-weight="normal" text-decoration="undefined" x="349"
-                    y="694.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+GetCelestialObjectById()</text>
+                    y="638.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+EditCelestialObject(id: int,
+                    celestialObject: CelestialObject): Task&lt;bool&gt;</text>
             </g>
         </g>
         <g>
@@ -1621,34 +1474,35 @@
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="italic" font-weight="normal" text-decoration="undefined" x="349"
-                    y="709.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+GetAll()</text>
+                    y="653.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+RemoveCelestialObject(id: int):
+                    Task&lt;bool&gt;</text>
             </g>
         </g>
         <g>
-            <rect fill="#C0C0C0" stroke="none" x="1055" y="599" width="168.59619140625" height="121"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
+            <rect fill="#C0C0C0" stroke="none" x="1439" y="639" width="168.59619140625" height="121"
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
         </g>
         <g>
-            <rect fill="#ffffff" stroke="none" x="1048" y="592" width="168.59619140625" height="121"
-                transform="matrix(1 0 0 1 -70 -118)" />
+            <rect fill="#ffffff" stroke="none" x="1432" y="632" width="168.59619140625" height="121"
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 978 474 L 1146.59619140625 474 L 1146.59619140625 595 L 978 595 L 978 474 Z Z"
+                d=" M 1282 618 L 1450.59619140625 618 L 1450.59619140625 739 L 1282 739 L 1282 618 Z Z"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 978 512 L 1146.59619140625 512" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 1282 656 L 1450.59619140625 656" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="normal" text-decoration="undefined"
-                    x="1132.798095703125" y="603.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">«interface»</text>
+                    x="1516.798095703125" y="643.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">«interface»</text>
             </g>
         </g>
         <g>
@@ -1656,110 +1510,110 @@
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="bold" text-decoration="undefined"
-                    x="1132.798095703125" y="618.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">IMapRepository</text>
+                    x="1516.798095703125" y="658.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">IMapRepository</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1053"
-                    y="641.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+AddMap()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1437"
+                    y="681.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+AddMap()</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1053"
-                    y="656.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+DeleteMap()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1437"
+                    y="696.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+DeleteMap()</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1053"
-                    y="671.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+AddCelestialObject()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1437"
+                    y="711.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+AddCelestialObject()</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1053"
-                    y="686.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+SuppressCelestialObject()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1437"
+                    y="726.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+SuppressCelestialObject()</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1053"
-                    y="701.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+EditMap()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1437"
+                    y="741.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+EditMap()</text>
             </g>
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 170 609 L 169 568" stroke-miterlimit="10" stroke-dasharray="3" />
+                d=" M 90 713 L 89 672" stroke-miterlimit="10" stroke-dasharray="3" />
         </g>
         <g>
             <path fill="#FFFFFF" stroke="none" paint-order="stroke fill markers"
-                d=" M 177.91212530274396 588.1140255192289 L 169 568 L 161.07906039474847 588.5245880779605" />
+                d=" M 97.91212530274396 692.1140255192289 L 89 672 L 81.07906039474847 692.5245880779605" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 177.91212530274396 588.1140255192289 L 169 568 L 161.07906039474847 588.5245880779605 L 177.91212530274396 588.1140255192289"
+                d=" M 97.91212530274396 692.1140255192289 L 89 672 L 81.07906039474847 692.5245880779605 L 97.91212530274396 692.1140255192289"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 513 587 L 450 569" stroke-miterlimit="10" stroke-dasharray="3" />
+                d=" M 577 729 L 503 652" stroke-miterlimit="10" stroke-dasharray="3" />
         </g>
         <g>
             <path fill="#FFFFFF" stroke="none" paint-order="stroke fill markers"
-                d=" M 471.8561974270593 566.4886987378244 L 450 569 L 467.2304235637123 582.678907259539" />
+                d=" M 523.1541068916832 660.8211096466717 L 503 652 L 511.0136392031161 672.4885721006194" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 471.8561974270593 566.4886987378244 L 450 569 L 467.2304235637123 582.678907259539 L 471.8561974270593 566.4886987378244"
+                d=" M 523.1541068916832 660.8211096466717 L 503 652 L 511.0136392031161 672.4885721006194 L 523.1541068916832 660.8211096466717"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 908 533 L 977 534" stroke-miterlimit="10" stroke-dasharray="3" />
+                d=" M 1212 677 L 1281 678" stroke-miterlimit="10" stroke-dasharray="3" />
         </g>
         <g>
             <path fill="#FFFFFF" stroke="none" paint-order="stroke fill markers"
-                d=" M 956.5547823204117 542.123612129727 L 977 534 L 956.7987867112688 525.2873091605873" />
+                d=" M 1260.5547823204117 686.123612129727 L 1281 678 L 1260.7987867112688 669.2873091605873" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 956.5547823204117 542.123612129727 L 977 534 L 956.7987867112688 525.2873091605873 L 956.5547823204117 542.123612129727"
+                d=" M 1260.5547823204117 686.123612129727 L 1281 678 L 1260.7987867112688 669.2873091605873 L 1260.5547823204117 686.123612129727"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <rect fill="#C0C0C0" stroke="none" x="183" y="399" width="135.7470703125" height="61"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
         </g>
         <g>
             <rect fill="#ffffff" stroke="none" x="176" y="392" width="135.7470703125" height="61"
-                transform="matrix(1 0 0 1 -70 -118)" />
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 106 274 L 241.7470703125 274 L 241.7470703125 335 L 106 335 L 106 274 Z Z"
+                d=" M 26 378 L 161.7470703125 378 L 161.7470703125 439 L 26 439 L 26 378 Z Z"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 106 312 L 241.7470703125 312" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 26 416 L 161.7470703125 416" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <g>
@@ -1767,7 +1621,7 @@
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="normal" text-decoration="undefined"
                     x="244.37353515625" y="403.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">«interface»</text>
+                    transform="matrix(1 0 0 1 -150 -14)">«interface»</text>
             </g>
         </g>
         <g>
@@ -1776,7 +1630,7 @@
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="bold" text-decoration="undefined"
                     x="244.37353515625" y="418.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">ISpaceImageService</text>
+                    transform="matrix(1 0 0 1 -150 -14)">ISpaceImageService</text>
             </g>
         </g>
         <g>
@@ -1785,33 +1639,33 @@
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="italic" font-weight="normal" text-decoration="undefined" x="181"
                     y="441.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+GetDailyImage()</text>
+                    transform="matrix(1 0 0 1 -150 -14)">+GetDailyImage()</text>
             </g>
         </g>
         <g>
-            <rect fill="#C0C0C0" stroke="none" x="375" y="399" width="160.642578125" height="121"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
+            <rect fill="#C0C0C0" stroke="none" x="367" y="207" width="499.09326171875" height="121"
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
         </g>
         <g>
-            <rect fill="#ffffff" stroke="none" x="368" y="392" width="160.642578125" height="121"
-                transform="matrix(1 0 0 1 -70 -118)" />
+            <rect fill="#ffffff" stroke="none" x="360" y="200" width="499.09326171875" height="121"
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 298 274 L 458.642578125 274 L 458.642578125 395 L 298 395 L 298 274 Z Z"
+                d=" M 210 186 L 709.09326171875 186 L 709.09326171875 307 L 210 307 L 210 186 Z Z"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 298 312 L 458.642578125 312" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 210 224 L 709.09326171875 224" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="normal" text-decoration="undefined"
-                    x="448.8212890625" y="403.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">«interface»</text>
+                    x="610.046630859375" y="211.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">«interface»</text>
             </g>
         </g>
         <g>
@@ -1819,79 +1673,84 @@
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="bold" text-decoration="undefined"
-                    x="448.8212890625" y="418.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">ICelestialObjectService</text>
+                    x="610.046630859375" y="226.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">ICelestialObjectService</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="italic" font-weight="normal" text-decoration="undefined" x="373"
-                    y="441.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+AddCelestialObject()</text>
+                    font-style="italic" font-weight="normal" text-decoration="undefined" x="365"
+                    y="249.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+GetCelestialObject(id: int):
+                    Task&lt;CelestialObject?&gt;</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="italic" font-weight="normal" text-decoration="undefined" x="373"
-                    y="456.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+EditCelestialObject()</text>
+                    font-style="italic" font-weight="normal" text-decoration="undefined" x="365"
+                    y="264.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+GetCelestialObjects(page: int, pageSize:
+                    int): Task&lt;IEnumerable&lt;CelestialObject&gt;&gt;</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="italic" font-weight="normal" text-decoration="undefined" x="373"
-                    y="471.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+DeleteCelestialObject()</text>
+                    font-style="italic" font-weight="normal" text-decoration="undefined" x="365"
+                    y="279.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+PostCelestialObject(celestialObject:
+                    CelestialObject): Task&lt;bool&gt;</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="italic" font-weight="normal" text-decoration="undefined" x="373"
-                    y="486.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+GetCelestialObjectById()</text>
+                    font-style="italic" font-weight="normal" text-decoration="undefined" x="365"
+                    y="294.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+PutCelestialObject(id: int,
+                    celestialObject: CelestialObject): Task&lt;bool&gt;</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="italic" font-weight="normal" text-decoration="undefined" x="373"
-                    y="501.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+GetAll()</text>
+                    font-style="italic" font-weight="normal" text-decoration="undefined" x="365"
+                    y="309.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+DeleteCelestialObject(id: int):
+                    Task&lt;bool&gt;</text>
             </g>
         </g>
         <g>
-            <rect fill="#C0C0C0" stroke="none" x="823" y="399" width="168.59619140625" height="121"
-                transform="matrix(1 0 0 1 -70 -118)" fill-opacity="0.2" />
+            <rect fill="#C0C0C0" stroke="none" x="1207" y="439" width="168.59619140625" height="121"
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
         </g>
         <g>
-            <rect fill="#ffffff" stroke="none" x="816" y="392" width="168.59619140625" height="121"
-                transform="matrix(1 0 0 1 -70 -118)" />
+            <rect fill="#ffffff" stroke="none" x="1200" y="432" width="168.59619140625" height="121"
+                transform="matrix(1 0 0 1 -150 -14)" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 746 274 L 914.59619140625 274 L 914.59619140625 395 L 746 395 L 746 274 Z Z"
+                d=" M 1050 418 L 1218.59619140625 418 L 1218.59619140625 539 L 1050 539 L 1050 418 Z Z"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 746 312 L 914.59619140625 312" stroke-miterlimit="10" stroke-dasharray="" />
+                d=" M 1050 456 L 1218.59619140625 456" stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="normal" text-decoration="undefined"
-                    x="900.798095703125" y="403.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">«interface»</text>
+                    x="1284.798095703125" y="443.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">«interface»</text>
             </g>
         </g>
         <g>
@@ -1899,92 +1758,631 @@
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
                     font-style="normal" font-weight="bold" text-decoration="undefined"
-                    x="900.798095703125" y="418.5" text-anchor="middle" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">IMapService</text>
+                    x="1284.798095703125" y="458.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">IMapService</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="821"
-                    y="441.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+AddMap()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1205"
+                    y="481.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+AddMap()</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="821"
-                    y="456.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+DeleteMap()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1205"
+                    y="496.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+DeleteMap()</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="821"
-                    y="471.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+AddCelestialObject()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1205"
+                    y="511.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+AddCelestialObject()</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="821"
-                    y="486.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+SuppressCelestialObject()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1205"
+                    y="526.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+SuppressCelestialObject()</text>
             </g>
         </g>
         <g>
             <g>
                 <path fill="none" stroke="none" />
                 <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
-                    font-style="normal" font-weight="normal" text-decoration="undefined" x="821"
-                    y="501.5" text-anchor="start" dominant-baseline="central"
-                    transform="matrix(1 0 0 1 -70 -118)">+EditMap()</text>
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1205"
+                    y="541.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+EditMap()</text>
             </g>
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 977 333 L 916 334" stroke-miterlimit="10" stroke-dasharray="3" />
+                d=" M 1289 472 L 1220 475" stroke-miterlimit="10" stroke-dasharray="3" />
         </g>
         <g>
             <path fill="#FFFFFF" stroke="none" paint-order="stroke fill markers"
-                d=" M 936.1846206642962 325.24893785655325 L 916 334 L 936.460617531618 342.0847467631859" />
+                d=" M 1239.9404662700128 465.7060339502189 L 1220 475 L 1240.6718653374653 482.52821250162987" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 936.1846206642962 325.24893785655325 L 916 334 L 936.460617531618 342.0847467631859 L 936.1846206642962 325.24893785655325"
+                d=" M 1239.9404662700128 465.7060339502189 L 1220 475 L 1240.6718653374653 482.52821250162987 L 1239.9404662700128 465.7060339502189"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 529 406 L 460 373" stroke-miterlimit="10" stroke-dasharray="3" />
+                d=" M 623 353 L 554 308" stroke-miterlimit="10" stroke-dasharray="3" />
         </g>
         <g>
             <path fill="#FFFFFF" stroke="none" paint-order="stroke fill markers"
-                d=" M 481.96863269850166 374.1743838207004 L 460 373 L 474.703754391174 389.3645839178401" />
+                d=" M 575.6237761494461 312.05121031775013 L 554 308 L 566.4256804624392 326.15495703782733" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 481.96863269850166 374.1743838207004 L 460 373 L 474.703754391174 389.3645839178401 L 481.96863269850166 374.1743838207004"
+                d=" M 575.6237761494461 312.05121031775013 L 554 308 L 566.4256804624392 326.15495703782733 L 575.6237761494461 312.05121031775013"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 172 385 L 173 336" stroke-miterlimit="10" stroke-dasharray="3" />
+                d=" M 92 489 L 93 440" stroke-miterlimit="10" stroke-dasharray="3" />
         </g>
         <g>
             <path fill="#FFFFFF" stroke="none" paint-order="stroke fill markers"
-                d=" M 181.002566123207 356.4928996348418 L 173 336 L 164.16800047464145 356.1493370705854" />
+                d=" M 101.002566123207 460.4928996348418 L 93 440 L 84.16800047464145 460.1493370705854" />
         </g>
         <g>
             <path fill="none" stroke="#000000" paint-order="fill stroke markers"
-                d=" M 181.002566123207 356.4928996348418 L 173 336 L 164.16800047464145 356.1493370705854 L 181.002566123207 356.4928996348418"
+                d=" M 101.002566123207 460.4928996348418 L 93 440 L 84.16800047464145 460.1493370705854 L 101.002566123207 460.4928996348418"
+                stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <rect fill="#C0C0C0" stroke="none" x="1231" y="1639" width="177.50830078125"
+                height="193" transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="1224" y="1632" width="177.50830078125"
+                height="193" transform="matrix(1 0 0 1 -150 -14)" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 1074 1618 L 1251.50830078125 1618 L 1251.50830078125 1811 L 1074 1811 L 1074 1618 Z Z"
+                stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 1074 1643 L 1251.50830078125 1643" stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 1074 1801 L 1251.50830078125 1801" stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="bold" text-decoration="undefined"
+                    x="1313.254150390625" y="1645.5" text-anchor="middle"
+                    dominant-baseline="central" transform="matrix(1 0 0 1 -150 -14)">
+                    CelestialObjectDTO</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1229"
+                    y="1668.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Id: int</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1229"
+                    y="1683.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Name: string</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1229"
+                    y="1698.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Descriptoin: string</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1229"
+                    y="1713.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Mass: double</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1229"
+                    y="1728.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Temperature: double</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1229"
+                    y="1743.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Radius: double</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1229"
+                    y="1758.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Image: string</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1229"
+                    y="1773.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+CreationDate: DateTime</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1229"
+                    y="1788.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+ModificationDate: DateTime</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1229"
+                    y="1803.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Type: string</text>
+            </g>
+        </g>
+        <g>
+            <rect fill="#C0C0C0" stroke="none" x="1527" y="1695" width="91.28173828125" height="88"
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="1520" y="1688" width="91.28173828125" height="88"
+                transform="matrix(1 0 0 1 -150 -14)" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 1370 1674 L 1461.28173828125 1674 L 1461.28173828125 1762 L 1370 1762 L 1370 1674 Z Z"
+                stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 1370 1699 L 1461.28173828125 1699" stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 1370 1752 L 1461.28173828125 1752" stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="bold" text-decoration="undefined"
+                    x="1566.140869140625" y="1701.5" text-anchor="middle"
+                    dominant-baseline="central" transform="matrix(1 0 0 1 -150 -14)">PropertyDTO</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1525"
+                    y="1724.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Name: string</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1525"
+                    y="1739.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Value: string</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1525"
+                    y="1754.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Type: string</text>
+            </g>
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 1369 1717 L 1253 1715" stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <path fill="#000000" stroke="none" paint-order="stroke fill markers"
+                d=" M 1263.2337317970298 1710.9663002706618 L 1253 1715 L 1263.0885975824094 1719.3840847186389 L 1274.9967308120779 1715.3792539795186" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 1263.2337317970298 1710.9663002706618 L 1253 1715 L 1263.0885975824094 1719.3840847186389 L 1274.9967308120779 1715.3792539795186 L 1263.2337317970298 1710.9663002706618"
+                stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 1358.7662682029702 1721.0336997293382 L 1369 1717 L 1358.9114024175906 1712.6159152813611"
+                stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="1413" y="1738" width="94.046875" height="13"
+                transform="matrix(1 0 0 1 -150 -14)" />
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined"
+                    x="1460.0234375" y="1744.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Metadata</text>
+            </g>
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="1494" y="1712" width="6.5" height="13"
+                transform="matrix(1 0 0 1 -150 -14)" />
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1497.25"
+                    y="1718.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">*</text>
+            </g>
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 338 1170 L 338 1394 L 521 1393" stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 510.86047935635133 1397.264987821439 L 521 1393 L 510.8144743846775 1388.8460780051128"
+                stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="437" y="1387" width="101.51806640625" height="13"
+                transform="matrix(1 0 0 1 -150 -14)" />
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined"
+                    x="487.759033203125" y="1393.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+CelestialObjects</text>
+            </g>
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="646" y="1413" width="6.5" height="13"
+                transform="matrix(1 0 0 1 -150 -14)" />
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="649.25"
+                    y="1419.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">*</text>
+            </g>
+        </g>
+        <g>
+            <rect fill="#C0C0C0" stroke="none" x="1239" y="1439" width="153.431640625" height="103"
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="1232" y="1432" width="153.431640625" height="103"
+                transform="matrix(1 0 0 1 -150 -14)" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 1082 1418 L 1235.431640625 1418 L 1235.431640625 1521 L 1082 1521 L 1082 1418 Z Z"
+                stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 1082 1443 L 1235.431640625 1443" stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 1082 1511 L 1235.431640625 1511" stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="bold" text-decoration="undefined"
+                    x="1309.2158203125" y="1445.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">MapDTO</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1237"
+                    y="1468.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Id: int</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1237"
+                    y="1483.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Name: string</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1237"
+                    y="1498.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+CreationDate: string</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1237"
+                    y="1513.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+ModificationDate: string</text>
+            </g>
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 1159 1522 L 1160 1617" stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 1155.6837458401976 1606.882196383207 L 1160 1617 L 1164.102314962427 1606.793579866131"
+                stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="1259" y="1576" width="128.72412109375" height="13"
+                transform="matrix(1 0 0 1 -150 -14)" />
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined"
+                    x="1323.362060546875" y="1582.5" text-anchor="middle"
+                    dominant-baseline="central" transform="matrix(1 0 0 1 -150 -14)">
+                    +CelestialObjectsDTO</text>
+            </g>
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="1294" y="1603" width="6.5" height="13"
+                transform="matrix(1 0 0 1 -150 -14)" />
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1297.25"
+                    y="1609.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">*</text>
+            </g>
+        </g>
+        <g>
+            <rect fill="#C0C0C0" stroke="none" x="983" y="1495" width="159.4619140625" height="118"
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="976" y="1488" width="159.4619140625" height="118"
+                transform="matrix(1 0 0 1 -150 -14)" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 826 1474 L 985.4619140625 1474 L 985.4619140625 1592 L 826 1592 L 826 1474 Z Z"
+                stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 826 1499 L 985.4619140625 1499" stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 826 1582 L 985.4619140625 1582" stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="bold" text-decoration="undefined"
+                    x="1056.23095703125" y="1501.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">SpaceImageDTO</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="981"
+                    y="1524.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Id: int</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="981"
+                    y="1539.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Image: string</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="981"
+                    y="1554.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Title: string</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="981"
+                    y="1569.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Description: string</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="981"
+                    y="1584.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+ShootingDate: DateTime</text>
+            </g>
+        </g>
+        <g>
+            <rect fill="#C0C0C0" stroke="none" x="1047" y="1695" width="88.482421875" height="88"
+                transform="matrix(1 0 0 1 -150 -14)" fill-opacity="0.2" />
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="1040" y="1688" width="88.482421875" height="88"
+                transform="matrix(1 0 0 1 -150 -14)" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 890 1674 L 978.482421875 1674 L 978.482421875 1762 L 890 1762 L 890 1674 Z Z"
+                stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 890 1699 L 978.482421875 1699" stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 890 1752 L 978.482421875 1752" stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="bold" text-decoration="undefined"
+                    x="1084.7412109375" y="1701.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">PositionDTO</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1045"
+                    y="1724.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+X: int</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1045"
+                    y="1739.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Y: int</text>
+            </g>
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined" x="1045"
+                    y="1754.5" text-anchor="start" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Z: int</text>
+            </g>
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 1073 1716 L 979 1717" stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 989.1173202643604 1712.6826129814012 L 979 1717 L 989.2068794042232 1721.1011721285074"
+                stroke-miterlimit="10" stroke-dasharray="" />
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="1150" y="1738" width="53.8408203125" height="13"
+                transform="matrix(1 0 0 1 -150 -14)" />
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined"
+                    x="1176.92041015625" y="1744.5" text-anchor="middle" dominant-baseline="central"
+                    transform="matrix(1 0 0 1 -150 -14)">+Position</text>
+            </g>
+        </g>
+        <g>
+            <rect fill="#ffffff" stroke="none" x="1147" y="1712" width="7.22998046875" height="13"
+                transform="matrix(1 0 0 1 -150 -14)" />
+        </g>
+        <g>
+            <g>
+                <path fill="none" stroke="none" />
+                <text fill="#000000" stroke="none" font-family="Arial" font-size="13px"
+                    font-style="normal" font-weight="normal" text-decoration="undefined"
+                    x="1150.614990234375" y="1718.5" text-anchor="middle"
+                    dominant-baseline="central" transform="matrix(1 0 0 1 -150 -14)">1</text>
+            </g>
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 579 1097 L 482 1034 L 486 972" stroke-miterlimit="10" stroke-dasharray="3" />
+        </g>
+        <g>
+            <path fill="#FFFFFF" stroke="none" paint-order="stroke fill markers"
+                d=" M 493.0929762987879 992.8252175792915 L 486 972 L 476.2898390696661 991.7411442096708" />
+        </g>
+        <g>
+            <path fill="none" stroke="#000000" paint-order="fill stroke markers"
+                d=" M 493.0929762987879 992.8252175792915 L 486 972 L 476.2898390696661 991.7411442096708 L 493.0929762987879 992.8252175792915"
                 stroke-miterlimit="10" stroke-dasharray="" />
         </g>
     </g>

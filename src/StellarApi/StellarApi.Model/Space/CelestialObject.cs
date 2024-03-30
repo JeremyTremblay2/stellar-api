@@ -6,7 +6,7 @@ namespace StellarApi.Model.Space
     /// <summary>
     /// Represents a celestial object.
     /// </summary>
-    public abstract class CelestialObject : IEquatable<CelestialObject>, IComparable<CelestialObject>, IComparable
+    public class CelestialObject : IEquatable<CelestialObject>, IComparable<CelestialObject>, IComparable
     {
         /// <summary>
         /// Gets the unique identifier of the celestial object.
@@ -24,7 +24,7 @@ namespace StellarApi.Model.Space
         public string Name 
         { 
             get => name; 
-            private set
+            set
             {
                 name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value);
             }
@@ -33,37 +33,37 @@ namespace StellarApi.Model.Space
         /// <summary>
         /// Gets or sets the description of the celestial object.
         /// </summary>
-        public string Description { get; private set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Gets or sets the image path of the celestial object.
         /// </summary>
-        public string Image { get; private set; }
+        public string Image { get; set; }
 
         /// <summary>
         /// Gets or sets the mass of the celestial object.
         /// </summary>
-        public double Mass { get; private set; }
+        public double Mass { get; set; }
 
         /// <summary>
         /// Gets or sets the temperature of the celestial object.
         /// </summary>
-        public double Temperature { get; private set; }
+        public double Temperature { get; set; }
 
         /// <summary>
         /// Gets or sets the radius of the celestial object.
         /// </summary>
-        public double Radius { get; private set; }
+        public double Radius { get; set; }
 
         /// <summary>
         /// Gets the creation date of the celestial object.
         /// </summary>
-        public DateTime CreationDate { get; private set; }
+        public DateTime CreationDate { get; set; }
 
         /// <summary>
         /// Gets the last modification date of the celestial object.
         /// </summary>
-        public DateTime ModificationDate { get; private set; }
+        public DateTime ModificationDate { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CelestialObject"/> class with specified properties.
@@ -103,7 +103,7 @@ namespace StellarApi.Model.Space
         public override int GetHashCode() => Id.GetHashCode();
 
         /// <inheritdoc/>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;

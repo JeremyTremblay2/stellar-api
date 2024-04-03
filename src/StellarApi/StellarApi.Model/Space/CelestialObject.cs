@@ -58,12 +58,12 @@ namespace StellarApi.Model.Space
         /// <summary>
         /// Gets the creation date of the celestial object.
         /// </summary>
-        public DateTime CreationDate { get; set; }
+        public DateTime? CreationDate { get; set; }
 
         /// <summary>
         /// Gets the last modification date of the celestial object.
         /// </summary>
-        public DateTime ModificationDate { get; set; }
+        public DateTime? ModificationDate { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CelestialObject"/> class with specified properties.
@@ -76,8 +76,9 @@ namespace StellarApi.Model.Space
         /// <param name="temperature">The temperature of the celestial object.</param>
         /// <param name="radius">The radius of the celestial object.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="name"/> is null or empty.</exception>
-        /// <exception cref="ArgumentException">Thrown when <paramref name="radius"/> or <paramref name="mass"/> is less than or equal to 0.</exception>
-        public CelestialObject(int id, string name, string description, string image, double mass, double temperature, double radius)
+        /// <exception cref="ArgumentException">Thrown when <paramref name="radius"/> or <paramref name="mass"/> is less than or equal to 0 or when <paramref name="creationDate"/> or <paramref name="modificationDate"/> is in the future or invalid.</exception>
+        public CelestialObject(int id, string name, string description, string image, double mass, double temperature, double radius, 
+            DateTime? creationDate = null, DateTime? modificationDate = null)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name), "The name of the object cannot be null or empty.");
@@ -88,6 +89,29 @@ namespace StellarApi.Model.Space
             if (mass <= 0)
                 throw new ArgumentException("The mass of the object cannot be less than or equal to 0.", nameof(mass));
 
+            if (modificationDate.HasValue)
+            {
+                if (modificationDate.Value > DateTime.UtcNow)
+                    throw new ArgumentException("The modification date cannot be in the future.", nameof(modificationDate));
+                else if (creationDate.HasValue && modificationDate.Value < creationDate.Value)
+                    throw new ArgumentException("The modification date cannot be before the creation date.", nameof(modificationDate));
+                ModificationDate = modificationDate.Value;
+            }
+            else
+                ModificationDate = DateTime.UtcNow;
+
+            if (creationDate.HasValue)
+            {
+                if (creationDate.Value > DateTime.UtcNow)
+                    throw new ArgumentException("The creation date cannot be in the future.", nameof(creationDate));
+                CreationDate = creationDate.Value;
+            }
+            else
+            {
+                CreationDate = DateTime.UtcNow;
+                ModificationDate = DateTime.UtcNow;
+            }
+            
             Id = id;
             Name = name;
             Description = description;
@@ -95,8 +119,6 @@ namespace StellarApi.Model.Space
             Mass = mass;
             Temperature = temperature;
             Radius = radius;
-            CreationDate = DateTime.UtcNow;
-            ModificationDate = CreationDate;
         }
 
         /// <inheritdoc/>

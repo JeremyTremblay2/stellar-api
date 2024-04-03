@@ -13,6 +13,11 @@
         /// <summary>
         /// Gas giants are large planets primarily composed of gases.
         /// </summary>
-        Gas
+        Gas,
+
+        /// <summary>
+        /// An unknown planet type.
+        /// </summary>
+        Undefined
     }
 }

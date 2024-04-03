@@ -1,7 +1,10 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
+using StellarApi.DTOs;
 using StellarApi.Infrastructure.Business;
 using StellarApi.Model.Space;
+using StellarApi.DTOtoModel;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace StellarApi.RestApi.Controllers
 {
@@ -31,14 +34,14 @@ namespace StellarApi.RestApi.Controllers
         /// <returns>The action result containing the retrieved celestial object or a NotFound result if not found.</returns>
         [MapToApiVersion(1)]
         [HttpGet("{id}")]
-        public async Task<ActionResult<CelestialObject?>> GetCelestialObjectById(int id)
+        public async Task<ActionResult<CelestialObjectDTO?>> GetCelestialObjectById(int id)
         {
             var result = await _service.GetCelestialObject(id);
             if (result == null)
             {
                 return NotFound();
             }
-            return Ok(result);
+            return Ok(result.ToDTO());
         }
 
         /// <summary>
@@ -49,9 +52,10 @@ namespace StellarApi.RestApi.Controllers
         /// <returns>The action result containing the collection of celestial objects.</returns>
         [MapToApiVersion(1)]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CelestialObject>>> GetCelestialObjects(int page, int pageSize)
+        public async Task<ActionResult<IEnumerable<CelestialObjectDTO>>> GetCelestialObjects(int page, int pageSize)
         {
-            return Ok(await _service.GetCelestialObjects(page, pageSize));
+            var objects = (await _service.GetCelestialObjects(page, pageSize)).ToDTO();
+            return Ok(objects);
         }
 
         /// <summary>
@@ -61,9 +65,24 @@ namespace StellarApi.RestApi.Controllers
         /// <returns>The action result indicating the success or failure of the operation.</returns>
         [MapToApiVersion(1)]
         [HttpPost]
-        public async Task<ActionResult<bool>> PostCelestialObject(CelestialObject celestialObject)
+        public async Task<ActionResult<bool>> PostCelestialObject(CelestialObjectDTO celestialObject)
         {
-            if (await _service.PostCelestialObject(celestialObject))
+            CelestialObject? userObject = null;
+            try
+            {
+                userObject = celestialObject.ToModel();
+                _ = userObject ?? throw new Exception("The object was not created.");
+            }
+            catch (ArgumentException err)
+            {
+                return BadRequest(err.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An unknown error occurred during the conversion of the object. Please retry.");
+            }
+
+            if (await _service.PostCelestialObject(userObject))
             {
                 return Ok($"The celestial object {celestialObject.Name} was successfully added.");
             }
@@ -81,9 +100,24 @@ namespace StellarApi.RestApi.Controllers
         /// <returns>The action result indicating the success or failure of the operation.</returns>
         [MapToApiVersion(1)]
         [HttpPut]
-        public async Task<ActionResult<bool>> PutCelestialObject(int id, CelestialObject celestialObject)
+        public async Task<ActionResult<bool>> PutCelestialObject(int id, CelestialObjectDTO celestialObject)
         {
-            if (await _service.PutCelestialObject(id, celestialObject))
+            CelestialObject? userObject = null;
+            try
+            {
+                userObject = celestialObject.ToModel();
+                _ = userObject ?? throw new Exception("The object was not created.");
+            }
+            catch (ArgumentException err)
+            {
+                return BadRequest(err.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An unknown error occurred during the conversion of the object. Please retry.");
+            }
+
+            if (await _service.PutCelestialObject(id, userObject))
             {
                 return Ok($"The celestial object {celestialObject.Name} was successfully edited.");
             }
@@ -108,7 +142,7 @@ namespace StellarApi.RestApi.Controllers
             }
             else
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "An unknown error occurred during the deletion of the object. Please retry.");
+                return NotFound();
             }
         }
     }

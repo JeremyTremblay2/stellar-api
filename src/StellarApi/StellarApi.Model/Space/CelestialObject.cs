@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StellarApi.Model.Geometry;
+using System;
 using System.Globalization;
 
 namespace StellarApi.Model.Space
@@ -41,6 +42,11 @@ namespace StellarApi.Model.Space
         public string Image { get; set; }
 
         /// <summary>
+        /// Gets or sets the position of the celestial object.
+        /// </summary>
+        public Position? Position { get; set; }
+
+        /// <summary>
         /// Gets or sets the mass of the celestial object.
         /// </summary>
         public double Mass { get; set; }
@@ -58,12 +64,12 @@ namespace StellarApi.Model.Space
         /// <summary>
         /// Gets the creation date of the celestial object.
         /// </summary>
-        public DateTime? CreationDate { get; set; }
+        public DateTime CreationDate { get; set; }
 
         /// <summary>
         /// Gets the last modification date of the celestial object.
         /// </summary>
-        public DateTime? ModificationDate { get; set; }
+        public DateTime ModificationDate { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CelestialObject"/> class with specified properties.
@@ -72,13 +78,14 @@ namespace StellarApi.Model.Space
         /// <param name="name">The name of the celestial object.</param>
         /// <param name="description">The description of the celestial object.</param>
         /// <param name="image">The image path of the celestial object.</param>
+        /// <param name="position">The position of the celestial object.</param>
         /// <param name="mass">The mass of the celestial object.</param>
         /// <param name="temperature">The temperature of the celestial object.</param>
         /// <param name="radius">The radius of the celestial object.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="name"/> is null or empty.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="radius"/> or <paramref name="mass"/> is less than or equal to 0 or when <paramref name="creationDate"/> or <paramref name="modificationDate"/> is in the future or invalid.</exception>
-        public CelestialObject(int id, string name, string description, string image, double mass, double temperature, double radius, 
-            DateTime? creationDate = null, DateTime? modificationDate = null)
+        public CelestialObject(int id, string name, string description, string image, Position? position, double mass, 
+            double temperature, double radius, DateTime? creationDate = null, DateTime? modificationDate = null)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name), "The name of the object cannot be null or empty.");
@@ -89,33 +96,13 @@ namespace StellarApi.Model.Space
             if (mass <= 0)
                 throw new ArgumentException("The mass of the object cannot be less than or equal to 0.", nameof(mass));
 
-            if (modificationDate.HasValue)
-            {
-                if (modificationDate.Value > DateTime.UtcNow)
-                    throw new ArgumentException("The modification date cannot be in the future.", nameof(modificationDate));
-                else if (creationDate.HasValue && modificationDate.Value < creationDate.Value)
-                    throw new ArgumentException("The modification date cannot be before the creation date.", nameof(modificationDate));
-                ModificationDate = modificationDate.Value;
-            }
-            else
-                ModificationDate = DateTime.UtcNow;
-
-            if (creationDate.HasValue)
-            {
-                if (creationDate.Value > DateTime.UtcNow)
-                    throw new ArgumentException("The creation date cannot be in the future.", nameof(creationDate));
-                CreationDate = creationDate.Value;
-            }
-            else
-            {
-                CreationDate = DateTime.UtcNow;
-                ModificationDate = DateTime.UtcNow;
-            }
+            CheckDates(modificationDate, creationDate);
             
             Id = id;
             Name = name;
             Description = description;
             Image = image;
+            Position = position;
             Mass = mass;
             Temperature = temperature;
             Radius = radius;
@@ -160,7 +147,33 @@ namespace StellarApi.Model.Space
         /// <inheritdoc/>
         public override string ToString()
         {
-            return $"{Id} - {Name}, (Description: {Description}), Mass: {Mass}, Temperature: {Temperature}, Radius: {Radius}, Image: {Image}, CreationDate: {CreationDate}, ModificationDate: {ModificationDate}";
+            return $"{Id} - {Name}, (Description: {Description}), Position: {Position}, Mass: {Mass}, Temperature: {Temperature}, Radius: {Radius}, Image: {Image}, CreationDate: {CreationDate}, ModificationDate: {ModificationDate}";
+        }
+
+        private void CheckDates(DateTime? modificationDate, DateTime? creationDate)
+        {
+            if (modificationDate.HasValue)
+            {
+                if (modificationDate.Value > DateTime.UtcNow)
+                    throw new ArgumentException("The modification date cannot be in the future.", nameof(modificationDate));
+                else if (creationDate.HasValue && modificationDate.Value < creationDate.Value)
+                    throw new ArgumentException("The modification date cannot be before the creation date.", nameof(modificationDate));
+                ModificationDate = modificationDate.Value;
+            }
+            else
+                ModificationDate = DateTime.UtcNow;
+
+            if (creationDate.HasValue)
+            {
+                if (creationDate.Value > DateTime.UtcNow)
+                    throw new ArgumentException("The creation date cannot be in the future.", nameof(creationDate));
+                CreationDate = creationDate.Value;
+            }
+            else
+            {
+                CreationDate = DateTime.UtcNow;
+                ModificationDate = DateTime.UtcNow;
+            }
         }
     }
 }

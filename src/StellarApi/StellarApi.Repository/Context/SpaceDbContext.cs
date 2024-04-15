@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using StellarApi.Entities;
 using StellarApi.Model.Space;
 
 namespace StellarApi.Repository.Context
@@ -11,7 +12,7 @@ namespace StellarApi.Repository.Context
         /// <summary>
         /// Gets or sets the DbSet of celestial objects.
         /// </summary>
-        public DbSet<CelestialObject> CelestialObjects { get; private set; }
+        public DbSet<CelestialObjectEntity> CelestialObjects { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpaceDbContext"/> class.

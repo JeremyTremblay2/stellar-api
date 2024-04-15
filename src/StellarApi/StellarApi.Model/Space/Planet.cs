@@ -1,4 +1,6 @@
-﻿namespace StellarApi.Model.Space
+﻿using StellarApi.Model.Geometry;
+
+namespace StellarApi.Model.Space
 {
     /// <summary>
     /// Represents a planet in the universe.
@@ -35,9 +37,9 @@
         /// <param name="planetType">The type of the planet.</param>
         /// <param name="creationDate">The creation date of the planet.</param>
         /// <param name="modificationDate">The last modification date of the planet.</param>
-        public Planet(int id, string name, string description, string image, double mass, double temperature, 
+        public Planet(int id, string name, string description, string image, Position? position, double mass, double temperature, 
             double radius, bool isWater, bool isLife, PlanetType planetType, DateTime? creationDate = null, DateTime? modificationDate = null) 
-            : base(id, name, description, image, mass, temperature, radius, creationDate, modificationDate)
+            : base(id, name, description, image, position, mass, temperature, radius, creationDate, modificationDate)
         {
             IsWater = isWater;
             IsLife = isLife;
@@ -47,7 +49,7 @@
         /// <inheritdoc/>
         public override string ToString()
         {
-            return $"{Id} - Planet {Name}, (Description: {Description}), Mass: {Mass}, Temperature: {Temperature}, Radius: {Radius}, Image: {Image}, CreationDate: {CreationDate}, ModificationDate: {ModificationDate}, IsWater: {IsWater}, IsLife: {IsLife}, PlanetType: {PlanetType}";
+            return $"{Id} - Planet {Name}, (Description: {Description}), Mass: {Mass}, Position: {Position}, Temperature: {Temperature}, Radius: {Radius}, Image: {Image}, CreationDate: {CreationDate}, ModificationDate: {ModificationDate}, IsWater: {IsWater}, IsLife: {IsLife}, PlanetType: {PlanetType}";
         }
     }
 }

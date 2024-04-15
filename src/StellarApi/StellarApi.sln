@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StellarApi.Repository", "St
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StellarApi.Infrastructure", "StellarApi.Infrastructure\StellarApi.Infrastructure.csproj", "{B1E8AF8F-A838-4306-9D1A-6AB46D209659}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StellarApi.Helpers", "StellarApi.Helpers\StellarApi.Helpers.csproj", "{4297CAB5-880F-429F-A479-D14858F2A8BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{B1E8AF8F-A838-4306-9D1A-6AB46D209659}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1E8AF8F-A838-4306-9D1A-6AB46D209659}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1E8AF8F-A838-4306-9D1A-6AB46D209659}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4297CAB5-880F-429F-A479-D14858F2A8BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4297CAB5-880F-429F-A479-D14858F2A8BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4297CAB5-880F-429F-A479-D14858F2A8BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4297CAB5-880F-429F-A479-D14858F2A8BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

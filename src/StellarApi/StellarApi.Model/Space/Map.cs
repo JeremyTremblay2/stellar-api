@@ -21,6 +21,11 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
     }
 
     /// <summary>
+    /// The celestial objects in the map.
+    /// </summary>
+    public IEnumerable<CelestialObject> CelestialObjects { get; private set; }
+
+    /// <summary>
     /// The creation date of the map.
     /// </summary>
     public DateTime? CreationDate { get; private set; }
@@ -28,7 +33,7 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
     /// <summary>
     /// The modification date of the map.
     /// </summary>
-    public DateTime? ModificationDate { get; set; }
+    public DateTime? ModificationDate { get; private set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Map"/> class with specified properties.
@@ -56,8 +61,9 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
         else
             ModificationDate = DateTime.UtcNow;
 
-        Name = name;
         Id = id;
+        Name = name;
+        CelestialObjects = new List<CelestialObject>();
         CreationDate = creationDate;
         ModificationDate = modificationDate;
     }
@@ -99,9 +105,31 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
         return string.Compare(Name, other.Name, StringComparison.OrdinalIgnoreCase);
     }
 
+    public void AddCelestialObject(CelestialObject celestialObject)
+    {
+        if (celestialObject == null)
+            throw new ArgumentNullException(nameof(celestialObject), "The celestial object cannot be null.");
+
+        if (CelestialObjects.Contains(celestialObject))
+            throw new ArgumentException("The celestial object is already in the map.", nameof(celestialObject));
+
+        CelestialObjects.Append(celestialObject);
+    }
+
+    public void RemoveCelestialObject(CelestialObject celestialObject)
+    {
+        if (celestialObject == null)
+            throw new ArgumentNullException(nameof(celestialObject), "The celestial object cannot be null.");
+
+        if (!CelestialObjects.Contains(celestialObject))
+            throw new ArgumentException("The celestial object is not in the map.", nameof(celestialObject));
+
+        CelestialObjects = CelestialObjects.Where(c => !c.Equals(celestialObject));
+    }
+
     /// <inheritdoc/>
     public override string ToString()
     {
-        return $"{Id} - Map {Name}, CreationDate: {CreationDate}, ModificationDate: {ModificationDate}";
+        return $"{Id} - Map {Name}, Celestial Objects: {CelestialObjects.Count()}, CreationDate: {CreationDate}, ModificationDate: {ModificationDate}";
     }
 }

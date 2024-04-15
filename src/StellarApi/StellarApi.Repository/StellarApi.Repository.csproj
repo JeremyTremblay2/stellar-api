@@ -31,4 +31,19 @@
     <Folder Include="Migrations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Context\FakeData\fake-data.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>fake-data.json</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Context\FakeData\fake-data.json">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>fake-data.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
 </Project>

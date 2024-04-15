@@ -1,6 +1,7 @@
 ﻿using StellarApi.DTOs;
 using StellarApi.DTOtoModel.Exceptions;
 using StellarApi.Model.Space;
+using StellarApi.Helpers;
 
 namespace StellarApi.DTOtoModel
 {
@@ -16,19 +17,19 @@ namespace StellarApi.DTOtoModel
         /// <returns>The converted CelestialObject.</returns>
         public static CelestialObject ToModel(this CelestialObjectDTO dto)
         {
-            if (dto.Type.Equals("Star"))
-            {
-                // Handle correctly type when added.
-                return new CelestialObject(dto.Id, dto.Name, dto.Description, dto.Image, dto.Mass, dto.Temperature,
-                    dto.Radius, dto.CreationDate, dto.ModificationDate);
-            }
-            else if (dto.Type.Equals("Planet"))
+            if (dto.Type.Equals("Planet"))
             {
                 var isWater = GetPropertyValue<bool>(dto.Metadata, "isWater");
                 var isLife = GetPropertyValue<bool>(dto.Metadata, "isLife");
                 var planetType = GetPropertyValue<PlanetType>(dto.Metadata, "planetType");
-                return new Planet(dto.Id, dto.Name, dto.Description, dto.Image, dto.Mass, dto.Temperature, dto.Radius,
-                    isWater ?? false, isLife ?? false, planetType ?? PlanetType.Undefined);
+                return new Planet(dto.Id, dto.Name, dto.Description, dto.Image, PositionExtensions.ToModel(dto.Position), dto.Mass, 
+                    dto.Temperature, dto.Radius, isWater ?? false, isLife ?? false, planetType ?? PlanetType.Undefined);
+            }
+            else if (dto.Type.Equals("Star"))
+            {
+                // Handle correctly type when added.
+                return new CelestialObject(dto.Id, dto.Name, dto.Description, dto.Image, PositionExtensions.ToModel(dto.Position),
+                    dto.Mass, dto.Temperature, dto.Radius, dto.CreationDate, dto.ModificationDate);
             }
             else
             {
@@ -59,6 +60,7 @@ namespace StellarApi.DTOtoModel
                 Name = model.Name,
                 Description = model.Description,
                 Image = model.Image,
+                Position = model.Position.ToDTO(),
                 Mass = model.Mass,
                 Temperature = model.Temperature,
                 Radius = model.Radius,
@@ -70,11 +72,11 @@ namespace StellarApi.DTOtoModel
             {
                 dto.Type = "Planet";
                 dto.Metadata = new List<PropertyDTO>
-            {
-                new PropertyDTO { Name = "isWater", Type = "bool", Value = planet.IsWater.ToString() },
-                new PropertyDTO { Name = "isLife", Type = "bool", Value = planet.IsLife.ToString() },
-                new PropertyDTO { Name = "planetType", Type = "PlanetType", Value = planet.PlanetType.ToString() }
-            };
+                {
+                    new PropertyDTO { Name = "isWater", Type = "bool", Value = planet.IsWater.ToString() },
+                    new PropertyDTO { Name = "isLife", Type = "bool", Value = planet.IsLife.ToString() },
+                    new PropertyDTO { Name = "planetType", Type = "PlanetType", Value = planet.PlanetType.ToString() }
+                };
             }
             else
             {
@@ -106,9 +108,9 @@ namespace StellarApi.DTOtoModel
         {
             foreach (var prop in properties)
             {
-                if (prop.Name == propertyName && prop.Type.ToLower() == typeof(T).Name.ToLower())
+                if (prop.Name == propertyName && prop.Type.Equals(typeof(T).Name, StringComparison.CurrentCultureIgnoreCase))
                 {
-                    if (TryParseValue<T>(prop.Value, out T result))
+                    if (ValueParserHelpers.TryParseValue(prop.Value, out T result))
                     {
                         return result;
                     }
@@ -119,34 +121,6 @@ namespace StellarApi.DTOtoModel
                 }
             }
             return null;
-        }
-
-        /// <summary>
-        /// Tries to parse the value to the specified type.
-        /// </summary>
-        /// <typeparam name="T">The type to parse to.</typeparam>
-        /// <param name="value">The value to parse.</param>
-        /// <param name="result">When this method returns, contains the parsed value if the conversion succeeded, or the default value if the conversion failed.</param>
-        /// <returns>True if the value was parsed successfully; otherwise, false.</returns>
-        private static bool TryParseValue<T>(string value, out T result) where T : struct
-        {
-            result = default(T);
-            try
-            {
-                if (typeof(T).IsEnum)
-                {
-                    result = (T)Enum.Parse(typeof(T), value);
-                }
-                else
-                {
-                    result = (T)Convert.ChangeType(value, typeof(T));
-                }
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
         }
     }
 }

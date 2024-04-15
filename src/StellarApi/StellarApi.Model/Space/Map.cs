@@ -2,6 +2,9 @@ using System.Globalization;
 
 namespace StellarApi.Model.Space;
 
+/// <summary>
+/// Represents a map of Celestial Objects.
+/// </summary>
 public class Map : IEquatable<Map>, IComparable<Map>, IComparable
 {
     /// <summary>
@@ -23,7 +26,7 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
     /// <summary>
     /// The celestial objects in the map.
     /// </summary>
-    public IEnumerable<CelestialObject> CelestialObjects { get; private set; }
+    public IList<CelestialObject> CelestialObjects { get; private set; }
 
     /// <summary>
     /// The creation date of the map.
@@ -105,26 +108,35 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
         return string.Compare(Name, other.Name, StringComparison.OrdinalIgnoreCase);
     }
 
-    public void AddCelestialObject(CelestialObject celestialObject)
+    /// <summary>
+    /// Adds a celestial object to the map.
+    /// </summary>
+    /// <param name="celestialObject">The celestial object to add to the map.</param>
+    public bool AddCelestialObject(CelestialObject? celestialObject)
     {
         if (celestialObject == null)
-            throw new ArgumentNullException(nameof(celestialObject), "The celestial object cannot be null.");
+            return false;
 
         if (CelestialObjects.Contains(celestialObject))
-            throw new ArgumentException("The celestial object is already in the map.", nameof(celestialObject));
+            return false;
 
-        CelestialObjects.Append(celestialObject);
+        CelestialObjects.Add(celestialObject);
+        return true;
     }
 
-    public void RemoveCelestialObject(CelestialObject celestialObject)
+    /// <summary>
+    /// Removes a celestial object from the map.
+    /// </summary>
+    /// <param name="celestialObject">The celestial object to remove from the map.</param>
+    public bool RemoveCelestialObject(CelestialObject? celestialObject)
     {
         if (celestialObject == null)
-            throw new ArgumentNullException(nameof(celestialObject), "The celestial object cannot be null.");
+            return false;
 
         if (!CelestialObjects.Contains(celestialObject))
-            throw new ArgumentException("The celestial object is not in the map.", nameof(celestialObject));
+            return false;
 
-        CelestialObjects = CelestialObjects.Where(c => !c.Equals(celestialObject));
+        return CelestialObjects.Remove(celestialObject);
     }
 
     /// <inheritdoc/>

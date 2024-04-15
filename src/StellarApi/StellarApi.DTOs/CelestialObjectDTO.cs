@@ -38,17 +38,22 @@
         /// <summary>
         /// Gets or sets the image path of the celestial object.
         /// </summary>
-        public string Image { get; set; }
+        public string? Image { get; set; }
+
+        /// <summary>
+        /// Gets or sets the position of the celestial object.
+        /// </summary>
+        public PositionDTO? Position { get; set; }
 
         /// <summary>
         /// Gets or sets the creation date of the celestial object.
         /// </summary>
-        public DateTime CreationDate { get; set; }
+        public DateTime? CreationDate { get; set; }
 
         /// <summary>
         /// Gets or sets the last modification date of the celestial object.
         /// </summary>
-        public DateTime ModificationDate { get; set; }
+        public DateTime? ModificationDate { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the celestial object.
@@ -81,12 +86,13 @@
         /// <param name="creationDate">The creation date of the celestial object.</param>
         /// <param name="modificationDate">The last modification date of the celestial object.</param>
         /// <param name="metadata">The list of inherited properties of the object.</param>
-        public CelestialObjectDTO(int id, string name, string description, double mass, double temperature, double radius, 
+        public CelestialObjectDTO(int id, string name, string description, PositionDTO? position, double mass, double temperature, double radius, 
             string image, DateTime creationDate, DateTime modificationDate, string type, IEnumerable<PropertyDTO> metadata)
         {
             Id = id;
             Name = name;
             Description = description;
+            Position = position;
             Mass = mass;
             Temperature = temperature;
             Radius = radius;
@@ -94,7 +100,7 @@
             CreationDate = creationDate;
             ModificationDate = modificationDate;
             Type = type;
-            Metadata = new List<PropertyDTO>();
+            Metadata = metadata;
         }
     }
 }

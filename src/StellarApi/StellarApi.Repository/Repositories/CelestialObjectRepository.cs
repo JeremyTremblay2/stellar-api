@@ -2,6 +2,7 @@
 using StellarApi.Infrastructure.Repository;
 using StellarApi.Model.Space;
 using StellarApi.Repository.Context;
+using StellarApi.EntityToModel;
 
 namespace StellarApi.Repository.Repositories
 {
@@ -20,7 +21,7 @@ namespace StellarApi.Repository.Repositories
             using SpaceDbContext context = new();
             if (context.CelestialObjects is null) return false;
 
-            await context.CelestialObjects.AddAsync(celestialObject);
+            await context.CelestialObjects.AddAsync(celestialObject.ToEntity());
             return await context.SaveChangesAsync() == 1;
         }
 
@@ -37,16 +38,9 @@ namespace StellarApi.Repository.Repositories
             var existingCelestialObject = await context.CelestialObjects.FindAsync(id);
             if (existingCelestialObject == null)
                 return false;
-
-            existingCelestialObject.Name = celestialObject.Name;
-            existingCelestialObject.Description = celestialObject.Description;
-            existingCelestialObject.Mass = celestialObject.Mass;
-            existingCelestialObject.Temperature = celestialObject.Temperature;
-            existingCelestialObject.Radius = celestialObject.Radius;
-            existingCelestialObject.Image = celestialObject.Image;
-            existingCelestialObject.CreationDate = celestialObject.CreationDate;
-            existingCelestialObject.ModificationDate = celestialObject.ModificationDate;
-
+            var entity = celestialObject.ToEntity();
+            entity.Id = id;
+            context.CelestialObjects.Update(entity);
             return await context.SaveChangesAsync() == 1;
         }
 
@@ -59,7 +53,7 @@ namespace StellarApi.Repository.Repositories
         {
             using SpaceDbContext context = new();
             if (context.CelestialObjects is null) return null;
-            return await context.CelestialObjects.FindAsync(id);
+            return (await context.CelestialObjects.FindAsync(id)).ToModel();
         }
 
         /// <summary>
@@ -74,10 +68,11 @@ namespace StellarApi.Repository.Repositories
             using SpaceDbContext context = new();
             if (context.CelestialObjects is null) return celestialObjects;
 
-            return await context.CelestialObjects
+            return (await context.CelestialObjects
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .ToListAsync();
+                .ToListAsync())
+                .ToModel();
         }
 
         /// <summary>

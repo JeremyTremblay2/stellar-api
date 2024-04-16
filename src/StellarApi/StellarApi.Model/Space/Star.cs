@@ -29,7 +29,7 @@ public class Star : CelestialObject
     /// <param name="radius"></param>
     /// <param name="brightness"></param>
     /// <param name="starType"></param>
-    public Star(int id, string name, string description, string image, Position? position, double mass, double temperature, double radius, DateTime? creationDate, 
+    public Star(int id, string name, string description, string image, Position? position, double mass, double temperature, double radius, DateTime? creationDate,
         DateTime? modificationDate, int brightness, StarType starType) : base(id, name, description, image, position, mass, temperature, radius, creationDate, modificationDate)
     {
         Brightness = brightness;
@@ -38,8 +38,5 @@ public class Star : CelestialObject
 
     /// <inheritdoc/>
     public override string ToString()
-    {
-        return
-            $"{Id} - Star {Name}, (Description: {Description}), Mass: {Mass}, Temperature: {Temperature}, Radius: {Radius}, Image: {Image}, CreationDate: {CreationDate}, ModificationDate: {ModificationDate}, Brightness: {Brightness}, StarType: {StarType}";
-    }
+        => $"{Id} - Star {Name}, (Description: {Description}), Mass: {Mass}, Temperature: {Temperature}, Radius: {Radius}, Image: {Image}, CreationDate: {CreationDate}, ModificationDate: {ModificationDate}, Brightness: {Brightness}, StarType: {StarType}";
 }

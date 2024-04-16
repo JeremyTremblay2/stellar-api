@@ -1,3 +1,5 @@
+using StellarApi.Model.Geometry;
+
 namespace StellarApi.Model.Space;
 
 /// <summary>
@@ -27,8 +29,8 @@ public class Star : CelestialObject
     /// <param name="radius"></param>
     /// <param name="brightness"></param>
     /// <param name="starType"></param>
-    public Star(int id, string name, string description, string image, double mass, double temperature, double radius,
-        int brightness, StarType starType) : base(id, name, description, image, mass, temperature, radius)
+    public Star(int id, string name, string description, string image, Position? position, double mass, double temperature, double radius, DateTime? creationDate, 
+        DateTime? modificationDate, int brightness, StarType starType) : base(id, name, description, image, position, mass, temperature, radius, creationDate, modificationDate)
     {
         Brightness = brightness;
         StarType = starType;

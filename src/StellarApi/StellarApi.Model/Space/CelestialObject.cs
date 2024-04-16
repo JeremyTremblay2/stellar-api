@@ -150,6 +150,12 @@ namespace StellarApi.Model.Space
             return $"{Id} - {Name}, (Description: {Description}), Position: {Position}, Mass: {Mass}, Temperature: {Temperature}, Radius: {Radius}, Image: {Image}, CreationDate: {CreationDate}, ModificationDate: {ModificationDate}";
         }
 
+        /// <summary>
+        /// Checks the dates and sets the creation and modification dates.
+        /// </summary>
+        /// <param name="modificationDate">The modification date to be set.</param>
+        /// <param name="creationDate">The creation date to be set.</param>
+        /// <exception cref="ArgumentException">If the creation date is before the modification date or if the dates are in the future.</exception>
         private void CheckDates(DateTime? modificationDate, DateTime? creationDate)
         {
             if (modificationDate.HasValue)

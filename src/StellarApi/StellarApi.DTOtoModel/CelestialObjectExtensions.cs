@@ -73,8 +73,8 @@ namespace StellarApi.DTOtoModel
                 dto.Type = "Planet";
                 dto.Metadata = new List<PropertyDTO>
                 {
-                    new PropertyDTO { Name = "isWater", Type = "bool", Value = planet.IsWater.ToString() },
-                    new PropertyDTO { Name = "isLife", Type = "bool", Value = planet.IsLife.ToString() },
+                    new PropertyDTO { Name = "isWater", Type = "boolean", Value = planet.IsWater.ToString() },
+                    new PropertyDTO { Name = "isLife", Type = "boolean", Value = planet.IsLife.ToString() },
                     new PropertyDTO { Name = "planetType", Type = "PlanetType", Value = planet.PlanetType.ToString() }
                 };
             }

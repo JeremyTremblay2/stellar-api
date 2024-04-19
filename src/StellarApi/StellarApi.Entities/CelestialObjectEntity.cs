@@ -39,7 +39,7 @@ namespace StellarApi.Entities
         /// <summary>
         /// Gets or sets the position of the celestial object.
         /// </summary>
-        public PositionEntity Position { get; set; } = new();
+        public required PositionEntity Position { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the mass of the celestial object.
@@ -64,12 +64,12 @@ namespace StellarApi.Entities
         /// <summary>
         /// Gets or sets the creation date of the celestial object.
         /// </summary>
-        public required DateTime CreationDate { get; set; } = DateTime.Now;
+        public required DateTime CreationDate { get; set; }
 
         /// <summary>
         /// Gets or sets the last modification date of the celestial object.
         /// </summary>
-        public required DateTime ModificationDate { get; set; } = DateTime.Now;
+        public required DateTime ModificationDate { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether a planet has water.

@@ -69,7 +69,7 @@ namespace StellarApi.Repository.Repositories
             if (context.CelestialObjects is null) return celestialObjects;
 
             return (await context.CelestialObjects
-                .Skip((page - 1) * pageSize)
+                .Skip(page * pageSize)
                 .Take(pageSize)
                 .ToListAsync())
                 .ToModel();

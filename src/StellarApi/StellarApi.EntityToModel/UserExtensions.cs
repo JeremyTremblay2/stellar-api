@@ -13,16 +13,16 @@ namespace StellarApi.EntityToModel
         /// </summary>
         /// <param name="entity">The Entity to convert.</param>
         /// <returns>The new User object.</returns>
-        public static User ToModel(this UserEntity entity)
-            => new User(entity.Id, entity.Email, entity.Username, entity.Password, entity.CreationDate, entity.ModificationDate);
+        public static User ToModel(this UserEntity? entity)
+            => entity is null ? null : new User(entity.Id, entity.Email, entity.Username, entity.Password, entity.CreationDate, entity.ModificationDate);
 
         /// <summary>
         /// Converts a <see cref="User"/> to a <see cref="UserEntity"/>.
         /// </summary>
         /// <param name="model">The model to convert.</param>
         /// <returns>The new entity User object.</returns>
-        public static UserEntity ToEntity(this User model)
-            => new UserEntity
+        public static UserEntity ToEntity(this User? model)
+            => model is null ? null : new UserEntity
             {
                 Id = model.Id,
                 Email = model.Email,

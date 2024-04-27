@@ -15,6 +15,11 @@ namespace StellarApi.Repository.Context
         public DbSet<CelestialObjectEntity> CelestialObjects { get; private set; }
 
         /// <summary>
+        /// Gets or sets the DbSet of users.
+        /// </summary>
+        public DbSet<UserEntity> Users { get; private set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SpaceDbContext"/> class.
         /// </summary>
         public SpaceDbContext() { }

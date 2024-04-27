@@ -13,16 +13,16 @@ namespace DTOtoModel
         /// </summary>
         /// <param name="dto">The DTO to transform.</param>
         /// <returns>The new User object.</returns>
-        public static User ToModel(this UserDTO dto)
-            => new User(dto.Id, dto.Email, dto.Username, dto.Password, dto.CreationDate, dto.ModificationDate);
+        public static User ToModel(this UserDTO? dto)
+            => dto is null ? null : new User(dto.Id, dto.Email, dto.Username, dto.Password, dto.CreationDate, dto.ModificationDate);
 
         /// <summary>
         /// Converts a <see cref="User"/> to a <see cref="UserDTO"/>.
         /// </summary>
         /// <param name="model">The User to transform.</param>
         /// <returns>The new DTO User object.</returns>
-        public static UserDTO ToDTO(this User model)
-            => new UserDTO(model.Id, model.Email, model.Username, model.Password, model.CreationDate, model.ModificationDate);
+        public static UserDTO ToDTO(this User? model)
+            => model is null ? null : new UserDTO(model.Id, model.Email, model.Username, model.Password, model.CreationDate, model.ModificationDate);
 
         /// <summary>
         /// Converts a collection of <see cref="UserDTO"/> to a collection of <see cref="User"/>.

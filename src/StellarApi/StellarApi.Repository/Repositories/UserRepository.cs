@@ -37,6 +37,7 @@ namespace StellarApi.Repository.Repositories
             var existingUser = await context.Users.FindAsync(user.Id);
             if (existingUser == null)
                 return false;
+            context.ChangeTracker.Clear();
             context.Users.Update(user.ToEntity());
             return await context.SaveChangesAsync() == 1;
         }

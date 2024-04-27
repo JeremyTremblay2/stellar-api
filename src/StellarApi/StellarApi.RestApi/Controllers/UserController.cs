@@ -35,7 +35,7 @@ namespace StellarApi.RestApi.Controllers
         /// <returns>The user object wrapped in an <see cref="ActionResult"/>.</returns>
         [MapToApiVersion(1)]
         [HttpGet("{id}")]
-        public async Task<ActionResult<CelestialObjectDTO?>> GetUserById(int id)
+        public async Task<ActionResult<UserDTO?>> GetUserById(int id)
         {
             var result = await _service.GetUserById(id);
             if (result == null)
@@ -119,7 +119,7 @@ namespace StellarApi.RestApi.Controllers
 
             if (await _service.PutUser(userObject))
             {
-                return Ok($"The celestial object {user.Username} was successfully edited.");
+                return Ok($"The User {user.Username} was successfully edited.");
             }
             else
             {
@@ -138,7 +138,7 @@ namespace StellarApi.RestApi.Controllers
         {
             if (await _service.DeleteUser(id))
             {
-                return Ok($"The user n°{id} was successfully deleted.");
+                return Ok($"The User n°{id} was successfully deleted.");
             }
             else
             {

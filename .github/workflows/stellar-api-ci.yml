@@ -44,7 +44,7 @@ jobs:
       run: docker push ${{ env.stellar_image }}
     
   deploy:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/11_ci'
     runs-on: ubuntu-latest
     needs: build
     environment:

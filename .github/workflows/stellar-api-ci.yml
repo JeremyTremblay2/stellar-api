@@ -54,7 +54,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: dotnet-results
-        path: TestResults
+        path: src/StellarApi/TestResults
       if: ${{ always() }}
     
   deploy:

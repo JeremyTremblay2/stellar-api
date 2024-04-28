@@ -11,8 +11,6 @@ env:
   stellar_image: '${{ secrets.DOCKER_HUB_USERNAME }}/stellar-api'
 
 jobs:
-  before_script:
-  - "dotnet restore"
   
   build:
     runs-on: ubuntu-latest

@@ -43,6 +43,9 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
       working-directory: ./src/StellarApi/
+    - name: Build
+      run: dotnet build --no-restore
+      working-directory: ./src/StellarApi/
     - name: Test
       run: dotnet test --no-build --verbosity normal
       working-directory: src/StellarApi/

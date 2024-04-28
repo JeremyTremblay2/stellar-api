@@ -1,7 +1,7 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: Build & deploy .NET APP
+name: Build, Test & deploy .NET API
 
 on:
   push:
@@ -48,13 +48,13 @@ jobs:
       run: dotnet build --no-restore
       working-directory: ./src/StellarApi/
     - name: Test
-      run: dotnet test --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
+      run: dotnet test --no-build --logger trx --results-directory "TestResults"
       working-directory: src/StellarApi/
     - name: Upload dotnet Test results
       uses: actions/upload-artifact@v4
       with:
-        name: dotnet-results-${{ matrix.dotnet-version }}
-        path: TestResults-${{ matrix.dotnet-version }}
+        name: dotnet-results
+        path: TestResults
       if: ${{ always() }}
     
   deploy:

@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\StellarApi.Model\StellarApi.Model.csproj" />
+  </ItemGroup>
+
 </Project>

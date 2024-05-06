@@ -384,6 +384,9 @@ FodyWeavers.xsd
 !.vscode/extensions.json
 *.code-workspace
 
+# JetBrains Files
+/src/StellarApi/.idea
+
 # Local History for Visual Studio Code
 .history/
 
@@ -396,3 +399,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Database files and folders
+*.db*
+**/Migrations

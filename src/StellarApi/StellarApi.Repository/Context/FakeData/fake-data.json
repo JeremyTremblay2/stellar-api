@@ -1,0 +1,206 @@
+﻿[
+  {
+    "id": 0,
+    "name": "Doyle Larsen",
+    "description": "In sint laborum ex mollit labore esse dolore amet dolore magna occaecat magna. Qui fugiat ex laborum dolore aliqua labore eu voluptate. Reprehenderit laborum magna velit anim anim aliquip irure sint irure in in non fugiat. Et exercitation nisi cupidatat ad est. Nulla reprehenderit non amet ad. Reprehenderit ex labore amet esse quis occaecat enim ea dolor in. Magna enim commodo eu enim velit aliqua velit laborum nostrud ullamco Lorem nostrud.\r\n",
+    "mass": 3038.66,
+    "temperature": 6.275818152084682e+32,
+    "radius": 4144946377.8,
+    "image": "http://placehold.it/32x32",
+    "position": {
+      "x": 493,
+      "y": 224,
+      "z": 359
+    },
+    "creationDate": "2016-12-31T06:29:20 -01:00",
+    "modificationDate": "2024-01-06T03:43:30 -01:00",
+    "type": "Planet",
+    "metadata": [
+      {
+        "name": "IsWater",
+        "value": "false",
+        "type": "boolean"
+      },
+      {
+        "name": "IsLife",
+        "value": "false",
+        "type": "boolean"
+      },
+      {
+        "name": "PlanetType",
+        "value": "Undefined",
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "name": "Maribel Nelson",
+    "description": "Consectetur ex do ad anim. Tempor Lorem sit non ad anim voluptate pariatur quis nulla exercitation adipisicing occaecat laborum. Officia reprehenderit nisi exercitation magna reprehenderit et proident ea sunt est nisi esse pariatur do. Minim reprehenderit fugiat eiusmod aliqua amet. Eiusmod esse aute laboris nulla aute tempor nisi ex sunt.\r\n",
+    "mass": 1674.2,
+    "temperature": 2.0325979313116613e+32,
+    "radius": 6454358073.4,
+    "image": "http://placehold.it/32x32",
+    "position": {
+      "x": 237,
+      "y": 76,
+      "z": 353
+    },
+    "creationDate": "2021-06-22T07:04:33 -02:00",
+    "modificationDate": "2024-01-10T10:28:12 -01:00",
+    "type": "Planet",
+    "metadata": [
+      {
+        "name": "IsWater",
+        "value": "false",
+        "type": "boolean"
+      },
+      {
+        "name": "IsLife",
+        "value": "false",
+        "type": "boolean"
+      },
+      {
+        "name": "PlanetType",
+        "value": "Gas",
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Marisa Mitchell",
+    "description": "Laborum non mollit id id duis commodo cillum veniam et nisi officia eiusmod dolore. Voluptate veniam qui irure commodo velit aliquip magna amet ipsum sunt. Irure tempor mollit ut elit in. Velit laborum eiusmod exercitation sit dolore reprehenderit sit deserunt minim voluptate ad tempor. Laboris aliqua tempor quis ea est laborum eu anim mollit mollit elit elit sunt deserunt. Enim cupidatat mollit consectetur in aliquip proident non. Dolore cillum exercitation ut excepteur in qui voluptate deserunt ex irure fugiat.\r\n",
+    "mass": 1611.17,
+    "temperature": 5.951210892050722e+32,
+    "radius": 5221593952.4,
+    "image": "http://placehold.it/32x32",
+    "position": {
+      "x": 348,
+      "y": 231,
+      "z": 226
+    },
+    "creationDate": "2018-06-25T02:45:06 -02:00",
+    "modificationDate": "2024-02-03T11:02:30 -01:00",
+    "type": "Planet",
+    "metadata": [
+      {
+        "name": "IsWater",
+        "value": "true",
+        "type": "boolean"
+      },
+      {
+        "name": "IsLife",
+        "value": "false",
+        "type": "boolean"
+      },
+      {
+        "name": "PlanetType",
+        "value": "Gas",
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Ella Zamora",
+    "description": "Ullamco ea excepteur duis dolor qui sunt labore ipsum cupidatat cillum nulla sint enim. Est nulla aliquip dolor et. Reprehenderit nostrud anim est minim in voluptate pariatur sint. Exercitation excepteur laborum incididunt incididunt eu qui id ea do. Ex quis exercitation sunt qui.\r\n",
+    "mass": 1050.46,
+    "temperature": 3.54719619316169e+32,
+    "radius": 9544335518.2,
+    "image": "http://placehold.it/32x32",
+    "position": {
+      "x": 96,
+      "y": 240,
+      "z": 219
+    },
+    "creationDate": "2016-12-23T10:42:24 -01:00",
+    "modificationDate": "2024-03-01T02:15:44 -01:00",
+    "type": "Planet",
+    "metadata": [
+      {
+        "name": "IsWater",
+        "value": "false",
+        "type": "boolean"
+      },
+      {
+        "name": "IsLife",
+        "value": "true",
+        "type": "boolean"
+      },
+      {
+        "name": "PlanetType",
+        "value": "Undefined",
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Kim Robles",
+    "description": "Elit ullamco incididunt commodo pariatur nisi et ex aliquip tempor voluptate. Ipsum deserunt incididunt in officia consectetur deserunt nisi veniam amet nostrud aliqua eiusmod. Ad elit minim Lorem laboris sit Lorem magna pariatur nulla. Proident cillum deserunt sunt ad minim id id reprehenderit labore incididunt sit ad mollit.\r\n",
+    "mass": 1432.42,
+    "temperature": 6.645054060586095e+32,
+    "radius": 2312046040.5,
+    "image": "http://placehold.it/32x32",
+    "position": {
+      "x": 26,
+      "y": 275,
+      "z": 395
+    },
+    "creationDate": "2023-11-21T09:17:29 -01:00",
+    "modificationDate": "2024-01-01T03:21:52 -01:00",
+    "type": "Planet",
+    "metadata": [
+      {
+        "name": "IsWater",
+        "value": "true",
+        "type": "boolean"
+      },
+      {
+        "name": "IsLife",
+        "value": "false",
+        "type": "boolean"
+      },
+      {
+        "name": "PlanetType",
+        "value": "Undefined",
+        "type": "string"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Petty Haynes",
+    "description": "Laborum deserunt do incididunt ut cillum fugiat proident amet Lorem amet. Cillum ea tempor dolor laboris. Dolor reprehenderit esse magna culpa sunt minim mollit laborum non sit irure aliquip laboris enim. Est reprehenderit occaecat officia nulla sint. Irure excepteur cupidatat ex veniam nisi. Ad in in eu occaecat ex cupidatat eu anim elit fugiat commodo commodo sunt.\r\n",
+    "mass": 604.9,
+    "temperature": 8.310470980090388e+31,
+    "radius": 7010439040.7,
+    "image": "http://placehold.it/32x32",
+    "position": {
+      "x": 421,
+      "y": 12,
+      "z": 308
+    },
+    "creationDate": "2015-11-08T03:26:02 -01:00",
+    "modificationDate": "2024-02-28T09:08:43 -01:00",
+    "type": "Planet",
+    "metadata": [
+      {
+        "name": "IsWater",
+        "value": "false",
+        "type": "boolean"
+      },
+      {
+        "name": "IsLife",
+        "value": "false",
+        "type": "boolean"
+      },
+      {
+        "name": "PlanetType",
+        "value": "Gas",
+        "type": "string"
+      }
+    ]
+  }
+]

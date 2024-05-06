@@ -34,6 +34,8 @@ builder.Services.AddDbContext<SpaceDbContext>(options =>
 
 builder.Services.AddTransient<ICelestialObjectService, CelestialObjectService>();
 builder.Services.AddTransient<ICelestialObjectRepository, CelestialObjectRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IUserService, UserService>();
 
 var app = builder.Build();
 

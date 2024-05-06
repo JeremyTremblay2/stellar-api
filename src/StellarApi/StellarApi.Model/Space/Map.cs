@@ -1,4 +1,5 @@
 using System.Globalization;
+using StellarApi.Helpers;
 
 namespace StellarApi.Model.Space;
 
@@ -31,12 +32,12 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
     /// <summary>
     /// The creation date of the map.
     /// </summary>
-    public DateTime? CreationDate { get; private set; }
+    public DateTime CreationDate { get; private set; }
 
     /// <summary>
     /// The modification date of the map.
     /// </summary>
-    public DateTime? ModificationDate { get; private set; }
+    public DateTime ModificationDate { get; private set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Map"/> class with specified properties.
@@ -47,28 +48,16 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
     /// <param name="modificationDate">The last modification date of the map.</param>
     /// <exception cref="ArgumentNullException">Throw when the name of the object is null or empty.</exception>
     /// <exception cref="ArgumentException">Thrown when the <paramref name="modificationDate"/> is in the future or before the <paramref name="creationDate"/>.</exception>
-    public Map(string name, int id, DateTime? creationDate, DateTime? modificationDate)
+    public Map(int id, string name, DateTime? creationDate = null, DateTime? modificationDate = null)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentNullException(nameof(name), "The name of the object cannot be null or empty.");
 
-        if (modificationDate.HasValue)
-        {
-            if (modificationDate.Value > DateTime.UtcNow)
-                throw new ArgumentException("The modification date cannot be in the future.", nameof(modificationDate));
-            else if (creationDate.HasValue && modificationDate.Value < creationDate.Value)
-                throw new ArgumentException("The modification date cannot be before the creation date.",
-                    nameof(modificationDate));
-            ModificationDate = modificationDate.Value;
-        }
-        else
-            ModificationDate = DateTime.UtcNow;
+        (CreationDate, ModificationDate) = DateHelper.CheckDates(creationDate, modificationDate);
 
         Id = id;
         Name = name;
         CelestialObjects = new List<CelestialObject>();
-        CreationDate = creationDate;
-        ModificationDate = modificationDate;
     }
 
     /// <inheritdoc/>

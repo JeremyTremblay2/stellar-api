@@ -1,7 +1,17 @@
 namespace StellarApi.Helpers;
 
+/// <summary>
+/// Represents a class that can be helpful during the process of date parsing.
+/// </summary>
 public static class DateHelper
 {
+    /// <summary>
+    /// Checks the dates and returns the final creation and modification dates.
+    /// </summary>
+    /// <param name="modificationDate">The modification date of the object.</param>
+    /// <param name="creationDate">The creation date of the object.</param>
+    /// <returns>A tuple containing the final creation and modification dates.</returns>
+    /// <exception cref="ArgumentException">Thrown when the <paramref name="modificationDate"/> is in the future or before the <paramref name="creationDate"/>.</exception>
     public static (DateTime CreationDate, DateTime ModificationDate) CheckDates(DateTime? modificationDate,
         DateTime? creationDate)
     {

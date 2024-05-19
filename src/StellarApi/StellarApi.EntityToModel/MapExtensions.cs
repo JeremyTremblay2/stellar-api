@@ -48,4 +48,17 @@ public static class MapExtensions
     /// <returns>A new list of MapEntity object.</returns>
     public static IEnumerable<MapEntity> ToEntity(this IEnumerable<Map> models)
         => models.Select(model => model.ToEntity());
+
+    /// <summary>
+    /// Adds a collection of celestial objects to the map.
+    /// </summary>
+    /// <param name="map">The map to add the celestial objects to.</param>
+    /// <param name="celestialObjects">The celestial objects to add to the map.</param>
+    public static void AddCelestialObjects(this Map map, IEnumerable<CelestialObject> celestialObjects)
+    {
+        foreach (var celestialObject in celestialObjects)
+        {
+            map.CelestialObjects.Add(celestialObject);
+        }
+    }
 }

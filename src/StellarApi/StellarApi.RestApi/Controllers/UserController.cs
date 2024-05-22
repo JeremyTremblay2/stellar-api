@@ -18,15 +18,27 @@ namespace StellarApi.RestApi.Controllers
     [Route("api/v{v:apiVersion}/users/")]
     public class UserController : ControllerBase
     {
+        /// <summary>
+        /// The service for managing user objects.
+        /// </summary>
         private readonly IUserService _service;
-        private readonly TokenService _tokenService;
+
+        /// <summary>
+        /// The service for managing the tokens.
+        /// </summary>
+        private readonly ITokenService _tokenService;
+
+        /// <summary>
+        /// Represents the number of days before a refresh token expires.
+        /// </summary>
+        private const int daysToExpire = 7;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserController"/> class.
         /// </summary>
         /// <param name="userService">The service for managing user objects.</param>
         /// <param name="tokenService">The service for managing the tokens.</param>
-        public UserController(IUserService userService, TokenService tokenService)
+        public UserController(IUserService userService, ITokenService tokenService)
         {
             _service = userService;
             _tokenService = tokenService;
@@ -82,21 +94,38 @@ namespace StellarApi.RestApi.Controllers
                 return BadRequest("Bad credentials");
             }
 
+            // Add BCrypt password hashing here to compare the hashed password with the one in the database.
             var isPasswordValid = request.Password != null && request.Email != null
                 && request.Password.Equals(user.Password) && request.Email.Equals(user.Email);
+            //var isPasswordValid = BCrypt.Net.BCrypt.Verify(request.Password, user.Password);
             if (!isPasswordValid)
             {
                 return BadRequest("Bad credentials");
             }
 
-            var accessToken = _tokenService.CreateToken(user);
+            var accessToken = _tokenService.GenerateAccessToken(user);
+            var refreshToken = _tokenService.GenerateRefreshToken();
+
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.Now.AddDays(daysToExpire);
+
+            try
+            {
+                await _service.PutUser(user);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An unknown error occurred during the generation of a new token. Please retry.");
+            }
 
             return Ok(new LoginResponse
             {
-                Username = user.Username,
-                Email = user.Email,
                 Token = accessToken,
-                Role = _tokenService.GetUserRole(user)
+                RefreshToken = refreshToken,
+                RefreshTokenExpirationTime = user.RefreshTokenExpiryTime,
+                Email = user.Email,
+                Username = user.Username,
+                Role = user.Role
             });
         }
 

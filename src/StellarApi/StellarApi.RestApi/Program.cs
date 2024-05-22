@@ -94,10 +94,10 @@ builder.Services.AddAuthentication(options => {
     });
 
 builder.Services.AddDbContext<SpaceDbContextSeed>(options => 
-    options.UseSqlite(@"Data Source=..\StellarApi.Repository\Database\SpaceDatabase.db")
+    options.UseSqlite(builder.Configuration["ConnectionStrings:DatabaseLocalPath"])
 );
 
-builder.Services.AddScoped<TokenService, TokenService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddTransient<ICelestialObjectService, CelestialObjectService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ICelestialObjectRepository, CelestialObjectRepository>();

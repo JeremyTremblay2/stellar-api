@@ -9,15 +9,25 @@ namespace StellarApi.RestApi.Auth
     public class LoginResponse
     {
         /// <summary>
+        /// Gets or sets the authentication token.
+        /// </summary>
+        public string Token { get; set; }
+
+        /// <summary>
+        /// Gets or sets the refresh token.
+        /// </summary>
+        public string RefreshToken { get; set; }
+
+        /// <summary>
+        /// Gets or sets the expiration time of the refresh token.
+        /// </summary>
+        public DateTime RefreshTokenExpirationTime { get; set; }
+
+        /// <summary>
         /// Gets or sets the email of the user.
         /// </summary>
         [EmailAddress]
         public string Email { get; set; }
-
-        /// <summary>
-        /// Gets or sets the authentication token.
-        /// </summary>
-        public string Token { get; set; }
 
         /// <summary>
         /// Gets or sets the username of the user.

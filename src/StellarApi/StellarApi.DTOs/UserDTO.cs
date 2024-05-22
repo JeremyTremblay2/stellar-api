@@ -44,6 +44,16 @@ namespace StellarApi.DTOs
         public DateTime? ModificationDate { get; set; }
 
         /// <summary>
+        /// The refresh token of the user.
+        /// </summary>
+        public string? RefreshToken { get; set; }
+
+        /// <summary>
+        /// The expiry time of the refresh token.
+        /// </summary>
+        public DateTime RefreshTokenExpiryTime { get; set; }
+
+        /// <summary>
         /// Creates a new instance of the <see cref="UserDTO"/> class.
         /// </summary>
         /// <param name="id">The ID of the user.</param>
@@ -53,7 +63,8 @@ namespace StellarApi.DTOs
         /// <param name="role">The role of the user.</param>
         /// <param name="creationDate">The creation date of the user.</param>
         /// <param name="modificationDate">The modificaiton date of the user.</param>
-        public UserDTO(int id, string email, string username, string password, string role, DateTime? creationDate, DateTime? modificationDate)
+        public UserDTO(int id, string email, string username, string password, string role, string refreshToken, 
+            DateTime refreshTokenExpiryTime, DateTime? creationDate, DateTime? modificationDate)
         {
             Id = id;
             Email = email;
@@ -62,6 +73,8 @@ namespace StellarApi.DTOs
             Role = role;
             CreationDate = creationDate;
             ModificationDate = modificationDate;
+            RefreshToken = refreshToken;
+            RefreshTokenExpiryTime = refreshTokenExpiryTime;
         }
     }
 }

@@ -55,5 +55,15 @@ namespace StellarApi.Entities
         /// </summary>
         [Required(AllowEmptyStrings = false, ErrorMessage = "The modification date cannot be empty.")]
         public required DateTime ModificationDate { get; set; }
+
+        /// <summary>
+        /// Gets the refresh token of the user.
+        /// </summary>
+        public string? RefreshToken { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets the expiry time of the refresh token.
+        /// </summary>
+        public DateTime RefreshTokenExpiryTime { get; set; }
     }
 }

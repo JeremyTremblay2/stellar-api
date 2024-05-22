@@ -1,4 +1,6 @@
 ﻿using StellarApi.Model.Users;
+using System.Security.Claims;
+using System.Security.Cryptography;
 
 namespace StellarApi.RestApi.Auth
 {
@@ -12,13 +14,19 @@ namespace StellarApi.RestApi.Auth
         /// </summary>
         /// <param name="user">The user for whom the token is created.</param>
         /// <returns>The created token.</returns>
-        string CreateToken(User user);
+        string GenerateAccessToken(User user);
 
         /// <summary>
-        /// Gets the role of the specified user.
+        /// Generates a refresh token.
         /// </summary>
-        /// <param name="user">The user whose role is retrieved.</param>
-        /// <returns>The role of the user.</returns>
-        Role GetUserRole(User user);
+        /// <returns>The generated refresh token.</returns>
+        string GenerateRefreshToken();
+
+        /// <summary>
+        /// Extracts the claims from the specified token.
+        /// </summary>
+        /// <param name="token">The token from which to extract the claims.</param>
+        /// <returns>The extracted claims.</returns>
+        ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
     }
 }

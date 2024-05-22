@@ -21,7 +21,7 @@ namespace DTOtoModel
             if (!Enum.TryParse(dto.Role, out Role role))
                 throw new ArgumentException("Invalid role value.");
 
-            return new User(dto.Id, dto.Email, dto.Username, dto.Password, role, dto.CreationDate, dto.ModificationDate);
+            return new User(dto.Id, dto.Email, dto.Username, dto.Password, role, dto.RefreshToken, dto.RefreshTokenExpiryTime, dto.CreationDate, dto.ModificationDate);
         }
 
         /// <summary>
@@ -34,7 +34,8 @@ namespace DTOtoModel
             if (model is null)
                 return null;
 
-            return new UserDTO(model.Id, model.Email, model.Username, model.Password, model.Role.ToString(), model.CreationDate, model.ModificationDate);
+            return new UserDTO(model.Id, model.Email, model.Username, model.Password, model.Role.ToString(), model.RefreshToken, 
+                model.RefreshTokenExpiryTime, model.CreationDate, model.ModificationDate);
         }
 
         /// <summary>

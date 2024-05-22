@@ -21,7 +21,8 @@ namespace StellarApi.EntityToModel
             if (!Enum.TryParse(entity.Role, out Role role))
                 throw new ArgumentException("Invalid role value.");
 
-            return new User(entity.Id, entity.Email, entity.Username, entity.Password, role, entity.CreationDate, entity.ModificationDate);
+            return new User(entity.Id, entity.Email, entity.Username, entity.Password, role, entity.RefreshToken, 
+                entity.RefreshTokenExpiryTime, entity.CreationDate, entity.ModificationDate);
         }
 
         /// <summary>
@@ -37,6 +38,8 @@ namespace StellarApi.EntityToModel
                 Username = model.Username,
                 Password = model.Password,
                 Role = model.Role.ToString(),
+                RefreshToken = model.RefreshToken,
+                RefreshTokenExpiryTime = model.RefreshTokenExpiryTime,
                 CreationDate = model.CreationDate,
                 ModificationDate = model.ModificationDate
             };

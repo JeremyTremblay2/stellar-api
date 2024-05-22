@@ -42,6 +42,8 @@ namespace StellarApi.Repository.Repositories
             existingUser.Username = entity.Username;
             existingUser.Password = entity.Password;
             existingUser.Role = entity.Role;
+            existingUser.RefreshToken = entity.RefreshToken;
+            existingUser.RefreshTokenExpiryTime = entity.RefreshTokenExpiryTime;
             existingUser.CreationDate = entity.CreationDate;
             existingUser.ModificationDate = entity.ModificationDate;
             context.Users.Update(existingUser);

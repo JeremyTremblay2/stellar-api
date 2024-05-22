@@ -2,6 +2,7 @@
 using StellarApi.Model.Users;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace StellarApi.RestApi.Auth
@@ -14,7 +15,7 @@ namespace StellarApi.RestApi.Auth
         /// <summary>
         /// The expiration time of the token, in minutes.
         /// </summary>
-        private const int ExpirationMinutes = 50;
+        private const int ExpirationMinutes = 1;
 
         /// <summary>
         /// A logger used to store API calls.
@@ -36,12 +37,8 @@ namespace StellarApi.RestApi.Auth
             _configuration = configuration;
         }
 
-        /// <summary>
-        /// Creates a JWT token for the specified user.
-        /// </summary>
-        /// <param name="user">The user for whom the token is created.</param>
-        /// <returns>The generated JWT token.</returns>
-        public string CreateToken(User user)
+        /// <inheritdoc/>
+        public string GenerateAccessToken(User user)
         {
             var expiration = DateTime.UtcNow.AddMinutes(ExpirationMinutes);
             var token = CreateJwtToken(
@@ -56,15 +53,42 @@ namespace StellarApi.RestApi.Auth
             return tokenHandler.WriteToken(token);
         }
 
-        /// <summary>
-        /// Gets the role of the specified user.
-        /// </summary>
-        /// <param name="user">The user for whom the role is retrieved.</param>
-        /// <returns>The role of the user.</returns>
-        public Role GetUserRole(User user)
+        /// <inheritdoc/>
+        public string GenerateRefreshToken()
         {
-            var adminUsername = _configuration.GetSection("SiteSettings")["AdminEmail"];
-            return user.Email == adminUsername ? Role.Administrator : Role.Member;
+            var randomNumber = new byte[32];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+                return Convert.ToBase64String(randomNumber);
+            }
+        }
+
+        /// <inheritdoc/>
+        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            SecurityToken securityToken;
+
+            var symmetricSecurityKey = _configuration.GetValue<string>("JwtTokenSettings:SymmetricSecurityKey");
+            var principal = tokenHandler.ValidateToken(token, new TokenValidationParameters
+            {
+                ClockSkew = TimeSpan.Zero,
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = false,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = _configuration.GetValue<string>("JwtTokenSettings:ValidIssuer"),
+                ValidAudience = _configuration.GetValue<string>("JwtTokenSettings:ValidAudience"),
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(symmetricSecurityKey)
+                ),
+            }, out securityToken);
+
+            var jwtSecurityToken = securityToken as JwtSecurityToken;
+            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException("Invalid token");
+            return principal;
         }
 
         /// <summary>

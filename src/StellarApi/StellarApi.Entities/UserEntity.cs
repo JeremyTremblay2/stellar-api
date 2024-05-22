@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace StellarApi.Entities
 {
@@ -12,6 +8,7 @@ namespace StellarApi.Entities
     /// Represents an entity for a user in a database.
     /// </summary>
     [Table("User")]
+    [Index(nameof(Email), IsUnique = true)]
     public class UserEntity
     {
         /// <summary>
@@ -40,6 +37,12 @@ namespace StellarApi.Entities
         /// </summary>
         [Required(AllowEmptyStrings = false, ErrorMessage = "The password cannot be empty.")]
         public required string Password { get; set; }
+
+        /// <summary>
+        /// Gets the role of the user.
+        /// </summary>
+        [Required(AllowEmptyStrings = false, ErrorMessage = "The role cannot be empty.")]
+        public required string Role { get; set; }
 
         /// <summary>
         /// Gets the creation date of the user.

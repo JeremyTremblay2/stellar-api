@@ -1,12 +1,4 @@
-﻿using StellarApi.Model.Space;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-
-namespace StellarApi.Model.Users
+﻿namespace StellarApi.Model.Users
 {
     /// <summary>
     /// Represents a user with an email, a name, a password and date information about the account.
@@ -34,6 +26,11 @@ namespace StellarApi.Model.Users
         public string Password { get; private set; }
 
         /// <summary>
+        /// Gets the user's role.
+        /// </summary>
+        public Role Role { get; private set; }
+
+        /// <summary>
         /// Gets the creation date of the user.
         /// </summary>
         public DateTime CreationDate { get; private set; }
@@ -49,7 +46,8 @@ namespace StellarApi.Model.Users
         /// <param name="email">The email address of the user.</param>
         /// <param name="username">The username of the user.</param>
         /// <param name="password">The password of the user.</param>
-        public User(string email, string username, string password)
+        /// <param name="role">The role of the user.</param>
+        public User(string email, string username, string password, Role role)
         {
             CheckUserData(email, username, password);
             CreationDate = DateTime.Now;
@@ -63,11 +61,13 @@ namespace StellarApi.Model.Users
         /// <param name="email">The email address of the user.</param>
         /// <param name="username">The username of the user.</param>
         /// <param name="password">The password of the user.</param>
+        /// <param name="role">The role of the user.</param>
         /// <param name="creationDate">The creation date of the user.</param>
         /// <param name="modificationDate">The modification date of the user.</param>
-        public User(int id, string email, string username, string password, DateTime? creationDate = null, DateTime? modificationDate = null)
+        public User(int id, string email, string username, string password, Role role, DateTime? creationDate = null, DateTime? modificationDate = null)
         {
             Id = id;
+            Role = role;
             CheckUserData(email, username, password);
             CheckDates(creationDate, modificationDate);
         }
@@ -109,7 +109,7 @@ namespace StellarApi.Model.Users
 
         /// <inheritdoc/>
         public override string? ToString()
-            => $"{Id} - {Username}, (Email: {Email}), CreationDate: {CreationDate}, ModificationDate: {ModificationDate}";
+            => $"{Id} - {Username} - {Role}, (Email: {Email}), CreationDate: {CreationDate}, ModificationDate: {ModificationDate}";
 
         /// <summary>
         /// Checks the user data and sets the email, username and password.

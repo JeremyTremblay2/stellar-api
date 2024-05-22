@@ -32,6 +32,11 @@ namespace StellarApi.DTOs
         public string Password { get; set; }
 
         /// <summary>
+        /// Gets the role of the user.
+        /// </summary>
+        public string Role { get; set; } 
+
+        /// <summary>
         /// Gets the creation date of the user.
         /// </summary>
         public DateTime? CreationDate { get; set; }
@@ -48,14 +53,16 @@ namespace StellarApi.DTOs
         /// <param name="email">The email of the user.</param>
         /// <param name="username">The username of the user.</param>
         /// <param name="password">The password of the user.</param>
+        /// <param name="role">The role of the user.</param>
         /// <param name="creationDate">The creation date of the user.</param>
         /// <param name="modificationDate">The modificaiton date of the user.</param>
-        public UserDTO(int id, string email, string username, string password, DateTime? creationDate, DateTime? modificationDate)
+        public UserDTO(int id, string email, string username, string password, string role, DateTime? creationDate, DateTime? modificationDate)
         {
             Id = id;
             Email = email;
             Username = username;
             Password = password;
+            Role = role;
             CreationDate = creationDate;
             ModificationDate = modificationDate;
         }

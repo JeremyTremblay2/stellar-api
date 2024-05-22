@@ -8,7 +8,7 @@ namespace StellarApi.Model.Space
     /// <summary>
     /// Represents a celestial object.
     /// </summary>
-    public class CelestialObject : IEquatable<CelestialObject>, IComparable<CelestialObject>, IComparable
+    public abstract class CelestialObject : IEquatable<CelestialObject>, IComparable<CelestialObject>, IComparable
     {
         /// <summary>
         /// Gets the unique identifier of the celestial object.

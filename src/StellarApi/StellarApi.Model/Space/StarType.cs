@@ -40,5 +40,9 @@ public enum StarType
     /// <summary>
     /// Bl
     /// </summary>
-    BlackHole
+    BlackHole,
+    /// <summary>
+    /// An unknown star type.
+    /// </summary>
+    Undefined
 }

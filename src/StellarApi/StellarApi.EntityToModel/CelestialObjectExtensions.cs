@@ -19,15 +19,21 @@ namespace StellarApi.EntityToModel
             if (entity is null) return null;
             if (entity.Type.Equals("Planet"))
             {
-                var planetType = ValueParserHelpers.TryParseValue<PlanetType>(entity.PlanetType, out var result) ? result : PlanetType.Undefined;
-                return new Planet(entity.Id, entity.Name, entity.Description, entity.Image, PositionExtensions.ToModel(entity.Position), entity.Mass,
+                var planetType = ValueParserHelpers.TryParseValue<PlanetType>(entity.PlanetType, out var result)
+                    ? result
+                    : PlanetType.Undefined;
+                return new Planet(entity.Id, entity.Name, entity.Description, entity.Image,
+                    PositionExtensions.ToModel(entity.Position), entity.Mass,
                     entity.Temperature, entity.Radius, (bool)entity.IsWater, (bool)entity.IsLife, planetType);
             }
             else if (entity.Type.Equals("Star"))
             {
-                // Implement logic for converting a StarEntity to a Star model.
-                return new CelestialObject(entity.Id, entity.Name, entity.Description, entity.Image, PositionExtensions.ToModel(entity.Position), 
-                    entity.Mass, entity.Temperature, entity.Radius);
+                var starType = ValueParserHelpers.TryParseValue<StarType>(entity.StarType, out var result)
+                    ? result
+                    : StarType.Undefined;
+                return new Star(entity.Id, entity.Name, entity.Description, entity.Image,
+                    PositionExtensions.ToModel(entity.Position),
+                    entity.Mass, entity.Temperature, entity.Radius, (double)entity.Brightness, starType);
             }
             else
             {
@@ -53,6 +59,7 @@ namespace StellarApi.EntityToModel
         public static CelestialObjectEntity ToEntity(this CelestialObject model)
         {
             Planet? planet = model is Planet ? (Planet)model : null;
+            Star? star = model is Star ? (Star)model : null;
             return new CelestialObjectEntity
             {
                 Id = model.Id,
@@ -67,13 +74,15 @@ namespace StellarApi.EntityToModel
                 ModificationDate = model.ModificationDate,
                 Type = model switch
                 {
-                    Planet _ => "Planet",
-                    _ => "Star"
+                    Planet => "Planet",
+                    Star => "Star",
+                    _ => throw new ArgumentException("The celestial object type is not supported.", nameof(model))
                 },
                 IsWater = model is Planet ? planet!.IsWater : null,
                 IsLife = model is Planet ? planet!.IsLife : null,
-                PlanetType = model is Planet ? planet!.PlanetType.ToString() : null
-                // Implement Star properties when added.
+                PlanetType = model is Planet ? planet!.PlanetType.ToString() : null,
+                Brightness = model is Star ? star!.Brightness : null,
+                StarType = model is Star ? star!.StarType.ToString() : null
             };
         }
 

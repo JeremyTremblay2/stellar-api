@@ -10,7 +10,7 @@ public class Star : CelestialObject
     /// <summary>
     /// Gets or sets the brightness of the star.
     /// </summary>
-    public int Brightness { get; private set; }
+    public double Brightness { get; private set; }
 
     /// <summary>
     /// Gets or sets the type of the star.
@@ -30,8 +30,12 @@ public class Star : CelestialObject
     /// <param name="radius">The radius of the star.</param>
     /// <param name="brightness">The brightness of the star.</param>
     /// <param name="starType">The type of the star.</param>
-    public Star(int id, string name, string description, string image, Position? position, double mass, double temperature, double radius, DateTime? creationDate,
-        DateTime? modificationDate, int brightness, StarType starType) : base(id, name, description, image, position, mass, temperature, radius, creationDate, modificationDate)
+    /// <param name="creationDate">The creation date of the star.</param>
+    /// <param name="modificationDate">The last modification date of the star.</param>
+    public Star(int id, string name, string description, string image, Position? position, double mass,
+        double temperature, double radius, double brightness, StarType starType, DateTime? creationDate = null,
+        DateTime? modificationDate = null) : base(id, name, description, image, position, mass, temperature, radius,
+        creationDate, modificationDate)
     {
         Brightness = brightness;
         StarType = starType;
@@ -39,5 +43,6 @@ public class Star : CelestialObject
 
     /// <inheritdoc/>
     public override string ToString()
-        => $"{Id} - Star {Name}, (Description: {Description}), Mass: {Mass}, Temperature: {Temperature}, Radius: {Radius}, Image: {Image}, CreationDate: {CreationDate}, ModificationDate: {ModificationDate}, Brightness: {Brightness}, StarType: {StarType}";
+        =>
+            $"{Id} - Star {Name}, (Description: {Description}), Mass: {Mass}, Temperature: {Temperature}, Radius: {Radius}, Image: {Image}, CreationDate: {CreationDate}, ModificationDate: {ModificationDate}, Brightness: {Brightness}, StarType: {StarType}";
 }

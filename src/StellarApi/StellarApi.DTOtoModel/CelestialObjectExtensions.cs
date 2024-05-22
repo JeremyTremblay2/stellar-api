@@ -27,9 +27,15 @@ namespace StellarApi.DTOtoModel
             }
             else if (dto.Type.Equals("Star"))
             {
-                // Handle correctly type when added.
-                return new CelestialObject(dto.Id, dto.Name, dto.Description, dto.Image, PositionExtensions.ToModel(dto.Position),
-                    dto.Mass, dto.Temperature, dto.Radius, dto.CreationDate, dto.ModificationDate);
+                var brightness = GetPropertyValue<double>(dto.Metadata, "brightness");
+                if (brightness is null || brightness < 0)
+                {
+                    throw new ArgumentException("The brightness value is invalid.", nameof(brightness));
+                }
+                var starType = GetPropertyValue<StarType>(dto.Metadata, "starType");
+
+                return new Star(dto.Id, dto.Name, dto.Description, dto.Image, PositionExtensions.ToModel(dto.Position),
+                    dto.Mass, dto.Temperature, dto.Radius, (double)brightness, starType ?? StarType.Undefined);
             }
             else
             {
@@ -81,7 +87,11 @@ namespace StellarApi.DTOtoModel
             else
             {
                 dto.Type = "Star";
-                // Handle correctly type when added.
+                dto.Metadata = new List<PropertyDTO>
+                {
+                    new PropertyDTO { Name = "brightness", Type = "double", Value = ((Star)model).Brightness.ToString() },
+                    new PropertyDTO { Name = "starType", Type = "StarType", Value = ((Star)model).StarType.ToString() }
+                };
             }
 
             return dto;

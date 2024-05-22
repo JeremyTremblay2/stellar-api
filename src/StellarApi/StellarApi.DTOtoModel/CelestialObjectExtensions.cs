@@ -19,23 +19,13 @@ namespace StellarApi.DTOtoModel
         {
             if (dto.Type.Equals("Planet"))
             {
-                var isWater = GetPropertyValue<bool>(dto.Metadata, "isWater");
-                var isLife = GetPropertyValue<bool>(dto.Metadata, "isLife");
-                var planetType = GetPropertyValue<PlanetType>(dto.Metadata, "planetType");
                 return new Planet(dto.Id, dto.Name, dto.Description, dto.Image, PositionExtensions.ToModel(dto.Position), dto.Mass, 
-                    dto.Temperature, dto.Radius, isWater ?? false, isLife ?? false, planetType ?? PlanetType.Undefined);
+                    dto.Temperature, dto.Radius, dto.IsWater ?? false, dto.IsLife ?? false, Enum.Parse<PlanetType>(dto.PlanetType ?? "Undefined"));
             }
             else if (dto.Type.Equals("Star"))
             {
-                var brightness = GetPropertyValue<double>(dto.Metadata, "brightness");
-                if (brightness is null || brightness < 0)
-                {
-                    throw new ArgumentException("The brightness value is invalid.", nameof(brightness));
-                }
-                var starType = GetPropertyValue<StarType>(dto.Metadata, "starType");
-
                 return new Star(dto.Id, dto.Name, dto.Description, dto.Image, PositionExtensions.ToModel(dto.Position),
-                    dto.Mass, dto.Temperature, dto.Radius, (double)brightness, starType ?? StarType.Undefined);
+                    dto.Mass, dto.Temperature, dto.Radius, dto.Brightness ?? 1, Enum.Parse<StarType>(dto.StarType ?? "Undefined"));
             }
             else
             {
@@ -60,41 +50,27 @@ namespace StellarApi.DTOtoModel
         /// <returns>The converted CelestialObjectDTO.</returns>
         public static CelestialObjectDTO ToDTO(this CelestialObject model)
         {
-            var dto = new CelestialObjectDTO
+            Planet? planet = model is Planet ? (Planet)model : null;
+            Star? star = model is Star ? (Star)model : null;
+            return new CelestialObjectDTO
             {
                 Id = model.Id,
                 Name = model.Name,
                 Description = model.Description,
-                Image = model.Image,
                 Position = model.Position.ToDTO(),
+                Image = model.Image,
                 Mass = model.Mass,
                 Temperature = model.Temperature,
                 Radius = model.Radius,
-                CreationDate = (DateTime)model.CreationDate,
-                ModificationDate = (DateTime)model.ModificationDate
+                CreationDate = model.CreationDate,
+                ModificationDate = model.ModificationDate,
+                Type = model.GetType().Name,
+                IsWater = model is Planet ? planet!.IsWater : null,
+                IsLife = model is Planet ? planet!.IsLife : null,
+                PlanetType = model is Planet ? planet!.PlanetType.ToString() : null,
+                Brightness = model is Star ? star!.Brightness : null,
+                StarType = model is Star ? star!.StarType.ToString() : null
             };
-
-            if (model is Planet planet)
-            {
-                dto.Type = "Planet";
-                dto.Metadata = new List<PropertyDTO>
-                {
-                    new PropertyDTO { Name = "isWater", Type = "boolean", Value = planet.IsWater.ToString() },
-                    new PropertyDTO { Name = "isLife", Type = "boolean", Value = planet.IsLife.ToString() },
-                    new PropertyDTO { Name = "planetType", Type = "PlanetType", Value = planet.PlanetType.ToString() }
-                };
-            }
-            else
-            {
-                dto.Type = "Star";
-                dto.Metadata = new List<PropertyDTO>
-                {
-                    new PropertyDTO { Name = "brightness", Type = "double", Value = ((Star)model).Brightness.ToString() },
-                    new PropertyDTO { Name = "starType", Type = "StarType", Value = ((Star)model).StarType.ToString() }
-                };
-            }
-
-            return dto;
         }
 
         /// <summary>

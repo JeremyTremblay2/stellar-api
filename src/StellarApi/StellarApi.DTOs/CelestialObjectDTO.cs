@@ -61,16 +61,35 @@
         public string Type { get; set; }
 
         /// <summary>
-        /// Gets or sets the list of properties associated with the celestial object.
+        /// Gets or sets the planet type of the celestial object.
         /// </summary>
-        public IEnumerable<PropertyDTO> Metadata { get; set; }
+        public string? PlanetType { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CelestialObjectDTO"/> class.
+        /// Gets or sets the possibility of water on the celestial object.
+        /// </summary>
+        public bool? IsWater { get; set; }
+
+        /// <summary>
+        /// Gets or sets the possibility of life on the celestial object.
+        /// </summary>
+        public bool? IsLife { get; set; }
+
+        /// <summary>
+        /// Gets or set the star type of the celestial object.
+        /// </summary>
+        public string? StarType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the brightness of the celestial object.
+        /// </summary>
+        public double? Brightness { get; set; }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="CelestialObjectDTO"/> class.
         /// </summary>
         public CelestialObjectDTO()
         {
-            Metadata = new List<PropertyDTO>();
         }
 
         /// <summary>
@@ -85,9 +104,14 @@
         /// <param name="image">The image path of the celestial object.</param>
         /// <param name="creationDate">The creation date of the celestial object.</param>
         /// <param name="modificationDate">The last modification date of the celestial object.</param>
-        /// <param name="metadata">The list of inherited properties of the object.</param>
+        /// <param name="planetType">The type of the planet.</param>
+        /// <param name="isWater">The possibility of water on the celestial object.</param>
+        /// <param name="isLife">The possibility of life on the celestial object.</param>
+        /// <param name="starType">The type of the star.</param>
+        /// <param name="brightness">The brightness of the celestial object.</param>
         public CelestialObjectDTO(int id, string name, string description, PositionDTO? position, double mass, double temperature, double radius, 
-            string image, DateTime creationDate, DateTime modificationDate, string type, IEnumerable<PropertyDTO> metadata)
+            string image, DateTime creationDate, DateTime modificationDate, string type, string? planetType = null, bool? isWater = null, 
+            bool? isLife = null, string? starType = null, double? brightness = null)
         {
             Id = id;
             Name = name;
@@ -100,7 +124,11 @@
             CreationDate = creationDate;
             ModificationDate = modificationDate;
             Type = type;
-            Metadata = metadata;
+            PlanetType = planetType;
+            IsWater = isWater;
+            IsLife = isLife;
+            StarType = starType;
+            Brightness = brightness;
         }
     }
 }

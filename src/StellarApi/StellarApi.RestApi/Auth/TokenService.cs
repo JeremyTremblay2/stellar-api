@@ -22,12 +22,18 @@ namespace StellarApi.RestApi.Auth
         private readonly ILogger<TokenService> _logger;
 
         /// <summary>
+        /// Represents the configuration settings for the application.
+        /// </summary>
+        private readonly IConfiguration _configuration;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TokenService"/> class.
         /// </summary>
         /// <param name="logger">The logger instance.</param>
-        public TokenService(ILogger<TokenService> logger)
+        public TokenService(IConfiguration configuration, ILogger<TokenService> logger)
         {
             _logger = logger;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -57,7 +63,7 @@ namespace StellarApi.RestApi.Auth
         /// <returns>The role of the user.</returns>
         public Role GetUserRole(User user)
         {
-            var adminUsername = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("SiteSettings")["AdminEmail"];
+            var adminUsername = _configuration.GetSection("SiteSettings")["AdminEmail"];
             return user.Email == adminUsername ? Role.Administrator : Role.Member;
         }
 
@@ -70,8 +76,8 @@ namespace StellarApi.RestApi.Auth
         /// <returns>The created JWT token.</returns>
         private JwtSecurityToken CreateJwtToken(List<Claim> claims, SigningCredentials credentials, DateTime expiration)
             => new(
-                new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("JwtTokenSettings")["ValidIssuer"],
-                new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("JwtTokenSettings")["ValidAudience"],
+                _configuration.GetSection("JwtTokenSettings")["ValidIssuer"],
+                _configuration.GetSection("JwtTokenSettings")["ValidAudience"],
                 claims,
                 expires: expiration,
                 signingCredentials: credentials
@@ -84,7 +90,7 @@ namespace StellarApi.RestApi.Auth
         /// <returns>The list of claims for the user.</returns>
         private List<Claim> CreateClaims(User user)
         {
-            var jwtSub = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("JwtTokenSettings")["JwtRegisteredClaimNamesSub"];
+            var jwtSub = _configuration.GetSection("JwtTokenSettings")["JwtRegisteredClaimNamesSub"];
 
             try
             {

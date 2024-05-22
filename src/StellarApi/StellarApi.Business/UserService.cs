@@ -1,4 +1,5 @@
-﻿using StellarApi.Infrastructure.Business;
+﻿using Microsoft.EntityFrameworkCore;
+using StellarApi.Infrastructure.Business;
 using StellarApi.Infrastructure.Repository;
 using StellarApi.Model.Users;
 
@@ -22,6 +23,12 @@ namespace StellarApi.Business
         {
             return await _repository.GetUserById(id);
         }
+
+        /// <inheritdoc/>
+        public async Task<User?> GetUserByEmail(string email)
+        {
+            return await _repository.GetUserByEmail(email);
+        }        
 
         /// <inheritdoc/>
         public async Task<IEnumerable<User>> GetUsers(int page, int pageSize)

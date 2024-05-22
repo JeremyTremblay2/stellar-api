@@ -55,6 +55,19 @@ namespace StellarApi.Repository.Repositories
         }
 
         /// <summary>
+        /// Retrieves a user by his email from the repository.
+        /// </summary>
+        /// <param name="email">The email of the user to retrieve.</param>
+        /// <returns>The user with the specified email, or null if not found.</returns>
+        public async Task<User?> GetUserByEmail(string email)
+        {
+            SpaceDbContext context = new();
+            if (context.Users is null) return null;
+
+            return context.Users.FirstOrDefault(u => u.Email == email)?.ToModel();
+        }
+
+        /// <summary>
         /// Retrieves a paged list of users from the repository.
         /// </summary>
         /// <param name="page">The page number.</param>

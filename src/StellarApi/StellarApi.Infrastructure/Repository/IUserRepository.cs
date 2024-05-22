@@ -18,7 +18,14 @@ namespace StellarApi.Infrastructure.Repository
         /// <param name="id">The unique identifier of the user.</param>
         /// <returns>A task that represents the asynchronous operation and the user with the specified unique identifier.</returns>
         Task<User> GetUserById(int id);
-        
+
+        /// <summary>
+        /// Gets a user by its email.
+        /// </summary>
+        /// <param name="id">The email of the user.</param>
+        /// <returns>A task that represents the asynchronous operation and the user with the specified email.</returns>
+        Task<User?> GetUserByEmail(string email);
+
         /// <summary>
         /// Gets a list of users depending on the page and the page size.
         /// </summary>

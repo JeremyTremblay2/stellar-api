@@ -82,7 +82,7 @@ namespace StellarApi.EntityToModel
         /// </summary>
         /// <param name="models">The collection of CelestialObjects to convert.</param>
         /// <returns>The converted collection of CelestialObjectEntity.</returns>
-        public static IEnumerable<CelestialObjectEntity> ToDTO(this IEnumerable<CelestialObject> models)
+        public static IEnumerable<CelestialObjectEntity> ToEntity(this IEnumerable<CelestialObject> models)
         {
             return models.Select(model => model.ToEntity()).Where(obj => obj != null).Select(obj => obj!);
         }

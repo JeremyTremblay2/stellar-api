@@ -27,11 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Database\" />
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Context\FakeData\fake-data.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

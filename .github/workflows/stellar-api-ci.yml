@@ -5,7 +5,6 @@ name: Build, Test & deploy .NET API
 
 on:
   push:
-  pull_request:
   workflow_dispatch:
 
 env:

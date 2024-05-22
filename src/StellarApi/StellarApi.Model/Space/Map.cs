@@ -1,4 +1,6 @@
+using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Text;
 using StellarApi.Helpers;
 
 namespace StellarApi.Model.Space;
@@ -8,6 +10,8 @@ namespace StellarApi.Model.Space;
 /// </summary>
 public class Map : IEquatable<Map>, IComparable<Map>, IComparable
 {
+    private List<CelestialObject> celestialObjects = new();
+    
     /// <summary>
     /// The unique identifier of the map.
     /// </summary>
@@ -27,7 +31,7 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
     /// <summary>
     /// The celestial objects in the map.
     /// </summary>
-    public IList<CelestialObject> CelestialObjects { get; private set; }
+    public ReadOnlyCollection<CelestialObject> CelestialObjects { get; private set; }
 
     /// <summary>
     /// The creation date of the map.
@@ -57,8 +61,21 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
 
         Id = id;
         Name = name;
-        CelestialObjects = new List<CelestialObject>();
+        CelestialObjects = new ReadOnlyCollection<CelestialObject>(celestialObjects);
     }
+    
+    public Map(int id, string name, IEnumerable<CelestialObject> celestialObject, DateTime? creationDate = null, DateTime? modificationDate = null)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentNullException(nameof(name), "The name of the object cannot be null or empty.");
+
+        (CreationDate, ModificationDate) = DateHelper.CheckDates(creationDate, modificationDate);
+
+        Id = id;
+        Name = name;
+        CelestialObjects = new ReadOnlyCollection<CelestialObject>(celestialObjects);
+        celestialObjects.AddRange(celestialObject);
+    } 
 
     /// <inheritdoc/>
     public override int GetHashCode() => Id.GetHashCode();
@@ -109,7 +126,7 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
         if (CelestialObjects.Contains(celestialObject))
             return false;
 
-        CelestialObjects.Add(celestialObject);
+        celestialObjects.Add(celestialObject);
         return true;
     }
 
@@ -125,12 +142,21 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
         if (!CelestialObjects.Contains(celestialObject))
             return false;
 
-        return CelestialObjects.Remove(celestialObject);
+        return celestialObjects.Remove(celestialObject);
     }
 
     /// <inheritdoc/>
     public override string ToString()
     {
-        return $"{Id} - Map {Name}, Celestial Objects: {CelestialObjects.Count()}, CreationDate: {CreationDate}, ModificationDate: {ModificationDate}";
+        var builder = new StringBuilder();
+        builder.AppendLine($"Map: {Name}");
+        builder.AppendLine($"Creation Date: {CreationDate}");
+        builder.AppendLine($"Modification Date: {ModificationDate}");
+        builder.AppendLine("Celestial Objects:");
+        foreach (var celestialObject in CelestialObjects)
+        {
+            builder.AppendLine(celestialObject.ToString());
+        }
+        return builder.ToString();
     }
 }

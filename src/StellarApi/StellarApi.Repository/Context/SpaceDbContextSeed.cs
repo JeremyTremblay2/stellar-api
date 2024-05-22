@@ -33,7 +33,7 @@ namespace StellarApi.Repository.Context
             var position1 = new PositionEntity { X = 493, Y = 224, Z = 359 };
             var position2 = new PositionEntity { X = 142, Y = 23, Z = 98 };
             var position3 = new PositionEntity { };
-            modelBuilder.Entity<CelestialObjectEntity>().HasData(
+            /*modelBuilder.Entity<CelestialObjectEntity>().HasData(
                 new CelestialObjectEntity
                 {
                     Id = 1,
@@ -82,6 +82,19 @@ namespace StellarApi.Repository.Context
                     IsWater = false,
                     IsLife = false,
                     PlanetType = "Undefined"
+                }
+            );*/
+
+            modelBuilder.Entity<UserEntity>().HasData(
+                new UserEntity
+                {
+                    Id = 1,
+                    Email = "stellar-api@example.com",
+                    Username = "StellarApi",
+                    Password = "admin",
+                    Role = "Admin",
+                    CreationDate = DateTime.Now,
+                    ModificationDate = DateTime.Now,
                 }
             );
 

@@ -6,6 +6,10 @@ using StellarApi.DTOtoModel;
 using DTOtoModel;
 using StellarApi.Model.Space;
 using StellarApi.Model.Users;
+using StellarApi.RestApi.Auth;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StellarApi.RestApi.Controllers
 {
@@ -18,14 +22,17 @@ namespace StellarApi.RestApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _service;
+        private readonly TokenService _tokenService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserController"/> class.
         /// </summary>
-        /// <param name="service">The service for managing user objects.</param>
-        public UserController(IUserService service)
+        /// <param name="userService">The service for managing user objects.</param>
+        /// <param name="tokenService">The service for managing the tokens.</param>
+        public UserController(IUserService userService, TokenService tokenService)
         {
-            _service = service;
+            _service = userService;
+            _tokenService = tokenService;
         }
 
         /// <summary>
@@ -66,7 +73,7 @@ namespace StellarApi.RestApi.Controllers
         /// <returns>The created user object wrapped in an <see cref="ActionResult"/>.</returns>
         [MapToApiVersion(1)]
         [HttpPost]
-        public async Task<ActionResult<UserDTO>> PostUser(UserDTO user)
+        public async Task<ActionResult<UserDTO>> PostUser([FromBody] UserDTO user)
         {
             User? userObject = null;
             try
@@ -100,7 +107,7 @@ namespace StellarApi.RestApi.Controllers
         /// <returns>Returns <see cref="OkResult"/> if the user is successfully updated. Returns <see cref="BadRequestResult"/> if the user object is invalid.</returns>
         [MapToApiVersion(1)]
         [HttpPut]
-        public async Task<ActionResult<bool>> PutUser(UserDTO user)
+        public async Task<ActionResult<bool>> PutUser([FromBody] UserDTO user)
         {
             User? userObject = null;
             try
@@ -134,6 +141,7 @@ namespace StellarApi.RestApi.Controllers
         /// <returns>Returns <see cref="OkResult"/> if the user is successfully deleted. Returns <see cref="NotFoundResult"/> if the user is not found.</returns>
         [MapToApiVersion(1)]
         [HttpDelete]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<bool>> DeleteUser(int id)
         {
             if (await _service.DeleteUser(id))
@@ -144,6 +152,34 @@ namespace StellarApi.RestApi.Controllers
             {
                 return NotFound();
             }
+        }
+
+        [HttpPost]
+        [Route("login")]
+        public async Task<ActionResult<LoginResponse>> Authenticate([FromBody] LoginRequest request)
+        {
+            var user = await _service.GetUserByEmail(request.Email);
+            if (user is null)
+            {
+                return BadRequest("Bad credentials");
+            }
+
+            var isPasswordValid = request.Password != null && request.Email != null 
+                && request.Password.Equals(user.Password) && request.Email.Equals(user.Email);
+            if (!isPasswordValid)
+            {
+                return BadRequest("Bad credentials");
+            }
+
+            var accessToken = _tokenService.CreateToken(user);
+
+            return Ok(new LoginResponse
+            {
+                Username = user.Username,
+                Email = user.Email,
+                Token = accessToken,
+                Role = _tokenService.GetUserRole(user)
+            });
         }
     }
 }

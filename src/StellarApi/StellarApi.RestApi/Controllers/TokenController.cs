@@ -79,12 +79,12 @@ namespace StellarApi.RestApi.Controllers
 
             return Ok(new LoginResponse
             {
-                Token = newAccessToken,
+                AccessToken = newAccessToken,
                 RefreshToken = newRefreshToken,
                 RefreshTokenExpirationTime = user.RefreshTokenExpiryTime,
                 Email = user.Email,
                 Username = user.Username,
-                Role = user.Role
+                Role = user.Role.ToString()
             });
         }
 

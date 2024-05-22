@@ -120,12 +120,12 @@ namespace StellarApi.RestApi.Controllers
 
             return Ok(new LoginResponse
             {
-                Token = accessToken,
+                AccessToken = accessToken,
                 RefreshToken = refreshToken,
                 RefreshTokenExpirationTime = user.RefreshTokenExpiryTime,
                 Email = user.Email,
                 Username = user.Username,
-                Role = user.Role
+                Role = user.Role.ToString()
             });
         }
 

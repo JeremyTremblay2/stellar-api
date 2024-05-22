@@ -1,5 +1,4 @@
-﻿using StellarApi.Model.Users;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace StellarApi.RestApi.Auth
 {
@@ -11,7 +10,7 @@ namespace StellarApi.RestApi.Auth
         /// <summary>
         /// Gets or sets the authentication token.
         /// </summary>
-        public string Token { get; set; }
+        public string AccessToken { get; set; }
 
         /// <summary>
         /// Gets or sets the refresh token.
@@ -37,6 +36,6 @@ namespace StellarApi.RestApi.Auth
         /// <summary>
         /// Gets or sets the role of the user.
         /// </summary>
-        public Role Role { get; set; }
+        public string Role { get; set; }
     }
 }

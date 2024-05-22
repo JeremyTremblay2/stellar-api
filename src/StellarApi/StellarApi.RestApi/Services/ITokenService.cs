@@ -1,6 +1,5 @@
 ﻿using StellarApi.Model.Users;
 using System.Security.Claims;
-using System.Security.Cryptography;
 
 namespace StellarApi.RestApi.Auth
 {

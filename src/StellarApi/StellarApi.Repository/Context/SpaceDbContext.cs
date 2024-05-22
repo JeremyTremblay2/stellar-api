@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StellarApi.Entities;
-using StellarApi.Model.Space;
 
 namespace StellarApi.Repository.Context
 {

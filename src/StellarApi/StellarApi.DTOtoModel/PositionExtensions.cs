@@ -1,13 +1,11 @@
 ﻿using StellarApi.DTOs;
 using StellarApi.Model.Geometry;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StellarApi.DTOtoModel
 {
+    /// <summary>
+    /// Represents a way to transform <see cref="Position"/> objects into <see cref="PositionDTO"/> objects.
+    /// </summary>
     public static class PositionExtensions
     {
         /// <summary>

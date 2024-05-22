@@ -1,12 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
-using StellarApi.Infrastructure.Business;
+﻿using StellarApi.Infrastructure.Business;
 using StellarApi.Infrastructure.Repository;
 using StellarApi.Model.Users;
 
 namespace StellarApi.Business
 {
+    /// <summary>
+    /// Represents a service responsible for managing users.
+    /// </summary>
     public class UserService : IUserService
     {
+        /// <summary>
+        /// The repository used by this service.
+        /// </summary>
         private readonly IUserRepository _repository;
 
         /// <summary>

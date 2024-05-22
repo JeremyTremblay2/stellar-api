@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StellarApi.Model.Users
+﻿namespace StellarApi.Model.Users
 {
     /// <summary>
     /// Represents a role for a User in the application.

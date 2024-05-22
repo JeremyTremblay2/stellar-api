@@ -1,5 +1,4 @@
 using StellarApi.Model.Geometry;
-using System;
 using System.Globalization;
 using StellarApi.Helpers;
 

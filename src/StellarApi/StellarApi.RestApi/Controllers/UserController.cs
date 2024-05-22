@@ -4,11 +4,8 @@ using StellarApi.DTOs;
 using StellarApi.Infrastructure.Business;
 using StellarApi.DTOtoModel;
 using DTOtoModel;
-using StellarApi.Model.Space;
 using StellarApi.Model.Users;
 using StellarApi.RestApi.Auth;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 
 namespace StellarApi.RestApi.Controllers

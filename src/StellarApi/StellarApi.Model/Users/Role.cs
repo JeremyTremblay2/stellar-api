@@ -5,9 +5,9 @@
     /// </summary>
     public enum Role
     {
-        // The admin user is the most powerfull user.
-        Admin,
-        // The user is the simpliest role, it can do some things, but with limitations.
-        User
+        // The administrator user is the most powerfull user.
+        Administrator,
+        // The member is the simpliest role, it can do some things, but with limitations.
+        Member
     }
 }

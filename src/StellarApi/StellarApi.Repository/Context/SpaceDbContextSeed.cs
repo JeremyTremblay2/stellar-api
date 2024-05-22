@@ -87,9 +87,9 @@ namespace StellarApi.Repository.Context
                     Email = "stellar-api@example.com",
                     Username = "StellarApi",
                     Password = "admin",
-                    Role = "Admin",
-                    CreationDate = DateTime.Now,
-                    ModificationDate = DateTime.Now,
+                    Role = "Administrator",
+                    CreationDate = DateTime.Parse("08/18/2018 07:22:16"),
+                    ModificationDate = DateTime.Parse("08/18/2019 07:22:16"),
                 }
             );
 

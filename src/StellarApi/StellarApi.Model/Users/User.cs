@@ -50,6 +50,7 @@
         public User(string email, string username, string password, Role role)
         {
             CheckUserData(email, username, password);
+            Role = role;
             CreationDate = DateTime.Now;
             ModificationDate = DateTime.Now;
         }
@@ -140,29 +141,29 @@
         /// <param name="modificationDate">The modification date to be set.</param>
         /// <param name="creationDate">The creation date to be set.</param>
         /// <exception cref="ArgumentException">If the creation date is before the modification date or if the dates are in the future.</exception>
-        private void CheckDates(DateTime? modificationDate, DateTime? creationDate)
+        private void CheckDates(DateTime? creationDate, DateTime? modificationDate)
         {
             if (modificationDate.HasValue)
             {
-                if (modificationDate.Value > DateTime.UtcNow)
+                if (modificationDate.Value > DateTime.Now)
                     throw new ArgumentException("The modification date cannot be in the future.", nameof(modificationDate));
                 else if (creationDate.HasValue && modificationDate.Value < creationDate.Value)
                     throw new ArgumentException("The modification date cannot be before the creation date.", nameof(modificationDate));
                 ModificationDate = modificationDate.Value;
             }
             else
-                ModificationDate = DateTime.UtcNow;
+                ModificationDate = DateTime.Now;
 
             if (creationDate.HasValue)
             {
-                if (creationDate.Value > DateTime.UtcNow)
+                if (creationDate.Value > DateTime.Now)
                     throw new ArgumentException("The creation date cannot be in the future.", nameof(creationDate));
                 CreationDate = creationDate.Value;
             }
             else
             {
-                CreationDate = DateTime.UtcNow;
-                ModificationDate = DateTime.UtcNow;
+                CreationDate = DateTime.Now;
+                ModificationDate = DateTime.Now;
             }
         }
     }

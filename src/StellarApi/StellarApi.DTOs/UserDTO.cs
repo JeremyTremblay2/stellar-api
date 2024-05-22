@@ -1,4 +1,6 @@
-﻿namespace StellarApi.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace StellarApi.DTOs
 {
     /// <summary>
     /// Data transfer object for a user.
@@ -13,6 +15,7 @@
         /// <summary>
         /// Gets the email of the user.
         /// </summary>
+        [EmailAddress]
         public string Email { get; set; }
 
         /// <summary>
@@ -28,7 +31,7 @@
         /// <summary>
         /// Gets the role of the user.
         /// </summary>
-        public string Role { get; set; } 
+        public string Role { get; set; }
 
         /// <summary>
         /// Gets the creation date of the user.

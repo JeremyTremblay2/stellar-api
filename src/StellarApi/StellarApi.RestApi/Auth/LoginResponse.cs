@@ -1,4 +1,5 @@
 ﻿using StellarApi.Model.Users;
+using System.ComponentModel.DataAnnotations;
 
 namespace StellarApi.RestApi.Auth
 {
@@ -10,6 +11,7 @@ namespace StellarApi.RestApi.Auth
         /// <summary>
         /// Gets or sets the email of the user.
         /// </summary>
+        [EmailAddress]
         public string Email { get; set; }
 
         /// <summary>

@@ -14,7 +14,7 @@ namespace StellarApi.RestApi.Auth
         /// <summary>
         /// The expiration time of the token, in minutes.
         /// </summary>
-        private const int ExpirationMinutes = 3;
+        private const int ExpirationMinutes = 50;
 
         /// <summary>
         /// A logger used to store API calls.
@@ -58,7 +58,7 @@ namespace StellarApi.RestApi.Auth
         public Role GetUserRole(User user)
         {
             var adminUsername = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("SiteSettings")["AdminEmail"];
-            return user.Email == adminUsername ? Role.Admin : Role.User;
+            return user.Email == adminUsername ? Role.Administrator : Role.Member;
         }
 
         /// <summary>
@@ -123,5 +123,4 @@ namespace StellarApi.RestApi.Auth
             );
         }
     }
-}
 }

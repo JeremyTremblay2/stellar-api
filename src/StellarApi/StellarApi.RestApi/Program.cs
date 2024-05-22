@@ -75,6 +75,7 @@ public static partial class Program
         builder.Services.AddScoped<ICelestialObjectService, CelestialObjectService>();
         builder.Services.AddScoped<IUserService, UserService>();
 
+        builder.Services.AddScoped<IMapRepository, MapRepository>();
         builder.Services.AddScoped<ICelestialObjectRepository, CelestialObjectRepository>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
 

@@ -20,11 +20,18 @@ namespace StellarApi.RestApi.Controllers
         private readonly ICelestialObjectService _service;
 
         /// <summary>
+        /// Logger used to log information in the controller.
+        /// </summary>
+        private readonly ILogger<CelestialObjectController> _logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CelestialObjectController"/> class.
         /// </summary>
+        /// <param name="logger">The logger used to log information in the controller.</param>
         /// <param name="service">The service for managing celestial objects.</param>
-        public CelestialObjectController(ICelestialObjectService service)
+        public CelestialObjectController(ILogger<CelestialObjectController> logger, ICelestialObjectService service)
         {
+            _logger = logger;
             _service = service;
         }
 
@@ -37,6 +44,7 @@ namespace StellarApi.RestApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CelestialObjectDTO?>> GetCelestialObjectById(int id)
         {
+            _logger.LogInformation($"Retrieving celestial object n°{id}.");
             var result = await _service.GetCelestialObject(id);
             if (result == null)
             {

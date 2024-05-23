@@ -102,6 +102,15 @@ builder.Services.AddTransient<ICelestialObjectService, CelestialObjectService>()
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<ICelestialObjectRepository, CelestialObjectRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+
+builder.Logging.AddApplicationInsights(
+        configureTelemetryConfiguration: (config) =>
+            config.ConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"],
+            configureApplicationInsightsLoggerOptions: (options) => { }
+    );
+
+builder.Logging.AddFilter("", LogLevel.Trace);
 
 var app = builder.Build();
 

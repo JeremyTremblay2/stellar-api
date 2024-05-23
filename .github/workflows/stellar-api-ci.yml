@@ -5,6 +5,9 @@ name: Build, Test & deploy .NET API
 
 on:
   push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
   workflow_dispatch:
 
 env:
@@ -21,9 +24,11 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+        
     - name: Restore dependencies
       run: dotnet restore
       working-directory: ./src/StellarApi/
+      
     - name: Build
       run: dotnet build --no-restore
       working-directory: ./src/StellarApi/
@@ -34,27 +39,57 @@ jobs:
     
     steps:
     - uses: actions/checkout@v4
+    
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
-    - name: tree
-      run: tree
+
     - name: Restore dependencies
       run: dotnet restore
       working-directory: ./src/StellarApi/
+      
     - name: Build
       run: dotnet build --no-restore
       working-directory: ./src/StellarApi/
+      
     - name: Test
-      run: dotnet test --no-build --logger trx --results-directory "TestResults"
+      run: dotnet test --no-build --logger trx --results-directory "TestResults" --collect:"XPlat Code Coverage"
       working-directory: src/StellarApi/
+      
     - name: Upload dotnet Test results
       uses: actions/upload-artifact@v4
       with:
-        name: dotnet-results
+        name: test-results
         path: src/StellarApi/TestResults
       if: ${{ always() }}
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4.0.1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+
+  codecov:
+    name: Codecov
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+
+    - uses: actions/checkout@v4
+
+    - uses: actions/download-artifact@v4
+      with:
+        name: test-results
+        path: |
+          src/StellarApi/TestResults
+
+    - name: Upload to Codecov test reports
+      uses: codecov/codecov-action@v4
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        directory: src/StellarApi/TestResults
+        fail_ci_if_error: true
+        verbose: true
     
   deploy:
     if: github.ref == 'refs/heads/main'
@@ -66,27 +101,35 @@ jobs:
     
     steps:
     - uses: actions/checkout@v4
+    
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+        
     - name: Restore dependencies
       run: dotnet restore
       working-directory: ./src/StellarApi/
+      
     - name: Build
       run: dotnet build --no-restore
       working-directory: ./src/StellarApi/
+      
     - name: Create Docker Image
       run: dotnet publish src/StellarApi/StellarApi.RestApi/StellarApi.RestApi.csproj /t:PublishContainer -r linux-x64
+      
     - name: Change Image Tag
       run: docker tag stellar-api ${{ env.stellar_image }}
+      
     - name: Login to Docker Hub
       uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        
     - name: Docker Push
       run: docker push ${{ env.stellar_image }}
+      
     - name: Deploy to Azure Web App
       id: deploy-to-webapp
       uses: azure/webapps-deploy@v2
@@ -94,9 +137,10 @@ jobs:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         images: ${{ env.stellar_image }} 
+        
     - name: Trigger Azure WebHook
       run: |
         curl -X POST $WEBHOOK_URL
       env:
         WEBHOOK_URL: ${{ secrets.AZURE_WEBAPP_WEBHOOK_URL }}
-      shell: bash    
+      shell: bash

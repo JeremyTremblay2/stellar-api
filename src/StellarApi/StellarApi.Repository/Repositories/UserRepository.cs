@@ -18,7 +18,7 @@ namespace StellarApi.Repository.Repositories
         /// <returns>A boolean indicating whether the user was successfully added.</returns>
         public async Task<bool> AddUser(User user)
         {
-            SpaceDbContext context = new();
+            using SpaceDbContext context = new();
             if (context.Users is null) return false;
 
             await context.Users.AddAsync(user.ToEntity());
@@ -32,13 +32,21 @@ namespace StellarApi.Repository.Repositories
         /// <returns>A boolean indicating whether the user was successfully edited.</returns>
         public async Task<bool> EditUser(User user)
         {
-            SpaceDbContext context = new();
+            using SpaceDbContext context = new();
             if (context.Users is null) return false;
             var existingUser = await context.Users.FindAsync(user.Id);
             if (existingUser == null)
                 return false;
-            context.ChangeTracker.Clear();
-            context.Users.Update(user.ToEntity());
+            var entity = user.ToEntity();
+            existingUser.Email = entity.Email;
+            existingUser.Username = entity.Username;
+            existingUser.Password = entity.Password;
+            existingUser.Role = entity.Role;
+            existingUser.RefreshToken = entity.RefreshToken;
+            existingUser.RefreshTokenExpiryTime = entity.RefreshTokenExpiryTime;
+            existingUser.CreationDate = entity.CreationDate;
+            existingUser.ModificationDate = entity.ModificationDate;
+            context.Users.Update(existingUser);
             return await context.SaveChangesAsync() == 1;
         }
 
@@ -49,9 +57,22 @@ namespace StellarApi.Repository.Repositories
         /// <returns>The user with the specified ID, or null if not found.</returns>
         public async Task<User> GetUserById(int id)
         {
-            SpaceDbContext context = new();
+            using SpaceDbContext context = new();
             if (context.Users is null) return null;
             return (await context.Users.FindAsync(id)).ToModel();
+        }
+
+        /// <summary>
+        /// Retrieves a user by his email from the repository.
+        /// </summary>
+        /// <param name="email">The email of the user to retrieve.</param>
+        /// <returns>The user with the specified email, or null if not found.</returns>
+        public async Task<User?> GetUserByEmail(string email)
+        {
+            using SpaceDbContext context = new();
+            if (context.Users is null) return null;
+
+            return context.Users.FirstOrDefault(u => u.Email == email)?.ToModel();
         }
 
         /// <summary>
@@ -62,7 +83,7 @@ namespace StellarApi.Repository.Repositories
         /// <returns>A paged list of users.</returns>
         public async Task<IEnumerable<User>> GetUsers(int page, int pageSize)
         {
-            SpaceDbContext context = new();
+            using SpaceDbContext context = new();
             if (context.Users is null) return new List<User>();
             return (await context.Users
                 .Skip(page * pageSize)
@@ -78,7 +99,7 @@ namespace StellarApi.Repository.Repositories
         /// <returns>A boolean indicating whether the user was successfully removed.</returns>
         public async Task<bool> RemoveUser(int id)
         {
-            SpaceDbContext context = new();
+            using SpaceDbContext context = new();
             if (context.Users is null) return false;
             var user = await context.Users.FindAsync(id);
             if (user == null)

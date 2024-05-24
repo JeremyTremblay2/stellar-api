@@ -1,4 +1,7 @@
+using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Text;
+using StellarApi.Helpers;
 
 namespace StellarApi.Model.Space;
 
@@ -7,6 +10,8 @@ namespace StellarApi.Model.Space;
 /// </summary>
 public class Map : IEquatable<Map>, IComparable<Map>, IComparable
 {
+    private List<CelestialObject> celestialObjects = new();
+    
     /// <summary>
     /// The unique identifier of the map.
     /// </summary>
@@ -26,17 +31,17 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
     /// <summary>
     /// The celestial objects in the map.
     /// </summary>
-    public IList<CelestialObject> CelestialObjects { get; private set; }
+    public ReadOnlyCollection<CelestialObject> CelestialObjects { get; private set; }
 
     /// <summary>
     /// The creation date of the map.
     /// </summary>
-    public DateTime? CreationDate { get; private set; }
+    public DateTime CreationDate { get; private set; }
 
     /// <summary>
     /// The modification date of the map.
     /// </summary>
-    public DateTime? ModificationDate { get; private set; }
+    public DateTime ModificationDate { get; private set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Map"/> class with specified properties.
@@ -47,29 +52,30 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
     /// <param name="modificationDate">The last modification date of the map.</param>
     /// <exception cref="ArgumentNullException">Throw when the name of the object is null or empty.</exception>
     /// <exception cref="ArgumentException">Thrown when the <paramref name="modificationDate"/> is in the future or before the <paramref name="creationDate"/>.</exception>
-    public Map(string name, int id, DateTime? creationDate, DateTime? modificationDate)
+    public Map(int id, string name, DateTime? creationDate = null, DateTime? modificationDate = null)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentNullException(nameof(name), "The name of the object cannot be null or empty.");
 
-        if (modificationDate.HasValue)
-        {
-            if (modificationDate.Value > DateTime.UtcNow)
-                throw new ArgumentException("The modification date cannot be in the future.", nameof(modificationDate));
-            else if (creationDate.HasValue && modificationDate.Value < creationDate.Value)
-                throw new ArgumentException("The modification date cannot be before the creation date.",
-                    nameof(modificationDate));
-            ModificationDate = modificationDate.Value;
-        }
-        else
-            ModificationDate = DateTime.UtcNow;
+        (CreationDate, ModificationDate) = DateHelper.CheckDates(creationDate, modificationDate);
 
         Id = id;
         Name = name;
-        CelestialObjects = new List<CelestialObject>();
-        CreationDate = creationDate;
-        ModificationDate = modificationDate;
+        CelestialObjects = new ReadOnlyCollection<CelestialObject>(celestialObjects);
     }
+    
+    public Map(int id, string name, IEnumerable<CelestialObject> celestialObject, DateTime? creationDate = null, DateTime? modificationDate = null)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentNullException(nameof(name), "The name of the object cannot be null or empty.");
+
+        (CreationDate, ModificationDate) = DateHelper.CheckDates(creationDate, modificationDate);
+
+        Id = id;
+        Name = name;
+        CelestialObjects = new ReadOnlyCollection<CelestialObject>(celestialObjects);
+        celestialObjects.AddRange(celestialObject);
+    } 
 
     /// <inheritdoc/>
     public override int GetHashCode() => Id.GetHashCode();
@@ -120,7 +126,7 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
         if (CelestialObjects.Contains(celestialObject))
             return false;
 
-        CelestialObjects.Add(celestialObject);
+        celestialObjects.Add(celestialObject);
         return true;
     }
 
@@ -136,12 +142,21 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
         if (!CelestialObjects.Contains(celestialObject))
             return false;
 
-        return CelestialObjects.Remove(celestialObject);
+        return celestialObjects.Remove(celestialObject);
     }
 
     /// <inheritdoc/>
     public override string ToString()
     {
-        return $"{Id} - Map {Name}, Celestial Objects: {CelestialObjects.Count()}, CreationDate: {CreationDate}, ModificationDate: {ModificationDate}";
+        var builder = new StringBuilder();
+        builder.AppendLine($"Map: {Name}");
+        builder.AppendLine($"Creation Date: {CreationDate}");
+        builder.AppendLine($"Modification Date: {ModificationDate}");
+        builder.AppendLine("Celestial Objects:");
+        foreach (var celestialObject in CelestialObjects)
+        {
+            builder.AppendLine(celestialObject.ToString());
+        }
+        return builder.ToString();
     }
 }

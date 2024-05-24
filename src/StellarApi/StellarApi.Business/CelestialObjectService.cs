@@ -9,6 +9,9 @@ namespace StellarApi.Business
     /// </summary>
     public class CelestialObjectService : ICelestialObjectService
     {
+        /// <summary>
+        /// The repository used by this service.
+        /// </summary>
         private readonly ICelestialObjectRepository _repository;
 
         /// <summary>

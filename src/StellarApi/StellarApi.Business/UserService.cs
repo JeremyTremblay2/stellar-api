@@ -4,8 +4,14 @@ using StellarApi.Model.Users;
 
 namespace StellarApi.Business
 {
+    /// <summary>
+    /// Represents a service responsible for managing users.
+    /// </summary>
     public class UserService : IUserService
     {
+        /// <summary>
+        /// The repository used by this service.
+        /// </summary>
         private readonly IUserRepository _repository;
 
         /// <summary>
@@ -22,6 +28,12 @@ namespace StellarApi.Business
         {
             return await _repository.GetUserById(id);
         }
+
+        /// <inheritdoc/>
+        public async Task<User?> GetUserByEmail(string email)
+        {
+            return await _repository.GetUserByEmail(email);
+        }        
 
         /// <inheritdoc/>
         public async Task<IEnumerable<User>> GetUsers(int page, int pageSize)

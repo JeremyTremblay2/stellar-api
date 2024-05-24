@@ -10,7 +10,7 @@ public class Star : CelestialObject
     /// <summary>
     /// Gets or sets the brightness of the star.
     /// </summary>
-    public int Brightness { get; private set; }
+    public double Brightness { get; private set; }
 
     /// <summary>
     /// Gets or sets the type of the star.
@@ -20,17 +20,22 @@ public class Star : CelestialObject
     /// <summary>
     /// Initializes a new instance of the <see cref="Star"/> class with specified properties.
     /// </summary>
-    /// <param name="id"></param>
-    /// <param name="name"></param>
-    /// <param name="description"></param>
-    /// <param name="image"></param>
-    /// <param name="mass"></param>
-    /// <param name="temperature"></param>
-    /// <param name="radius"></param>
-    /// <param name="brightness"></param>
-    /// <param name="starType"></param>
-    public Star(int id, string name, string description, string image, Position? position, double mass, double temperature, double radius, DateTime? creationDate,
-        DateTime? modificationDate, int brightness, StarType starType) : base(id, name, description, image, position, mass, temperature, radius, creationDate, modificationDate)
+    /// <param name="id">The unique identifier of the star.</param>
+    /// <param name="name">The name of the star.</param>
+    /// <param name="description">The description of the star.</param>
+    /// <param name="image">The image of the star.</param>
+    /// <param name="position">The position of the star.</param>
+    /// <param name="mass">The mass of the star.</param>
+    /// <param name="temperature">The temperature of the star.</param>
+    /// <param name="radius">The radius of the star.</param>
+    /// <param name="brightness">The brightness of the star.</param>
+    /// <param name="starType">The type of the star.</param>
+    /// <param name="creationDate">The creation date of the star.</param>
+    /// <param name="modificationDate">The last modification date of the star.</param>
+    public Star(int id, string name, string description, string image, Position? position, double mass,
+        double temperature, double radius, double brightness, StarType starType, DateTime? creationDate = null,
+        DateTime? modificationDate = null) : base(id, name, description, image, position, mass, temperature, radius,
+        creationDate, modificationDate)
     {
         Brightness = brightness;
         StarType = starType;
@@ -38,5 +43,6 @@ public class Star : CelestialObject
 
     /// <inheritdoc/>
     public override string ToString()
-        => $"{Id} - Star {Name}, (Description: {Description}), Mass: {Mass}, Temperature: {Temperature}, Radius: {Radius}, Image: {Image}, CreationDate: {CreationDate}, ModificationDate: {ModificationDate}, Brightness: {Brightness}, StarType: {StarType}";
+        =>
+            $"{Id} - Star {Name}, (Description: {Description}), Mass: {Mass}, Temperature: {Temperature}, Radius: {Radius}, Image: {Image}, CreationDate: {CreationDate}, ModificationDate: {ModificationDate}, Brightness: {Brightness}, StarType: {StarType}";
 }

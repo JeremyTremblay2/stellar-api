@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace StellarApi.Entities
 {
@@ -12,6 +8,7 @@ namespace StellarApi.Entities
     /// Represents an entity for a user in a database.
     /// </summary>
     [Table("User")]
+    [Index(nameof(Email), IsUnique = true)]
     public class UserEntity
     {
         /// <summary>
@@ -42,6 +39,12 @@ namespace StellarApi.Entities
         public required string Password { get; set; }
 
         /// <summary>
+        /// Gets the role of the user.
+        /// </summary>
+        [Required(AllowEmptyStrings = false, ErrorMessage = "The role cannot be empty.")]
+        public required string Role { get; set; }
+
+        /// <summary>
         /// Gets the creation date of the user.
         /// </summary>
         [Required(AllowEmptyStrings = false, ErrorMessage = "The creation date cannot be empty.")]
@@ -52,5 +55,15 @@ namespace StellarApi.Entities
         /// </summary>
         [Required(AllowEmptyStrings = false, ErrorMessage = "The modification date cannot be empty.")]
         public required DateTime ModificationDate { get; set; }
+
+        /// <summary>
+        /// Gets the refresh token of the user.
+        /// </summary>
+        public string? RefreshToken { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets the expiry time of the refresh token.
+        /// </summary>
+        public DateTime RefreshTokenExpiryTime { get; set; }
     }
 }

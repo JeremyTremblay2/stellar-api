@@ -1,13 +1,13 @@
-﻿using StellarApi.Model.Geometry;
-using System;
+using StellarApi.Model.Geometry;
 using System.Globalization;
+using StellarApi.Helpers;
 
 namespace StellarApi.Model.Space
 {
     /// <summary>
     /// Represents a celestial object.
     /// </summary>
-    public class CelestialObject : IEquatable<CelestialObject>, IComparable<CelestialObject>, IComparable
+    public abstract class CelestialObject : IEquatable<CelestialObject>, IComparable<CelestialObject>, IComparable
     {
         /// <summary>
         /// Gets the unique identifier of the celestial object.
@@ -96,8 +96,8 @@ namespace StellarApi.Model.Space
             if (mass <= 0)
                 throw new ArgumentException("The mass of the object cannot be less than or equal to 0.", nameof(mass));
 
-            CheckDates(modificationDate, creationDate);
-            
+            (CreationDate, ModificationDate) = DateHelper.CheckDates(creationDate, modificationDate);
+
             Id = id;
             Name = name;
             Description = description;
@@ -148,38 +148,6 @@ namespace StellarApi.Model.Space
         public override string ToString()
         {
             return $"{Id} - {Name}, (Description: {Description}), Position: {Position}, Mass: {Mass}, Temperature: {Temperature}, Radius: {Radius}, Image: {Image}, CreationDate: {CreationDate}, ModificationDate: {ModificationDate}";
-        }
-
-        /// <summary>
-        /// Checks the dates and sets the creation and modification dates.
-        /// </summary>
-        /// <param name="modificationDate">The modification date to be set.</param>
-        /// <param name="creationDate">The creation date to be set.</param>
-        /// <exception cref="ArgumentException">If the creation date is before the modification date or if the dates are in the future.</exception>
-        private void CheckDates(DateTime? modificationDate, DateTime? creationDate)
-        {
-            if (modificationDate.HasValue)
-            {
-                if (modificationDate.Value > DateTime.UtcNow)
-                    throw new ArgumentException("The modification date cannot be in the future.", nameof(modificationDate));
-                else if (creationDate.HasValue && modificationDate.Value < creationDate.Value)
-                    throw new ArgumentException("The modification date cannot be before the creation date.", nameof(modificationDate));
-                ModificationDate = modificationDate.Value;
-            }
-            else
-                ModificationDate = DateTime.UtcNow;
-
-            if (creationDate.HasValue)
-            {
-                if (creationDate.Value > DateTime.UtcNow)
-                    throw new ArgumentException("The creation date cannot be in the future.", nameof(creationDate));
-                CreationDate = creationDate.Value;
-            }
-            else
-            {
-                CreationDate = DateTime.UtcNow;
-                ModificationDate = DateTime.UtcNow;
-            }
         }
     }
 }

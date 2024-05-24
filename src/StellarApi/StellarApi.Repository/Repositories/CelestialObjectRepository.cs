@@ -39,8 +39,22 @@ namespace StellarApi.Repository.Repositories
             if (existingCelestialObject == null)
                 return false;
             var entity = celestialObject.ToEntity();
-            entity.Id = id;
-            context.CelestialObjects.Update(entity);
+            existingCelestialObject.Name = entity.Name;
+            existingCelestialObject.Type = entity.Type;
+            existingCelestialObject.Mass = entity.Mass;
+            existingCelestialObject.Radius = entity.Radius;
+            existingCelestialObject.Temperature = entity.Temperature;
+            existingCelestialObject.Description = entity.Description;
+            existingCelestialObject.CreationDate = entity.CreationDate;
+            existingCelestialObject.ModificationDate = entity.ModificationDate;
+            existingCelestialObject.Image = entity.Image;
+            existingCelestialObject.Position = entity.Position;
+            existingCelestialObject.StarType = entity.StarType;
+            existingCelestialObject.PlanetType = entity.PlanetType;
+            existingCelestialObject.IsLife = entity.IsLife;
+            existingCelestialObject.IsWater = entity.IsWater;
+            existingCelestialObject.Brightness = entity.Brightness;
+            context.CelestialObjects.Update(existingCelestialObject);
             return await context.SaveChangesAsync() == 1;
         }
 

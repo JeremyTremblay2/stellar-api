@@ -5,9 +5,11 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    target-branch: "main"
   # Maintain dependencies for the nuget packages.
   - package-ecosystem: "nuget"
-    directory: "/src/"
+    directory: "/src/StellarApi"
     schedule:
       interval: "daily"
+    target-branch: "develop"
     open-pull-requests-limit: 25

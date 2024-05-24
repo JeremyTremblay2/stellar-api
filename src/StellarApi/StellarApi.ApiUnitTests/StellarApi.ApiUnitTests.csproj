@@ -11,9 +11,19 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
+    <PackageReference Include="Moq" Version="4.20.70" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.0.4" />
     <PackageReference Include="MSTest.TestFramework" Version="3.0.4" />
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StellarApi.Business\StellarApi.Business.csproj" />
+    <ProjectReference Include="..\StellarApi.Entities\StellarApi.Entities.csproj" />
+    <ProjectReference Include="..\StellarApi.Helpers\StellarApi.Helpers.csproj" />
+    <ProjectReference Include="..\StellarApi.Model\StellarApi.Model.csproj" />
+    <ProjectReference Include="..\StellarApi.Repository\StellarApi.Repository.csproj" />
+    <ProjectReference Include="..\StellarApi.RestApi\StellarApi.RestApi.csproj" />
   </ItemGroup>
 
 </Project>

@@ -14,7 +14,16 @@ namespace StellarApi.EntityToModel
         /// <param name="entity">The Entity to convert.</param>
         /// <returns>The new User object.</returns>
         public static User ToModel(this UserEntity? entity)
-            => entity is null ? null : new User(entity.Id, entity.Email, entity.Username, entity.Password, entity.CreationDate, entity.ModificationDate);
+        {
+            if (entity is null)
+                return null;
+
+            if (!Enum.TryParse(entity.Role, out Role role))
+                throw new ArgumentException("Invalid role value.");
+
+            return new User(entity.Id, entity.Email, entity.Username, entity.Password, role, entity.RefreshToken, 
+                entity.RefreshTokenExpiryTime, entity.CreationDate, entity.ModificationDate);
+        }
 
         /// <summary>
         /// Converts a <see cref="User"/> to a <see cref="UserEntity"/>.
@@ -28,6 +37,9 @@ namespace StellarApi.EntityToModel
                 Email = model.Email,
                 Username = model.Username,
                 Password = model.Password,
+                Role = model.Role.ToString(),
+                RefreshToken = model.RefreshToken,
+                RefreshTokenExpiryTime = model.RefreshTokenExpiryTime,
                 CreationDate = model.CreationDate,
                 ModificationDate = model.ModificationDate
             };

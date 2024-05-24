@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StellarApi.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StellarApi.Repository.Context
 {
@@ -33,7 +28,7 @@ namespace StellarApi.Repository.Context
             var position1 = new PositionEntity { X = 493, Y = 224, Z = 359 };
             var position2 = new PositionEntity { X = 142, Y = 23, Z = 98 };
             var position3 = new PositionEntity { };
-            modelBuilder.Entity<CelestialObjectEntity>().HasData(
+            /*modelBuilder.Entity<CelestialObjectEntity>().HasData(
                 new CelestialObjectEntity
                 {
                     Id = 1,
@@ -82,6 +77,19 @@ namespace StellarApi.Repository.Context
                     IsWater = false,
                     IsLife = false,
                     PlanetType = "Undefined"
+                }
+            );*/
+
+            modelBuilder.Entity<UserEntity>().HasData(
+                new UserEntity
+                {
+                    Id = 1,
+                    Email = "stellar-api@example.com",
+                    Username = "StellarApi",
+                    Password = "admin",
+                    Role = "Administrator",
+                    CreationDate = DateTime.Parse("08/18/2018 07:22:16"),
+                    ModificationDate = DateTime.Parse("08/18/2019 07:22:16"),
                 }
             );
 

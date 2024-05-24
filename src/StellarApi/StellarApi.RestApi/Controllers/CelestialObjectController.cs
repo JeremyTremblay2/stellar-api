@@ -4,7 +4,7 @@ using StellarApi.DTOs;
 using StellarApi.Infrastructure.Business;
 using StellarApi.Model.Space;
 using StellarApi.DTOtoModel;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StellarApi.RestApi.Controllers
 {
@@ -14,6 +14,7 @@ namespace StellarApi.RestApi.Controllers
     [ApiController]
     [ApiVersion(1)]
     [Route("api/v{v:apiVersion}/celestial-objects/")]
+    [Authorize(Roles = "Member, Administrator")]
     public class CelestialObjectController : ControllerBase
     {
         private readonly ICelestialObjectService _service;

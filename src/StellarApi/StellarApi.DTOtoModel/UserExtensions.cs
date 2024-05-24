@@ -14,7 +14,15 @@ namespace DTOtoModel
         /// <param name="dto">The DTO to transform.</param>
         /// <returns>The new User object.</returns>
         public static User ToModel(this UserDTO? dto)
-            => dto is null ? null : new User(dto.Id, dto.Email, dto.Username, dto.Password, dto.CreationDate, dto.ModificationDate);
+        {
+            if (dto is null)
+                return null;
+
+            if (!Enum.TryParse(dto.Role, out Role role))
+                throw new ArgumentException("Invalid role value.");
+
+            return new User(dto.Id, dto.Email, dto.Username, dto.Password, role, dto.RefreshToken, dto.RefreshTokenExpiryTime, dto.CreationDate, dto.ModificationDate);
+        }
 
         /// <summary>
         /// Converts a <see cref="User"/> to a <see cref="UserDTO"/>.
@@ -22,7 +30,13 @@ namespace DTOtoModel
         /// <param name="model">The User to transform.</param>
         /// <returns>The new DTO User object.</returns>
         public static UserDTO ToDTO(this User? model)
-            => model is null ? null : new UserDTO(model.Id, model.Email, model.Username, model.Password, model.CreationDate, model.ModificationDate);
+        {
+            if (model is null)
+                return null;
+
+            return new UserDTO(model.Id, model.Email, model.Username, model.Password, model.Role.ToString(), model.RefreshToken, 
+                model.RefreshTokenExpiryTime, model.CreationDate, model.ModificationDate);
+        }
 
         /// <summary>
         /// Converts a collection of <see cref="UserDTO"/> to a collection of <see cref="User"/>.

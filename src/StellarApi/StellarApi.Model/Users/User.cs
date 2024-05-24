@@ -1,12 +1,4 @@
-﻿using StellarApi.Model.Space;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-
-namespace StellarApi.Model.Users
+﻿namespace StellarApi.Model.Users
 {
     /// <summary>
     /// Represents a user with an email, a name, a password and date information about the account.
@@ -34,6 +26,11 @@ namespace StellarApi.Model.Users
         public string Password { get; private set; }
 
         /// <summary>
+        /// Gets the user's role.
+        /// </summary>
+        public Role Role { get; private set; }
+
+        /// <summary>
         /// Gets the creation date of the user.
         /// </summary>
         public DateTime CreationDate { get; private set; }
@@ -44,14 +41,26 @@ namespace StellarApi.Model.Users
         public DateTime ModificationDate { get; private set; }
 
         /// <summary>
+        /// The refresh token of the user.
+        /// </summary>
+        public string? RefreshToken { get; set; }
+
+        /// <summary>
+        /// The expiry time of the refresh token.
+        /// </summary>
+        public DateTime RefreshTokenExpiryTime { get; set; }
+
+        /// <summary>
         /// Creates a new instance of the <see cref="User"/> class.
         /// </summary>
         /// <param name="email">The email address of the user.</param>
         /// <param name="username">The username of the user.</param>
         /// <param name="password">The password of the user.</param>
-        public User(string email, string username, string password)
+        /// <param name="role">The role of the user.</param>
+        public User(string email, string username, string password, Role role)
         {
             CheckUserData(email, username, password);
+            Role = role;
             CreationDate = DateTime.Now;
             ModificationDate = DateTime.Now;
         }
@@ -63,11 +72,16 @@ namespace StellarApi.Model.Users
         /// <param name="email">The email address of the user.</param>
         /// <param name="username">The username of the user.</param>
         /// <param name="password">The password of the user.</param>
+        /// <param name="role">The role of the user.</param>
         /// <param name="creationDate">The creation date of the user.</param>
         /// <param name="modificationDate">The modification date of the user.</param>
-        public User(int id, string email, string username, string password, DateTime? creationDate = null, DateTime? modificationDate = null)
+        public User(int id, string email, string username, string password, Role role, string refreshToken, 
+            DateTime refreshTokenExpiryTime, DateTime? creationDate = null, DateTime? modificationDate = null)
         {
             Id = id;
+            Role = role;
+            RefreshToken = refreshToken;
+            RefreshTokenExpiryTime = refreshTokenExpiryTime;
             CheckUserData(email, username, password);
             CheckDates(creationDate, modificationDate);
         }
@@ -109,7 +123,7 @@ namespace StellarApi.Model.Users
 
         /// <inheritdoc/>
         public override string? ToString()
-            => $"{Id} - {Username}, (Email: {Email}), CreationDate: {CreationDate}, ModificationDate: {ModificationDate}";
+            => $"{Id} - {Username} - {Role}, (Email: {Email}), CreationDate: {CreationDate}, ModificationDate: {ModificationDate}";
 
         /// <summary>
         /// Checks the user data and sets the email, username and password.
@@ -140,29 +154,29 @@ namespace StellarApi.Model.Users
         /// <param name="modificationDate">The modification date to be set.</param>
         /// <param name="creationDate">The creation date to be set.</param>
         /// <exception cref="ArgumentException">If the creation date is before the modification date or if the dates are in the future.</exception>
-        private void CheckDates(DateTime? modificationDate, DateTime? creationDate)
+        private void CheckDates(DateTime? creationDate, DateTime? modificationDate)
         {
             if (modificationDate.HasValue)
             {
-                if (modificationDate.Value > DateTime.UtcNow)
+                if (modificationDate.Value > DateTime.Now)
                     throw new ArgumentException("The modification date cannot be in the future.", nameof(modificationDate));
                 else if (creationDate.HasValue && modificationDate.Value < creationDate.Value)
                     throw new ArgumentException("The modification date cannot be before the creation date.", nameof(modificationDate));
                 ModificationDate = modificationDate.Value;
             }
             else
-                ModificationDate = DateTime.UtcNow;
+                ModificationDate = DateTime.Now;
 
             if (creationDate.HasValue)
             {
-                if (creationDate.Value > DateTime.UtcNow)
+                if (creationDate.Value > DateTime.Now)
                     throw new ArgumentException("The creation date cannot be in the future.", nameof(creationDate));
                 CreationDate = creationDate.Value;
             }
             else
             {
-                CreationDate = DateTime.UtcNow;
-                ModificationDate = DateTime.UtcNow;
+                CreationDate = DateTime.Now;
+                ModificationDate = DateTime.Now;
             }
         }
     }

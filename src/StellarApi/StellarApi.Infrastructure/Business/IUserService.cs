@@ -15,6 +15,13 @@ namespace StellarApi.Infrastructure.Business
         Task<User> GetUserById(int id);
 
         /// <summary>
+        /// Gets a user by its email.
+        /// </summary>
+        /// <param name="email">The user's mail.</param>
+        /// <returns>The corresponding user.</returns>
+        public Task<User?> GetUserByEmail(string email);
+
+        /// <summary>
         /// Gets a list of users depending on the page and the page size.
         /// </summary>
         /// <param name="page">The page of the user search.</param>

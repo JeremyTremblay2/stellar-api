@@ -38,7 +38,7 @@ public enum StarType
     /// </summary>
     NeutronStar,
     /// <summary>
-    /// Bl
+    /// A blackhole is a region of spacetime where gravity is so strong that nothing can escape from it.
     /// </summary>
     BlackHole,
     /// <summary>

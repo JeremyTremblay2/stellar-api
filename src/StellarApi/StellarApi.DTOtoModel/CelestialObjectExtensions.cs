@@ -6,7 +6,7 @@ using StellarApi.Helpers;
 namespace StellarApi.DTOtoModel
 {
     /// <summary>
-    /// Extension methods for converting between CelestialObject and CelestialObjectDTO.
+    /// Extension methods for converting between <see cref="CelestialObject"/> and <see cref="CelestialObjectDTO"/>.
     /// </summary>
     public static class CelestialObjectExtensions
     {

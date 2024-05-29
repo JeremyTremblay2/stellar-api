@@ -15,7 +15,6 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers()
 .AddJsonOptions(opt =>
 {
@@ -93,17 +92,22 @@ builder.Services.AddAuthentication(options => {
         };
     });
 
-builder.Services.AddDbContext<SpaceDbContextSeed>(options => 
+builder.Services.AddDbContext<SpaceDbContextSeed>(options =>
     options.UseSqlite(builder.Configuration["ConnectionStrings:DatabaseLocalPath"])
 );
 
+builder.Services.AddScoped<SpaceDbContext, SpaceDbContextSeed>();
+
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddTransient<ICelestialObjectService, CelestialObjectService>();
-builder.Services.AddTransient<IUserService, UserService>();
-builder.Services.AddTransient<ICelestialObjectRepository, CelestialObjectRepository>();
-builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICelestialObjectService, CelestialObjectService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddScoped<ICelestialObjectRepository, CelestialObjectRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 
+// Logging.
 builder.Logging.AddApplicationInsights(
         configureTelemetryConfiguration: (config) =>
             config.ConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"],

@@ -19,7 +19,7 @@ namespace StellarApi.ApiUnitTests
             var mockSet = new Mock<DbSet<CelestialObjectEntity>>();
             var mockContext = new Mock<SpaceDbContext>();
 
-            var repository = new CelestialObjectRepository();
+            //var repository = new CelestialObjectRepository();
 
             // Act
             /*var result = await repository.AddCelestialObject(celestialObject);

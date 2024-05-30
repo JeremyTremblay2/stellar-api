@@ -39,7 +39,7 @@ namespace StellarApi.Model.Space
         /// <summary>
         /// Gets or sets the image path of the celestial object.
         /// </summary>
-        public string Image { get; set; }
+        public string? Image { get; set; }
 
         /// <summary>
         /// Gets or sets the position of the celestial object.
@@ -84,7 +84,7 @@ namespace StellarApi.Model.Space
         /// <param name="radius">The radius of the celestial object.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="name"/> is null or empty.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="radius"/> or <paramref name="mass"/> is less than or equal to 0 or when <paramref name="creationDate"/> or <paramref name="modificationDate"/> is in the future or invalid.</exception>
-        public CelestialObject(int id, string name, string description, string image, Position? position, double mass, 
+        public CelestialObject(int id, string name, string description, string? image, Position? position, double mass, 
             double temperature, double radius, DateTime? creationDate = null, DateTime? modificationDate = null)
         {
             if (string.IsNullOrWhiteSpace(name))

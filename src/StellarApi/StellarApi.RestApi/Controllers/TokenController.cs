@@ -43,7 +43,7 @@ namespace StellarApi.RestApi.Controllers
         /// <returns>A new set of tokens for the user.</returns>
         [HttpPost]
         [Route("refresh")]
-        public async Task<ActionResult<LoginResponse>> Refresh(ApiTokenRequest apiTokenRequest)
+        public async Task<ActionResult<LoginResponse>> Refresh([FromBody] ApiTokenRequest apiTokenRequest)
         {
             if (apiTokenRequest is null)
                 return BadRequest("Invalid client request");

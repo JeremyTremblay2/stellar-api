@@ -1,12 +1,12 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
-using StellarApi.DTOs;
 using StellarApi.Infrastructure.Business;
 using StellarApi.DTOtoModel;
 using DTOtoModel;
 using StellarApi.Model.Users;
 using StellarApi.RestApi.Auth;
 using Microsoft.AspNetCore.Authorization;
+using StellarApi.DTOs.Users;
 
 namespace StellarApi.RestApi.Controllers
 {
@@ -52,7 +52,7 @@ namespace StellarApi.RestApi.Controllers
         [MapToApiVersion(1)]
         [HttpPost]
         [Route("register")]
-        public async Task<ActionResult<UserDTO>> PostUser([FromBody] RegistrationRequest request)
+        public async Task<ActionResult> PostUser([FromBody] RegistrationRequest request)
         {
             User? userObject = null;
             try
@@ -137,7 +137,7 @@ namespace StellarApi.RestApi.Controllers
         [MapToApiVersion(1)]
         [HttpGet("{id}")]
         [Authorize(Roles = "Member, Administrator")]
-        public async Task<ActionResult<UserDTO?>> GetUserById(int id)
+        public async Task<ActionResult<UserOutput?>> GetUserById(int id)
         {
             var result = await _service.GetUserById(id);
             if (result == null)
@@ -156,7 +156,7 @@ namespace StellarApi.RestApi.Controllers
         [MapToApiVersion(1)]
         [HttpGet]
         [Authorize(Roles = "Administrator")]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers(int page, int pageSize)
+        public async Task<ActionResult<IEnumerable<UserOutput>>> GetUsers(int page, int pageSize)
         {
             var users = (await _service.GetUsers(page, pageSize)).ToDTO();
             return Ok(users);
@@ -170,7 +170,8 @@ namespace StellarApi.RestApi.Controllers
         [MapToApiVersion(1)]
         [HttpPut]
         [Authorize(Roles = "Member, Administrator")]
-        public async Task<ActionResult<bool>> PutUser([FromBody] UserDTO user)
+        [Route("edit")]
+        public async Task<ActionResult> PutUser([FromBody] UserInput user)
         {
             User? userObject = null;
             try
@@ -205,7 +206,8 @@ namespace StellarApi.RestApi.Controllers
         [MapToApiVersion(1)]
         [HttpDelete]
         [Authorize(Roles = "Administrator")]
-        public async Task<ActionResult<bool>> DeleteUser(int id)
+        [Route("remove")]
+        public async Task<ActionResult> DeleteUser(int id)
         {
             if (await _service.DeleteUser(id))
             {

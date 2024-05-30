@@ -64,6 +64,6 @@ namespace StellarApi.Entities
         /// <summary>
         /// Gets the expiry time of the refresh token.
         /// </summary>
-        public DateTime RefreshTokenExpiryTime { get; set; }
+        public DateTime? RefreshTokenExpiryTime { get; set; }
     }
 }

@@ -1,9 +1,11 @@
-﻿namespace StellarApi.DTOs
+﻿using StellarApi.DTOs.Geometry;
+
+namespace StellarApi.DTOs.Space
 {
     /// <summary>
-    /// Represents a Data Transfer Object (DTO) for a celestial object, including its properties.
+    /// Represents a Data Transfer Object (DTO) for a celestial object in output (all data), including its properties.
     /// </summary>
-    public class CelestialObjectDTO
+    public class CelestialObjectOutput
     {
         /// <summary>
         /// Gets or sets the unique identifier of the celestial object.
@@ -13,12 +15,12 @@
         /// <summary>
         /// Gets or sets the name of the celestial object.
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the description of the celestial object.
         /// </summary>
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the mass of the celestial object.
@@ -43,17 +45,17 @@
         /// <summary>
         /// Gets or sets the position of the celestial object.
         /// </summary>
-        public PositionDTO? Position { get; set; }
+        public Position? Position { get; set; }
 
         /// <summary>
         /// Gets or sets the creation date of the celestial object.
         /// </summary>
-        public DateTime? CreationDate { get; set; }
+        public DateTime CreationDate { get; set; }
 
         /// <summary>
         /// Gets or sets the last modification date of the celestial object.
         /// </summary>
-        public DateTime? ModificationDate { get; set; }
+        public DateTime ModificationDate { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the celestial object.
@@ -86,14 +88,14 @@
         public double? Brightness { get; set; }
 
         /// <summary>
-        /// Creates a new instance of the <see cref="CelestialObjectDTO"/> class.
+        /// Creates a new instance of the <see cref="CelestialObjectOutput"/> class.
         /// </summary>
-        public CelestialObjectDTO()
+        public CelestialObjectOutput()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CelestialObjectDTO"/> class with specified properties.
+        /// Initializes a new instance of the <see cref="CelestialObjectOutput"/> class with specified properties.
         /// </summary>
         /// <param name="id">The unique identifier of the celestial object.</param>
         /// <param name="name">The name of the celestial object.</param>
@@ -109,8 +111,8 @@
         /// <param name="isLife">The possibility of life on the celestial object.</param>
         /// <param name="starType">The type of the star.</param>
         /// <param name="brightness">The brightness of the celestial object.</param>
-        public CelestialObjectDTO(int id, string name, string description, PositionDTO? position, double mass, double temperature, double radius, 
-            string image, DateTime creationDate, DateTime modificationDate, string type, string? planetType = null, bool? isWater = null, 
+        public CelestialObjectOutput(int id, string name, string description, Position? position, double mass, double temperature, double radius,
+            string image, DateTime creationDate, DateTime modificationDate, string type, string? planetType = null, bool? isWater = null,
             bool? isLife = null, string? starType = null, double? brightness = null)
         {
             Id = id;

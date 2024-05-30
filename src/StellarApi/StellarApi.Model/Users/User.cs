@@ -48,7 +48,7 @@
         /// <summary>
         /// The expiry time of the refresh token.
         /// </summary>
-        public DateTime RefreshTokenExpiryTime { get; set; }
+        public DateTime? RefreshTokenExpiryTime { get; set; }
 
         /// <summary>
         /// Creates a new instance of the <see cref="User"/> class.
@@ -75,8 +75,8 @@
         /// <param name="role">The role of the user.</param>
         /// <param name="creationDate">The creation date of the user.</param>
         /// <param name="modificationDate">The modification date of the user.</param>
-        public User(int id, string email, string username, string password, Role role, string refreshToken, 
-            DateTime refreshTokenExpiryTime, DateTime? creationDate = null, DateTime? modificationDate = null)
+        public User(int id, string email, string username, string password, Role role, string? refreshToken = null, 
+            DateTime? refreshTokenExpiryTime = null, DateTime? creationDate = null, DateTime? modificationDate = null)
         {
             Id = id;
             Role = role;

@@ -118,7 +118,10 @@ jobs:
       working-directory: ./src/StellarApi/
 
     - name: Migrate Database
-      run: dotnet ef --startup-project ./StellarApi.RestApi/ --project ./StellarApi.Repository/ Migrations add Init --context SpaceDbContextSeed
+      run: |
+        dotnet tool install --global dotnet-ef
+        dotnet tool restore
+        dotnet ef --startup-project ./StellarApi.RestApi/ --project ./StellarApi.Repository/ Migrations add Init --context SpaceDbContextSeed
       working-directory: ./src/StellarApi/
 
     - name: Update Database

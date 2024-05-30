@@ -41,14 +41,6 @@ namespace StellarApi.Model.Space
         /// <exception cref="ArgumentException">Thrown when the <paramref name="title"/> or <paramref name="image"/> is null or empty.</exception>
         public SpaceImage(string title, string description, string image, DateTime shootingDate, int id)
         {
-
-            if (string.IsNullOrWhiteSpace(title))
-                throw new ArgumentNullException(nameof(title), "The name of the object cannot be null or empty.");
-
-            if (string.IsNullOrWhiteSpace(image))
-                throw new ArgumentNullException(nameof(image), "The image url of the object cannot be null or empty.");
-
-
             Title = title;
             Description = description;
             Image = image;

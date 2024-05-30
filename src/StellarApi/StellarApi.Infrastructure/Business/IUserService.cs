@@ -12,7 +12,7 @@ namespace StellarApi.Infrastructure.Business
         /// </summary>
         /// <param name="id">The unique identifier of the user.</param>
         /// <returns>A task that represents the asynchronous operation and the user with the specified unique identifier.</returns>
-        Task<User> GetUserById(int id);
+        Task<User?> GetUserById(int id);
 
         /// <summary>
         /// Gets a user by its email.
@@ -40,8 +40,9 @@ namespace StellarApi.Infrastructure.Business
         /// Updates an existing user.
         /// </summary>
         /// <param name="user">The user to update.</param>
+        /// <param name="shouldUpdateModificationDate">A boolean indicating whether the modification date should be updated.</param>
         /// <returns>A task that represents the asynchronous operation and true if the user was successfully updated, false otherwise.</returns>
-        Task<bool> PutUser(User user);
+        Task<bool> PutUser(User user, bool shouldUpdateModificationDate);
 
         /// <summary>
         /// Deletes a user.

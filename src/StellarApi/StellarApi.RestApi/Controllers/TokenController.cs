@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StellarApi.Infrastructure.Business;
+using StellarApi.Model.Users;
+using StellarApi.Repository.Exceptions;
 using StellarApi.RestApi.Auth;
 using System.Security.Claims;
 
@@ -46,46 +48,74 @@ namespace StellarApi.RestApi.Controllers
         public async Task<ActionResult<LoginResponse>> Refresh([FromBody] ApiTokenRequest apiTokenRequest)
         {
             if (apiTokenRequest is null)
-                return BadRequest("Invalid client request");
+            {
+                return BadRequest("Invalid client request.");
+            }
 
-            var principal = _tokenService.GetPrincipalFromExpiredToken(apiTokenRequest.AccessToken);
-            var emailClaim = principal.FindFirstValue(ClaimTypes.Email);
-            if (emailClaim is null)
-                return StatusCode(500, "An unknow error occurred while processing the request.");
-
-            var user = await _service.GetUserByEmail(emailClaim);
-
-            if (user is null)
-                return StatusCode(500, "An unknown error occurred while processing the request.");
-
-            if (user.RefreshToken != apiTokenRequest.RefreshToken)
-                return Unauthorized("Invalid refresh token");
-
-            if (user.RefreshTokenExpiryTime <= DateTime.Now)
-                return Unauthorized("Refresh token has expired");
-
-            var newAccessToken = _tokenService.GenerateAccessToken(user);
-            var newRefreshToken = _tokenService.GenerateRefreshToken();
-            user.RefreshToken = newRefreshToken;
+            User? user;
 
             try
             {
-                await _service.PutUser(user);
+                var principal = _tokenService.GetPrincipalFromExpiredToken(apiTokenRequest.AccessToken);
+                var emailClaim = principal.FindFirstValue(ClaimTypes.Email);
+                if (emailClaim is null)
+                {
+                    return StatusCode(500, "An unknow error occurred while processing the request. Check that you are still connected to the application and retry.");
+                }
+
+                user = await _service.GetUserByEmail(emailClaim);
+                if (user is null)
+                {
+                    return StatusCode(500, "An unknown error occurred while processing the request and getting your information.");
+                }
+            }
+            catch (UnavailableDatabaseException ex)
+            {
+                return StatusCode(503, ex.Message);
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "An unknown error occurred during the generation of a new token. Please retry.");
+                return StatusCode(500, "An unknown error occurred while getting the user's information.");
             }
 
-            return Ok(new LoginResponse
+            if (user.RefreshToken != apiTokenRequest.RefreshToken)
             {
-                AccessToken = newAccessToken,
-                RefreshToken = newRefreshToken,
-                RefreshTokenExpirationTime = user.RefreshTokenExpiryTime,
-                Email = user.Email,
-                Username = user.Username,
-                Role = user.Role.ToString()
-            });
+                return Unauthorized("The refresh token provided is invalid.");
+            }
+
+            if (user.RefreshTokenExpiryTime <= DateTime.Now)
+            {
+                return Unauthorized("The refresh token provided has expired.");
+            }
+
+            try
+            {
+                var newAccessToken = _tokenService.GenerateAccessToken(user);
+                var newRefreshToken = _tokenService.GenerateRefreshToken();
+                user.RefreshToken = newRefreshToken;
+                var wasEdited = await _service.PutUser(user, false);
+                if (!wasEdited)
+                {
+                    return StatusCode(500, "An unknown error occurred while revoking your user privileges.");
+                }
+                return Ok(new LoginResponse
+                {
+                    AccessToken = newAccessToken,
+                    RefreshToken = newRefreshToken,
+                    RefreshTokenExpirationTime = user.RefreshTokenExpiryTime,
+                    Email = user.Email,
+                    Username = user.Username,
+                    Role = user.Role.ToString()
+                });
+            }
+            catch (UnavailableDatabaseException ex)
+            {
+                return StatusCode(503, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "An unexpected error occurred while revoking your user privileges.", Details = ex.Message });
+            }
         }
 
         /// <summary>
@@ -99,20 +129,48 @@ namespace StellarApi.RestApi.Controllers
         {
             var emailClaim = User.FindFirstValue(ClaimTypes.Email);
             if (emailClaim is null)
-                return StatusCode(500, "An unknow error occurred while processing the request.");
-            var user = await _service.GetUserByEmail(emailClaim);
-            if (user == null) return BadRequest();
+            {
+                return StatusCode(500, "An unknow error occurred while processing the request. Check that you are still connected to the application and retry.");
+            }
 
-            user.RefreshToken = null;
+            User? user;
+
             try
             {
-                await _service.PutUser(user);
+                user = await _service.GetUserByEmail(emailClaim);
+                if (user is null)
+                {
+                    return StatusCode(500, "An unknown error occurred while processing the request and getting your information.");
+                }
+            }
+            catch (UnavailableDatabaseException ex)
+            {
+                return StatusCode(503, ex.Message);
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "An unknown error occurred during the generation of a new token. Please retry.");
+                return StatusCode(500, "An unknown error occurred while getting the user's information.");
             }
-            return NoContent();
+
+            try
+            {
+                user.RefreshToken = null;
+                user.RefreshTokenExpiryTime = null;
+                var wasEdited = await _service.PutUser(user, false);
+                if (!wasEdited)
+                {
+                    return StatusCode(500, "An unknown error occurred while revoking your user privileges.");
+                }
+                return NoContent();
+            }
+            catch (UnavailableDatabaseException ex)
+            {
+                return StatusCode(503, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "An unexpected error occurred while revoking your user privileges.", Details = ex.Message });
+            }
         }
     }
 }

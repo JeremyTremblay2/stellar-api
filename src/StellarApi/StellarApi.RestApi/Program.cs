@@ -162,11 +162,13 @@ public static partial class Program
         }
         else
         {
-            builder.Logging.AddApplicationInsights(
+            builder.Logging.AddConsole();
+            builder.Logging.AddDebug();
+            /*builder.Logging.AddApplicationInsights(
             configureTelemetryConfiguration: (config) =>
                 config.ConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"],
                 configureApplicationInsightsLoggerOptions: (options) => { }
-            );
+            );*/
         }
 
         builder.Logging.AddFilter("", LogLevel.Trace);

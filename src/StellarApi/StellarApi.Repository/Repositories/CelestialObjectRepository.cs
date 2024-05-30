@@ -57,7 +57,6 @@ namespace StellarApi.Repository.Repositories
             existingCelestialObject.Radius = entity.Radius;
             existingCelestialObject.Temperature = entity.Temperature;
             existingCelestialObject.Description = entity.Description;
-            existingCelestialObject.CreationDate = entity.CreationDate;
             existingCelestialObject.ModificationDate = entity.ModificationDate;
             existingCelestialObject.Image = entity.Image;
             existingCelestialObject.Position = entity.Position;

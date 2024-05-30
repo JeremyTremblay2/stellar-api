@@ -15,7 +15,7 @@ namespace StellarApi.RestApi.Auth
         /// <summary>
         /// The expiration time of the token, in minutes.
         /// </summary>
-        private const int ExpirationMinutes = 1;
+        private const int ExpirationMinutes = 30;
 
         /// <summary>
         /// A logger used to store API calls.

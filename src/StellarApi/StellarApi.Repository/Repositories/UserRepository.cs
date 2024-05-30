@@ -53,10 +53,8 @@ namespace StellarApi.Repository.Repositories
             existingUser.Email = entity.Email;
             existingUser.Username = entity.Username;
             existingUser.Password = entity.Password;
-            existingUser.Role = entity.Role;
             existingUser.RefreshToken = entity.RefreshToken;
             existingUser.RefreshTokenExpiryTime = entity.RefreshTokenExpiryTime;
-            existingUser.CreationDate = entity.CreationDate;
             existingUser.ModificationDate = entity.ModificationDate;
             _context.Users.Update(existingUser);
             return await _context.SaveChangesAsync() == 1;

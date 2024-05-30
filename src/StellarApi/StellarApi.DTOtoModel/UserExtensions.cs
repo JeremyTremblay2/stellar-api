@@ -31,8 +31,7 @@ namespace DTOtoModel
             if (model is null)
                 return null;
 
-            return new UserOutput(model.Id, model.Email, model.Username, model.Role.ToString(), model.RefreshToken, 
-                model.RefreshTokenExpiryTime, model.CreationDate, model.ModificationDate);
+            return new UserOutput(model.Id, model.Email, model.Username, model.Role.ToString(), model.CreationDate, model.ModificationDate);
         }
 
         /// <summary>

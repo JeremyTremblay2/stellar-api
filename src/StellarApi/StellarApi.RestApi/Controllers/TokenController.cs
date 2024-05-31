@@ -60,22 +60,22 @@ namespace StellarApi.RestApi.Controllers
                 var emailClaim = principal.FindFirstValue(ClaimTypes.Email);
                 if (emailClaim is null)
                 {
-                    return StatusCode(500, "An unknow error occurred while processing the request. Check that you are still connected to the application and retry.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "An unknow error occurred while processing the request. Check that you are still connected to the application and retry.");
                 }
 
                 user = await _service.GetUserByEmail(emailClaim);
                 if (user is null)
                 {
-                    return StatusCode(500, "An unknown error occurred while processing the request and getting your information.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "An unknown error occurred while processing the request and getting your information.");
                 }
             }
             catch (UnavailableDatabaseException ex)
             {
-                return StatusCode(503, ex.Message);
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
             }
             catch (Exception)
             {
-                return StatusCode(500, "An unknown error occurred while getting the user's information.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "An unknown error occurred while getting the user's information.");
             }
 
             if (user.RefreshToken != apiTokenRequest.RefreshToken)
@@ -96,7 +96,7 @@ namespace StellarApi.RestApi.Controllers
                 var wasEdited = await _service.PutUser(user, false);
                 if (!wasEdited)
                 {
-                    return StatusCode(500, "An unknown error occurred while revoking your user privileges.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "An unknown error occurred while revoking your user privileges.");
                 }
                 return Ok(new LoginResponse
                 {
@@ -110,11 +110,11 @@ namespace StellarApi.RestApi.Controllers
             }
             catch (UnavailableDatabaseException ex)
             {
-                return StatusCode(503, ex.Message);
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "An unexpected error occurred while revoking your user privileges.", Details = ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while revoking your user privileges.", Details = ex.Message });
             }
         }
 
@@ -130,7 +130,7 @@ namespace StellarApi.RestApi.Controllers
             var emailClaim = User.FindFirstValue(ClaimTypes.Email);
             if (emailClaim is null)
             {
-                return StatusCode(500, "An unknow error occurred while processing the request. Check that you are still connected to the application and retry.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "An unknow error occurred while processing the request. Check that you are still connected to the application and retry.");
             }
 
             User? user;
@@ -140,16 +140,16 @@ namespace StellarApi.RestApi.Controllers
                 user = await _service.GetUserByEmail(emailClaim);
                 if (user is null)
                 {
-                    return StatusCode(500, "An unknown error occurred while processing the request and getting your information.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "An unknown error occurred while processing the request and getting your information.");
                 }
             }
             catch (UnavailableDatabaseException ex)
             {
-                return StatusCode(503, ex.Message);
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
             }
             catch (Exception)
             {
-                return StatusCode(500, "An unknown error occurred while getting the user's information.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "An unknown error occurred while getting the user's information.");
             }
 
             try
@@ -159,17 +159,17 @@ namespace StellarApi.RestApi.Controllers
                 var wasEdited = await _service.PutUser(user, false);
                 if (!wasEdited)
                 {
-                    return StatusCode(500, "An unknown error occurred while revoking your user privileges.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "An unknown error occurred while revoking your user privileges.");
                 }
                 return NoContent();
             }
             catch (UnavailableDatabaseException ex)
             {
-                return StatusCode(503, ex.Message);
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "An unexpected error occurred while revoking your user privileges.", Details = ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while revoking your user privileges.", Details = ex.Message });
             }
         }
     }

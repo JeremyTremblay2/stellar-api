@@ -66,7 +66,7 @@ namespace StellarApi.RestApi.Controllers
                 }
                 else
                 {
-                    return StatusCode(500, "The user could not be added due to an unknown error.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "The user could not be added due to an unknown error.");
                 }
             }
             catch (Exception ex) when (ex is ArgumentNullException ||
@@ -82,11 +82,11 @@ namespace StellarApi.RestApi.Controllers
             }
             catch (UnavailableDatabaseException ex)
             {
-                return StatusCode(503, ex.Message);
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "An unexpected error occurred while adding a new user.", Details = ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while adding a new user.", Details = ex.Message });
             }
         }
 
@@ -106,11 +106,11 @@ namespace StellarApi.RestApi.Controllers
             }
             catch (UnavailableDatabaseException ex)
             {
-                return StatusCode(503, ex.Message);
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "An unexpected error occurred while fetching user data.", Details = ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching user data.", Details = ex.Message });
             }
 
             if (user is null)
@@ -150,16 +150,16 @@ namespace StellarApi.RestApi.Controllers
                 }
                 else
                 {
-                    return StatusCode(500, "The user could not be edited to add the refresh token due to an unknown error.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "The user could not be edited to add the refresh token due to an unknown error.");
                 }
             }
             catch (UnavailableDatabaseException ex)
             {
-                return StatusCode(503, ex.Message);
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "An unexpected error occurred while updating the refresh token.", Details = ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while updating the refresh token.", Details = ex.Message });
             }
         }
 
@@ -184,11 +184,11 @@ namespace StellarApi.RestApi.Controllers
             }
             catch (UnavailableDatabaseException ex)
             {
-                return StatusCode(503, ex.Message);
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "An unexpected error occurred while fetching user data.", Details = ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching user data.", Details = ex.Message });
             }
         }
 
@@ -210,11 +210,11 @@ namespace StellarApi.RestApi.Controllers
             }
             catch (UnavailableDatabaseException ex)
             {
-                return StatusCode(503, ex.Message);
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "An unexpected error occurred while fetching user data.", Details = ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching user data.", Details = ex.Message });
             }
         }
 
@@ -239,7 +239,7 @@ namespace StellarApi.RestApi.Controllers
                 }
                 else
                 {
-                    return StatusCode(500, "The user could not be edited due to an unknown error.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "The user could not be edited due to an unknown error.");
                 }
             }
             catch (Exception ex) when (ex is ArgumentNullException ||
@@ -259,11 +259,11 @@ namespace StellarApi.RestApi.Controllers
             }
             catch (UnavailableDatabaseException ex)
             {
-                return StatusCode(503, ex.Message);
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "An unexpected error occurred while editing the user's information.", Details = ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while editing the user's information.", Details = ex.Message });
             }
         }
 
@@ -286,7 +286,7 @@ namespace StellarApi.RestApi.Controllers
                 }
                 else
                 {
-                    return StatusCode(500, $"The user n°{id} could not be deleted due to an unknown error.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, $"The user n°{id} could not be deleted due to an unknown error.");
                 }
             }
             catch (EntityNotFoundException ex)
@@ -295,11 +295,11 @@ namespace StellarApi.RestApi.Controllers
             }
             catch (UnavailableDatabaseException ex)
             {
-                return StatusCode(503, ex.Message);
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "An unexpected error occurred while deleting user data.", Details = ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while deleting user data.", Details = ex.Message });
             }
         }
     }

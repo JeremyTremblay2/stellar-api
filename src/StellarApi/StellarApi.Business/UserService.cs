@@ -104,7 +104,7 @@ namespace StellarApi.Business
             }
             if (user.Email.Length > MaxLengthEmail)
             {
-                throw new InvalidFieldLengthException($"The email address cannot be greater than ${MaxLengthEmail} characters.", nameof(user.Username));
+                throw new InvalidFieldLengthException($"The email address cannot be greater than {MaxLengthEmail} characters.", nameof(user.Username));
             }
             if (string.IsNullOrWhiteSpace(user.Username))
             {
@@ -112,7 +112,7 @@ namespace StellarApi.Business
             }
             if (user.Username.Length > MaxLengthUsername)
             {
-                throw new InvalidFieldLengthException($"The username cannot be greater than ${MaxLengthUsername} characters.", nameof(user.Username));
+                throw new InvalidFieldLengthException($"The username cannot be greater than {MaxLengthUsername} characters.", nameof(user.Username));
             }
             if (string.IsNullOrWhiteSpace(user.Password))
             {

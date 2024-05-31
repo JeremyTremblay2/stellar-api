@@ -3,6 +3,8 @@ using StellarApi.Infrastructure.Repository;
 using StellarApi.Model.Space;
 using StellarApi.Repository.Context;
 using StellarApi.EntityToModel;
+using StellarApi.Repository.Exceptions;
+using StellarApi.Model.Users;
 
 namespace StellarApi.Repository.Repositories
 {
@@ -30,10 +32,10 @@ namespace StellarApi.Repository.Repositories
         /// </summary>
         /// <param name="celestialObject">The celestial object to add.</param>
         /// <returns>A task that represents the asynchronous operation and returns true if the addition was successful; otherwise, false.</returns>
+        /// <exception cref="UnavailableDatabaseException">Thrown when the database is not available.</exception>
         public async Task<bool> AddCelestialObject(CelestialObject celestialObject)
         {
-            if (_context.CelestialObjects is null) return false;
-
+            if (_context.CelestialObjects is null) throw new UnavailableDatabaseException();
             await _context.CelestialObjects.AddAsync(celestialObject.ToEntity());
             return await _context.SaveChangesAsync() == 1;
         }
@@ -44,12 +46,13 @@ namespace StellarApi.Repository.Repositories
         /// <param name="id">The unique identifier of the celestial object to update.</param>
         /// <param name="celestialObject">The celestial object with updated information.</param>
         /// <returns>A task that represents the asynchronous operation and returns true if the update was successful; otherwise, false.</returns>
+        /// <exception cref="UnavailableDatabaseException">Thrown when the database is not available.</exception>
+        /// <exception cref="EntityNotFoundException">Thrown when the celestial object is not found.</exception>"
         public async Task<bool> EditCelestialObject(int id, CelestialObject celestialObject)
         {
-            if (_context.CelestialObjects is null) return false;
+            if (_context.CelestialObjects is null) throw new UnavailableDatabaseException();
             var existingCelestialObject = await _context.CelestialObjects.FindAsync(id);
-            if (existingCelestialObject == null)
-                return false;
+            if (existingCelestialObject == null) throw new EntityNotFoundException(id.ToString(), "The celestial object was not found.");
             var entity = celestialObject.ToEntity();
             existingCelestialObject.Name = entity.Name;
             existingCelestialObject.Type = entity.Type;
@@ -74,9 +77,10 @@ namespace StellarApi.Repository.Repositories
         /// </summary>
         /// <param name="id">The unique identifier of the celestial object.</param>
         /// <returns>A task that represents the asynchronous operation and returns the retrieved celestial object, or null if not found.</returns>
+        /// <exception cref="UnavailableDatabaseException">Thrown when the database is not available.</exception>
         public async Task<CelestialObject?> GetCelestialObject(int id)
         {
-            if (_context.CelestialObjects is null) return null;
+            if (_context.CelestialObjects is null) throw new UnavailableDatabaseException();
             return (await _context.CelestialObjects.FindAsync(id)).ToModel();
         }
 
@@ -86,11 +90,11 @@ namespace StellarApi.Repository.Repositories
         /// <param name="page">The page number.</param>
         /// <param name="pageSize">The number of items per page.</param>
         /// <returns>A task that represents the asynchronous operation and returns the collection of celestial objects.</returns>
+        /// <exception cref="UnavailableDatabaseException">Thrown when the database is not available.</exception>
         public async Task<IEnumerable<CelestialObject>> GetCelestialObjects(int page, int pageSize)
         {
             var celestialObjects = new List<CelestialObject>();
-            if (_context.CelestialObjects is null) return celestialObjects;
-
+            if (_context.CelestialObjects is null) throw new UnavailableDatabaseException();
             return (await _context.CelestialObjects
                 .Skip(page * pageSize)
                 .Take(pageSize)
@@ -103,12 +107,13 @@ namespace StellarApi.Repository.Repositories
         /// </summary>
         /// <param name="id">The unique identifier of the celestial object to remove.</param>
         /// <returns>A task that represents the asynchronous operation and returns true if the removal was successful; otherwise, false.</returns>
+        /// <exception cref="EntityNotFoundException">Thrown when the celestial object is not found.</exception>
+        /// <exception cref="UnavailableDatabaseException">Thrown when the database is not available.</exception>
         public async Task<bool> RemoveCelestialObject(int id)
         {
-            if (_context.CelestialObjects is null) return false;
+            if (_context.CelestialObjects is null) throw new UnavailableDatabaseException();
             var celestialObject = await _context.CelestialObjects.FindAsync(id);
-            if (celestialObject == null) return false;
-
+            if (celestialObject == null) throw new EntityNotFoundException(id.ToString(), "The celestial object was not found.");
             _context.CelestialObjects.Remove(celestialObject);
             return await _context.SaveChangesAsync() == 1;
         }

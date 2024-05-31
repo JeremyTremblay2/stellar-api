@@ -1,6 +1,8 @@
 ﻿using StellarApi.DTOtoModel.Exceptions;
 using StellarApi.Model.Space;
 using StellarApi.DTOs.Space;
+using System.ComponentModel;
+using StellarApi.Model.Users;
 
 namespace StellarApi.DTOtoModel
 {
@@ -16,15 +18,28 @@ namespace StellarApi.DTOtoModel
         /// <returns>The converted CelestialObject.</returns>
         public static CelestialObject ToModel(this CelestialObjectInput dto)
         {
-            if (dto.Type.Equals("Planet"))
+            if (string.IsNullOrWhiteSpace(dto.Type))
             {
+                throw new ArgumentException("The type cannot be null or empty.", nameof(dto.Type));
+            }
+            else if (dto.Type.Equals("Planet"))
+            {
+                if (!Enum.TryParse(dto.PlanetType ?? "Undefined", out PlanetType planetType))
+                {
+                    throw new InvalidEnumArgumentException($"The planet type {dto.PlanetType} is not supported.");
+                }
                 return new Planet(dto.Id, dto.Name, dto.Description, dto.Image, PositionExtensions.ToModel(dto.Position), dto.Mass, 
-                    dto.Temperature, dto.Radius, dto.IsWater ?? false, dto.IsLife ?? false, Enum.Parse<PlanetType>(dto.PlanetType ?? "Undefined"));
+                    dto.Temperature, dto.Radius, dto.IsWater ?? false, dto.IsLife ?? false, planetType);
+                
             }
             else if (dto.Type.Equals("Star"))
             {
+                if (!Enum.TryParse(dto.StarType ?? "Undefined", out StarType starType))
+                {
+                    throw new InvalidEnumArgumentException($"The star type {dto.StarType} is not supported.");
+                }
                 return new Star(dto.Id, dto.Name, dto.Description, dto.Image, PositionExtensions.ToModel(dto.Position),
-                    dto.Mass, dto.Temperature, dto.Radius, dto.Brightness ?? 1, Enum.Parse<StarType>(dto.StarType ?? "Undefined"));
+                    dto.Mass, dto.Temperature, dto.Radius, dto.Brightness ?? 0, starType);
             }
             else
             {

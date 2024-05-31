@@ -1,4 +1,5 @@
-﻿using StellarApi.Business.Exceptions;
+﻿using Microsoft.Extensions.Logging;
+using StellarApi.Business.Exceptions;
 using StellarApi.Infrastructure.Business;
 using StellarApi.Infrastructure.Repository;
 using StellarApi.Model.Space;
@@ -26,11 +27,17 @@ namespace StellarApi.Business
         private readonly ICelestialObjectRepository _repository;
 
         /// <summary>
+        /// Logger used by this service.
+        /// </summary>
+        private readonly ILogger<CelestialObjectService> _logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CelestialObjectService"/> class.
         /// </summary>
         /// <param name="repository">The repository used for accessing celestial objects.</param>
-        public CelestialObjectService(ICelestialObjectRepository repository)
+        public CelestialObjectService(ILogger<CelestialObjectService> logger, ICelestialObjectRepository repository)
         {
+            _logger = logger;
             _repository = repository;
         }
 
@@ -80,6 +87,7 @@ namespace StellarApi.Business
         {
             if (celestialObject == null)
             {
+                _logger.LogWarning("The celestial object was null while checking its data.");
                 throw new ArgumentNullException(nameof(celestialObject));
             }
             if (string.IsNullOrWhiteSpace(celestialObject.Name))

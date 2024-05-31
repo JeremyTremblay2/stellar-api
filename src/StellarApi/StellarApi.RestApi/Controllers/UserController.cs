@@ -31,6 +31,11 @@ namespace StellarApi.RestApi.Controllers
         private readonly ITokenService _tokenService;
 
         /// <summary>
+        /// Logger used to log information in the controller.
+        /// </summary>
+        private readonly ILogger<UserController> _logger;
+
+        /// <summary>
         /// Represents the number of days before a refresh token expires.
         /// </summary>
         private const int daysToExpire = 7;
@@ -38,10 +43,12 @@ namespace StellarApi.RestApi.Controllers
         /// <summary>
         /// Initializes a new instance of the <see cref="UserController"/> class.
         /// </summary>
+        /// <param name="logger">The logger used to log information in the controller.</param>
         /// <param name="userService">The service for managing user objects.</param>
         /// <param name="tokenService">The service for managing the tokens.</param>
-        public UserController(IUserService userService, ITokenService tokenService)
+        public UserController(ILogger<UserController> logger, IUserService userService, ITokenService tokenService)
         {
+            _logger = logger;
             _service = userService;
             _tokenService = tokenService;
         }
@@ -56,16 +63,19 @@ namespace StellarApi.RestApi.Controllers
         [Route("register")]
         public async Task<ActionResult> PostUser([FromBody] RegistrationRequest request)
         {
-            User? userObject = new User(request.Email, request.Username, request.Password);
+            _logger.LogInformation($"New registration request for a user: {request.Email} named {request.Username}.");
             try
             {
+                User? userObject = new User(request.Email, request.Username, request.Password);
                 var wasAdded = await _service.PostUser(userObject);
                 if (wasAdded)
                 {
+                    _logger.LogInformation($"User {request.Email} added successfully.");
                     return Ok("User added successfully.");
                 }
                 else
                 {
+                    _logger.LogError($"The user {request.Email} could not be added due to an unknown error.");
                     return StatusCode(StatusCodes.Status500InternalServerError, "The user could not be added due to an unknown error.");
                 }
             }
@@ -74,18 +84,22 @@ namespace StellarApi.RestApi.Controllers
                                    ex is InvalidEmailFormatException ||
                                    ex is InvalidFieldLengthException)
             { 
+                _logger.LogInformation($"The user {request.Email} could not be added due to an invalid field: {ex.Message}.");
                 return BadRequest(ex.Message);
             }
             catch (DuplicateUserException ex)
             {
+                _logger.LogInformation($"The user {request.Email} could not be added because a user already exists with this email. More details: {ex.Message}.");
                 return Conflict(ex.Message);
             }
             catch (UnavailableDatabaseException ex)
             {
+                _logger.LogError($"The user {request.Email} could not be added due to an unavailable database. More details: {ex.Message}.");
                 return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError($"An unexpected error occurred while adding a new user. More details:; {ex.Message}.");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while adding a new user.", Details = ex.Message });
             }
         }
@@ -99,6 +113,7 @@ namespace StellarApi.RestApi.Controllers
         [Route("login")]
         public async Task<ActionResult<LoginResponse>> Authenticate([FromBody] LoginRequest request)
         {
+            _logger.LogInformation($"New login request for a user: {request.Email}.");
             User? user;
             try
             {
@@ -106,15 +121,18 @@ namespace StellarApi.RestApi.Controllers
             }
             catch (UnavailableDatabaseException ex)
             {
+                _logger.LogError($"The user {request.Email} could not be fetched due to an unavailable database. More details: {ex.Message}.");
                 return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError($"An unexpected error occurred while fetching user data. More details: {ex.Message}.");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching user data.", Details = ex.Message });
             }
 
             if (user is null)
             {
+                _logger.LogInformation($"The user {request.Email} could not be found, the credentials are invalid.");
                 return BadRequest("Bad credentials");
             }
 
@@ -124,6 +142,7 @@ namespace StellarApi.RestApi.Controllers
             //var isPasswordValid = BCrypt.Net.BCrypt.Verify(request.Password, user.Password);
             if (!isPasswordValid)
             {
+                _logger.LogInformation($"The user {request.Email} could not be authenticated, the credentials are invalid.");
                 return BadRequest("Bad credentials");
             }
 
@@ -138,6 +157,7 @@ namespace StellarApi.RestApi.Controllers
                 var wasEdited = await _service.PutUser(user, false);
                 if (wasEdited)
                 {
+                    _logger.LogInformation($"The user {request.Email} was successfully authenticated and his token updated.");
                     return Ok(new LoginResponse
                     {
                         AccessToken = accessToken,
@@ -150,15 +170,18 @@ namespace StellarApi.RestApi.Controllers
                 }
                 else
                 {
+                    _logger.LogError($"The user {request.Email} could not be authenticated due to an unknown error.");
                     return StatusCode(StatusCodes.Status500InternalServerError, "The user could not be edited to add the refresh token due to an unknown error.");
                 }
             }
             catch (UnavailableDatabaseException ex)
             {
+                _logger.LogError($"The user {request.Email} could not be authenticated due to an unavailable database. More details: {ex.Message}.");
                 return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError($"An unexpected error occurred while updating the refresh token. More details: {ex.Message}.");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while updating the refresh token.", Details = ex.Message });
             }
         }
@@ -173,21 +196,26 @@ namespace StellarApi.RestApi.Controllers
         [Authorize(Roles = "Member, Administrator")]
         public async Task<ActionResult<UserOutput?>> GetUserById(int id)
         {
+            _logger.LogInformation($"Fetching user data for user n°{id}.");
             try
             {
                 var result = await _service.GetUserById(id);
                 if (result == null)
                 {
+                    _logger.LogInformation($"The user n°{id} could not be found.");
                     return NotFound();
                 }
+                _logger.LogInformation($"The user n°{id} was found and fetched successfully.");
                 return Ok(result.ToDTO());
             }
             catch (UnavailableDatabaseException ex)
             {
+                _logger.LogError($"The user n°{id} could not be fetched due to an unavailable database. More details: {ex.Message}.");
                 return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError($"An unexpected error occurred while fetching user data. More details: {ex.Message}.");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching user data.", Details = ex.Message });
             }
         }
@@ -203,17 +231,21 @@ namespace StellarApi.RestApi.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<IEnumerable<UserOutput>>> GetUsers(int page, int pageSize)
         {
+            _logger.LogInformation($"Fetching user data for page {page} with {pageSize} users per page.");
             try
             {
                 var users = (await _service.GetUsers(page, pageSize)).ToDTO();
+                _logger.LogInformation($"User data fetched successfully.");
                 return Ok(users);
             }
             catch (UnavailableDatabaseException ex)
             {
+                _logger.LogError($"The user data could not be fetched due to an unavailable database. More details: {ex.Message}.");
                 return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError($"An unexpected error occurred while fetching user data. More details: {ex.Message}.");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching user data.", Details = ex.Message });
             }
         }
@@ -229,16 +261,19 @@ namespace StellarApi.RestApi.Controllers
         [Route("edit")]
         public async Task<ActionResult> PutUser([FromBody] UserInput user)
         {
+            _logger.LogInformation($"Editing user data for user n°{user.Id}.");
             User userObject = user.ToModel();
             try
             {
                 var wasEdited = await _service.PutUser(userObject, true);
                 if (wasEdited)
                 {
+                    _logger.LogInformation($"User n°{user.Id} edited successfully.");
                     return Ok("User edited successfully.");
                 }
                 else
                 {
+                    _logger.LogError($"The user n°{user.Id} could not be edited due to an unknown error.");
                     return StatusCode(StatusCodes.Status500InternalServerError, "The user could not be edited due to an unknown error.");
                 }
             }
@@ -247,22 +282,27 @@ namespace StellarApi.RestApi.Controllers
                                    ex is InvalidEmailFormatException ||
                                    ex is InvalidFieldLengthException)
             {
+                _logger.LogInformation($"The user n°{user.Id} could not be edited due to an invalid field: {ex.Message}.");
                 return BadRequest(ex.Message);
             }
             catch (DuplicateUserException ex)
             {
+                _logger.LogInformation($"The user n°{user.Id} could not be edited because a user already exists with this email. More details: {ex.Message}.");
                 return Conflict(ex.Message);
             }
             catch (EntityNotFoundException ex)
             {
+                _logger.LogInformation($"The user n°{user.Id} could not be edited because it could not be found.");
                 return NotFound(ex.Message);
             }
             catch (UnavailableDatabaseException ex)
             {
+                _logger.LogError($"The user n°{user.Id} could not be edited due to an unavailable database. More details: {ex.Message}.");
                 return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError($"An unexpected error occurred while editing the user's information. More details: {ex.Message}.");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while editing the user's information.", Details = ex.Message });
             }
         }
@@ -278,27 +318,33 @@ namespace StellarApi.RestApi.Controllers
         [Route("remove")]
         public async Task<ActionResult> DeleteUser(int id)
         {
+            _logger.LogInformation($"Deleting user data for user n°{id}.");
             try
             {
                 if (await _service.DeleteUser(id))
                 {
+                    _logger.LogInformation($"User n°{id} deleted successfully.");
                     return Ok($"The User n°{id} was successfully deleted.");
                 }
                 else
                 {
+                    _logger.LogError($"The user n°{id} could not be deleted due to an unknown error.");
                     return StatusCode(StatusCodes.Status500InternalServerError, $"The user n°{id} could not be deleted due to an unknown error.");
                 }
             }
             catch (EntityNotFoundException ex)
             {
+                _logger.LogInformation($"The user n°{id} could not be deleted because it could not be found.");
                 return NotFound(ex.Message);
             }
             catch (UnavailableDatabaseException ex)
             {
+                _logger.LogError($"The user n°{id} could not be deleted due to an unavailable database. More details: {ex.Message}.");
                 return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
             }
             catch (Exception ex)
             {
+                _logger.LogError($"An unexpected error occurred while deleting user data. More details: {ex.Message}.");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while deleting user data.", Details = ex.Message });
             }
         }

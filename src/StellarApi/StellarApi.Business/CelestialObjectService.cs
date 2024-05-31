@@ -102,7 +102,7 @@ namespace StellarApi.Business
             {
                 throw new ArgumentException("The mass cannot be negative or null.", nameof(celestialObject.Mass));
             }
-            if (celestialObject.Temperature < 273)
+            if (celestialObject.Temperature < -273)
             {
                 throw new ArgumentException("The temperature cannot be less than 273 degrees.", nameof(celestialObject.Temperature));
             }

@@ -22,18 +22,16 @@ namespace StellarApi.EntityToModel
                 var planetType = ValueParserHelpers.TryParseValue<PlanetType>(entity.PlanetType, out var result)
                     ? result
                     : PlanetType.Undefined;
-                return new Planet(entity.Id, entity.Name, entity.Description, entity.Image,
-                    PositionExtensions.ToModel(entity.Position), entity.Mass,
-                    entity.Temperature, entity.Radius, (bool)entity.IsWater, (bool)entity.IsLife, planetType);
+                return new Planet(entity.Id, entity.Name, entity.Description, entity.Image, PositionExtensions.ToModel(entity.Position), entity.Mass,
+                    entity.Temperature, entity.Radius, (bool)entity.IsWater, (bool)entity.IsLife, planetType, entity.CreationDate, entity.ModificationDate);
             }
             else if (entity.Type.Equals("Star"))
             {
                 var starType = ValueParserHelpers.TryParseValue<StarType>(entity.StarType, out var result)
                     ? result
                     : StarType.Undefined;
-                return new Star(entity.Id, entity.Name, entity.Description, entity.Image,
-                    PositionExtensions.ToModel(entity.Position),
-                    entity.Mass, entity.Temperature, entity.Radius, (double)entity.Brightness, starType);
+                return new Star(entity.Id, entity.Name, entity.Description, entity.Image, PositionExtensions.ToModel(entity.Position),
+                    entity.Mass, entity.Temperature, entity.Radius, (double)entity.Brightness, starType, entity.CreationDate, entity.ModificationDate);
             }
             else
             {

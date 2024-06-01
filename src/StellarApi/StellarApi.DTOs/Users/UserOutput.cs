@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace StellarApi.DTOs
+namespace StellarApi.DTOs.Users
 {
     /// <summary>
-    /// Data transfer object for a user.
+    /// Ouput data transfer object for a user.
     /// </summary>
-    public class UserDTO
+    public class UserOutput
     {
         /// <summary>
         /// Gets the unique identifier of the user.
@@ -24,11 +24,6 @@ namespace StellarApi.DTOs
         public string Username { get; set; }
 
         /// <summary>
-        /// Gets the password of the user.
-        /// </summary>
-        public string Password { get; set; }
-
-        /// <summary>
         /// Gets the role of the user.
         /// </summary>
         public string Role { get; set; }
@@ -36,45 +31,30 @@ namespace StellarApi.DTOs
         /// <summary>
         /// Gets the creation date of the user.
         /// </summary>
-        public DateTime? CreationDate { get; set; }
+        public DateTime CreationDate { get; set; }
 
         /// <summary>
         /// Gets the modification date of the user.
         /// </summary>
-        public DateTime? ModificationDate { get; set; }
+        public DateTime ModificationDate { get; set; }
 
         /// <summary>
-        /// The refresh token of the user.
-        /// </summary>
-        public string? RefreshToken { get; set; }
-
-        /// <summary>
-        /// The expiry time of the refresh token.
-        /// </summary>
-        public DateTime RefreshTokenExpiryTime { get; set; }
-
-        /// <summary>
-        /// Creates a new instance of the <see cref="UserDTO"/> class.
+        /// Creates a new instance of the <see cref="UserOutput"/> class.
         /// </summary>
         /// <param name="id">The ID of the user.</param>
         /// <param name="email">The email of the user.</param>
         /// <param name="username">The username of the user.</param>
-        /// <param name="password">The password of the user.</param>
         /// <param name="role">The role of the user.</param>
         /// <param name="creationDate">The creation date of the user.</param>
         /// <param name="modificationDate">The modificaiton date of the user.</param>
-        public UserDTO(int id, string email, string username, string password, string role, string refreshToken, 
-            DateTime refreshTokenExpiryTime, DateTime? creationDate, DateTime? modificationDate)
+        public UserOutput(int id, string email, string username, string role, DateTime creationDate, DateTime modificationDate)
         {
             Id = id;
             Email = email;
             Username = username;
-            Password = password;
             Role = role;
             CreationDate = creationDate;
             ModificationDate = modificationDate;
-            RefreshToken = refreshToken;
-            RefreshTokenExpiryTime = refreshTokenExpiryTime;
         }
     }
 }

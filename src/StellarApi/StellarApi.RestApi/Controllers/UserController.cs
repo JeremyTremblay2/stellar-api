@@ -1,12 +1,14 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
-using StellarApi.DTOs;
 using StellarApi.Infrastructure.Business;
 using StellarApi.DTOtoModel;
 using DTOtoModel;
 using StellarApi.Model.Users;
 using StellarApi.RestApi.Auth;
 using Microsoft.AspNetCore.Authorization;
+using StellarApi.DTOs.Users;
+using StellarApi.Business.Exceptions;
+using StellarApi.Repository.Exceptions;
 
 namespace StellarApi.RestApi.Controllers
 {
@@ -52,30 +54,39 @@ namespace StellarApi.RestApi.Controllers
         [MapToApiVersion(1)]
         [HttpPost]
         [Route("register")]
-        public async Task<ActionResult<UserDTO>> PostUser([FromBody] RegistrationRequest request)
+        public async Task<ActionResult> PostUser([FromBody] RegistrationRequest request)
         {
-            User? userObject = null;
+            User? userObject = new User(request.Email, request.Username, request.Password);
             try
             {
-                userObject = new User(request.Email, request.Username, request.Password, Role.Member);
-                _ = userObject ?? throw new Exception("The object was not created.");
+                var wasAdded = await _service.PostUser(userObject);
+                if (wasAdded)
+                {
+                    return Ok("User added successfully.");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "The user could not be added due to an unknown error.");
+                }
             }
-            catch (ArgumentException err)
-            {
-                return BadRequest(err.Message);
+            catch (Exception ex) when (ex is ArgumentNullException ||
+                                   ex is ArgumentException ||
+                                   ex is InvalidEmailFormatException ||
+                                   ex is InvalidFieldLengthException)
+            { 
+                return BadRequest(ex.Message);
             }
-            catch (Exception)
+            catch (DuplicateUserException ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "An unknown error occurred during the conversion of the object. Please retry.");
+                return Conflict(ex.Message);
             }
-
-            if (await _service.PostUser(userObject))
+            catch (UnavailableDatabaseException ex)
             {
-                return CreatedAtAction(nameof(PostUser), userObject);
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
             }
-            else
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "An unknown error occurred during the addition of the object. Please retry.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while adding a new user.", Details = ex.Message });
             }
         }
 
@@ -88,7 +99,20 @@ namespace StellarApi.RestApi.Controllers
         [Route("login")]
         public async Task<ActionResult<LoginResponse>> Authenticate([FromBody] LoginRequest request)
         {
-            var user = await _service.GetUserByEmail(request.Email);
+            User? user;
+            try
+            {
+                user = await _service.GetUserByEmail(request.Email);
+            }
+            catch (UnavailableDatabaseException ex)
+            {
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching user data.", Details = ex.Message });
+            }
+
             if (user is null)
             {
                 return BadRequest("Bad credentials");
@@ -111,22 +135,32 @@ namespace StellarApi.RestApi.Controllers
 
             try
             {
-                await _service.PutUser(user);
+                var wasEdited = await _service.PutUser(user, false);
+                if (wasEdited)
+                {
+                    return Ok(new LoginResponse
+                    {
+                        AccessToken = accessToken,
+                        RefreshToken = refreshToken,
+                        RefreshTokenExpirationTime = user.RefreshTokenExpiryTime,
+                        Email = user.Email,
+                        Username = user.Username,
+                        Role = user.Role.ToString()
+                    });
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "The user could not be edited to add the refresh token due to an unknown error.");
+                }
             }
-            catch (Exception)
+            catch (UnavailableDatabaseException ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "An unknown error occurred during the generation of a new token. Please retry.");
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
             }
-
-            return Ok(new LoginResponse
+            catch (Exception ex)
             {
-                AccessToken = accessToken,
-                RefreshToken = refreshToken,
-                RefreshTokenExpirationTime = user.RefreshTokenExpiryTime,
-                Email = user.Email,
-                Username = user.Username,
-                Role = user.Role.ToString()
-            });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while updating the refresh token.", Details = ex.Message });
+            }
         }
 
         /// <summary>
@@ -137,14 +171,25 @@ namespace StellarApi.RestApi.Controllers
         [MapToApiVersion(1)]
         [HttpGet("{id}")]
         [Authorize(Roles = "Member, Administrator")]
-        public async Task<ActionResult<UserDTO?>> GetUserById(int id)
+        public async Task<ActionResult<UserOutput?>> GetUserById(int id)
         {
-            var result = await _service.GetUserById(id);
-            if (result == null)
+            try
             {
-                return NotFound();
+                var result = await _service.GetUserById(id);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                return Ok(result.ToDTO());
             }
-            return Ok(result.ToDTO());
+            catch (UnavailableDatabaseException ex)
+            {
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching user data.", Details = ex.Message });
+            }
         }
 
         /// <summary>
@@ -156,10 +201,21 @@ namespace StellarApi.RestApi.Controllers
         [MapToApiVersion(1)]
         [HttpGet]
         [Authorize(Roles = "Administrator")]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers(int page, int pageSize)
+        public async Task<ActionResult<IEnumerable<UserOutput>>> GetUsers(int page, int pageSize)
         {
-            var users = (await _service.GetUsers(page, pageSize)).ToDTO();
-            return Ok(users);
+            try
+            {
+                var users = (await _service.GetUsers(page, pageSize)).ToDTO();
+                return Ok(users);
+            }
+            catch (UnavailableDatabaseException ex)
+            {
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching user data.", Details = ex.Message });
+            }
         }
 
         /// <summary>
@@ -170,30 +226,44 @@ namespace StellarApi.RestApi.Controllers
         [MapToApiVersion(1)]
         [HttpPut]
         [Authorize(Roles = "Member, Administrator")]
-        public async Task<ActionResult<bool>> PutUser([FromBody] UserDTO user)
+        [Route("edit")]
+        public async Task<ActionResult> PutUser([FromBody] UserInput user)
         {
-            User? userObject = null;
+            User userObject = user.ToModel();
             try
             {
-                userObject = user.ToModel();
-                _ = userObject ?? throw new Exception("The object was not created.");
+                var wasEdited = await _service.PutUser(userObject, true);
+                if (wasEdited)
+                {
+                    return Ok("User edited successfully.");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "The user could not be edited due to an unknown error.");
+                }
             }
-            catch (ArgumentException err)
+            catch (Exception ex) when (ex is ArgumentNullException ||
+                                   ex is ArgumentException ||
+                                   ex is InvalidEmailFormatException ||
+                                   ex is InvalidFieldLengthException)
             {
-                return BadRequest(err.Message);
+                return BadRequest(ex.Message);
             }
-            catch (Exception)
+            catch (DuplicateUserException ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "An unknown error occurred during the conversion of the object. Please retry.");
+                return Conflict(ex.Message);
             }
-
-            if (await _service.PutUser(userObject))
+            catch (EntityNotFoundException ex)
             {
-                return Ok($"The User {user.Username} was successfully edited.");
+                return NotFound(ex.Message);
             }
-            else
+            catch (UnavailableDatabaseException ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "An unknown error occurred during the edition of the object. Please retry.");
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while editing the user's information.", Details = ex.Message });
             }
         }
 
@@ -205,15 +275,31 @@ namespace StellarApi.RestApi.Controllers
         [MapToApiVersion(1)]
         [HttpDelete]
         [Authorize(Roles = "Administrator")]
-        public async Task<ActionResult<bool>> DeleteUser(int id)
+        [Route("remove")]
+        public async Task<ActionResult> DeleteUser(int id)
         {
-            if (await _service.DeleteUser(id))
+            try
             {
-                return Ok($"The User n°{id} was successfully deleted.");
+                if (await _service.DeleteUser(id))
+                {
+                    return Ok($"The User n°{id} was successfully deleted.");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, $"The user n°{id} could not be deleted due to an unknown error.");
+                }
             }
-            else
+            catch (EntityNotFoundException ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
+            }
+            catch (UnavailableDatabaseException ex)
+            {
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while deleting user data.", Details = ex.Message });
             }
         }
     }

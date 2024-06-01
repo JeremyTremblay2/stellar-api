@@ -1,7 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Text;
-using StellarApi.Helpers;
 
 namespace StellarApi.Model.Space;
 
@@ -57,8 +56,6 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentNullException(nameof(name), "The name of the object cannot be null or empty.");
 
-        (CreationDate, ModificationDate) = DateHelper.CheckDates(creationDate, modificationDate);
-
         Id = id;
         Name = name;
         CelestialObjects = new ReadOnlyCollection<CelestialObject>(celestialObjects);
@@ -68,8 +65,6 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentNullException(nameof(name), "The name of the object cannot be null or empty.");
-
-        (CreationDate, ModificationDate) = DateHelper.CheckDates(creationDate, modificationDate);
 
         Id = id;
         Name = name;

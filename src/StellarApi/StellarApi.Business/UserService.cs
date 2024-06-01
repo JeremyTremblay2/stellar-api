@@ -1,6 +1,8 @@
 ﻿using StellarApi.Infrastructure.Business;
 using StellarApi.Infrastructure.Repository;
 using StellarApi.Model.Users;
+using StellarApi.Helpers;
+using StellarApi.Business.Exceptions;
 
 namespace StellarApi.Business
 {
@@ -9,6 +11,16 @@ namespace StellarApi.Business
     /// </summary>
     public class UserService : IUserService
     {
+        /// <summary>
+        /// Constant that represents the maximum length of a username.
+        /// </summary>
+        private const int MaxLengthUsername = 30;
+
+        /// <summary>
+        /// Constant that represents the maximum length of an email.
+        /// </summary>
+        private const int MaxLengthEmail = 100;
+
         /// <summary>
         /// The repository used by this service.
         /// </summary>
@@ -24,7 +36,7 @@ namespace StellarApi.Business
         }
 
         /// <inheritdoc/>
-        public async Task<User> GetUserById(int id)
+        public async Task<User?> GetUserById(int id)
         {
             return await _repository.GetUserById(id);
         }
@@ -44,12 +56,20 @@ namespace StellarApi.Business
         /// <inheritdoc/>
         public async Task<bool> PostUser(User user)
         {
+            user.CreationDate = DateTime.Now;
+            user.ModificationDate = DateTime.Now;
+            await CheckUserData(user);
             return await _repository.AddUser(user);
         }
 
         /// <inheritdoc/>
-        public async Task<bool> PutUser(User user)
+        public async Task<bool> PutUser(User user, bool shouldUpdateModificationDate)
         {
+            if (shouldUpdateModificationDate)
+            {
+                user.ModificationDate = DateTime.Now;
+            }
+            await CheckUserData(user);
             return await _repository.EditUser(user);
         }
 
@@ -57,6 +77,52 @@ namespace StellarApi.Business
         public async Task<bool> DeleteUser(int id)
         {
             return await _repository.RemoveUser(id);
+        }
+
+        /// <summary>
+        /// Checks if the user data is valid.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <exception cref="ArgumentNullException">If the user is null.</exception>
+        /// <exception cref="ArgumentException">If the email or username or password is null or empty.</exception>
+        /// <exception cref="InvalidEmailFormatException">If the email format is invalid.</exception>
+        /// <exception cref="InvalidFieldLengthException">If the email or username is greater than the maximum length.</exception>
+        /// <exception cref="DuplicateUserException">If the email is already used.</exception>
+        private async Task CheckUserData(User user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+            if (string.IsNullOrWhiteSpace(user.Email))
+            {
+                throw new ArgumentException("Email cannot be null or empty.", nameof(user.Email));
+            }
+            if (!user.Email.IsValidEmail())
+            {
+                throw new InvalidEmailFormatException("The email address has not a valid format.", nameof(user.Email));
+            }
+            if (user.Email.Length > MaxLengthEmail)
+            {
+                throw new InvalidFieldLengthException($"The email address cannot be greater than {MaxLengthEmail} characters.", nameof(user.Username));
+            }
+            if (string.IsNullOrWhiteSpace(user.Username))
+            {
+                throw new ArgumentException("The username cannot be null or empty.", nameof(user.Username));
+            }
+            if (user.Username.Length > MaxLengthUsername)
+            {
+                throw new InvalidFieldLengthException($"The username cannot be greater than {MaxLengthUsername} characters.", nameof(user.Username));
+            }
+            if (string.IsNullOrWhiteSpace(user.Password))
+            {
+                throw new ArgumentException("The password cannot be null or empty.", nameof(user.Password));
+            }
+            var existingUser = await _repository.GetUserByEmail(user.Email);
+            if (existingUser != null && existingUser.Id != user.Id)
+            {
+                throw new DuplicateUserException("The email address is already used.");
+            }
         }
     }
 }

@@ -1,10 +1,14 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
-using StellarApi.DTOs;
 using StellarApi.Infrastructure.Business;
 using StellarApi.Model.Space;
 using StellarApi.DTOtoModel;
 using Microsoft.AspNetCore.Authorization;
+using StellarApi.DTOs.Space;
+using StellarApi.Repository.Exceptions;
+using StellarApi.Business.Exceptions;
+using StellarApi.DTOtoModel.Exceptions;
+using System.ComponentModel;
 
 namespace StellarApi.RestApi.Controllers
 {
@@ -42,15 +46,26 @@ namespace StellarApi.RestApi.Controllers
         /// <returns>The action result containing the retrieved celestial object or a NotFound result if not found.</returns>
         [MapToApiVersion(1)]
         [HttpGet("{id}")]
-        public async Task<ActionResult<CelestialObjectDTO?>> GetCelestialObjectById(int id)
+        public async Task<ActionResult<CelestialObjectOutput?>> GetCelestialObjectById(int id)
         {
             _logger.LogInformation($"Retrieving celestial object n°{id}.");
-            var result = await _service.GetCelestialObject(id);
-            if (result == null)
+            try
             {
-                return NotFound();
+                var result = await _service.GetCelestialObject(id);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                return Ok(result.ToDTO());
             }
-            return Ok(result.ToDTO());
+            catch (UnavailableDatabaseException ex)
+            {
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching celestial object data.", Details = ex.Message });
+            }
         }
 
         /// <summary>
@@ -61,10 +76,21 @@ namespace StellarApi.RestApi.Controllers
         /// <returns>The action result containing the collection of celestial objects.</returns>
         [MapToApiVersion(1)]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CelestialObjectDTO>>> GetCelestialObjects(int page, int pageSize)
+        public async Task<ActionResult<IEnumerable<CelestialObjectOutput>>> GetCelestialObjects(int page, int pageSize)
         {
-            var objects = (await _service.GetCelestialObjects(page, pageSize)).ToDTO();
-            return Ok(objects);
+            try
+            {
+                var objects = (await _service.GetCelestialObjects(page, pageSize)).ToDTO();
+                return Ok(objects);
+            }
+            catch (UnavailableDatabaseException ex)
+            {
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching celestial object data.", Details = ex.Message });
+            }
         }
 
         /// <summary>
@@ -74,30 +100,38 @@ namespace StellarApi.RestApi.Controllers
         /// <returns>The action result indicating the success or failure of the operation.</returns>
         [MapToApiVersion(1)]
         [HttpPost]
-        public async Task<ActionResult<bool>> PostCelestialObject(CelestialObjectDTO celestialObject)
+        [Route("add")]
+        public async Task<ActionResult> PostCelestialObject([FromBody] CelestialObjectInput celestialObject)
         {
-            CelestialObject? userObject = null;
             try
             {
-                userObject = celestialObject.ToModel();
-                _ = userObject ?? throw new Exception("The object was not created.");
-            }
-            catch (ArgumentException err)
-            {
-                return BadRequest(err.Message);
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "An unknown error occurred during the conversion of the object. Please retry.");
-            }
+                CelestialObject userObject = celestialObject.ToModel();
 
-            if (await _service.PostCelestialObject(userObject))
-            {
-                return Ok($"The celestial object {celestialObject.Name} was successfully added.");
+                var wasAdded = await _service.PostCelestialObject(userObject);
+                if (wasAdded)
+                {
+                    return Ok("Celestial object added successfully.");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "The celestial object could not be added due to an unknown error.");
+                }
             }
-            else
+            catch (Exception ex) when (ex is WrongCelestialObjectTypeException ||
+                                   ex is InvalidEnumArgumentException ||
+                                   ex is ArgumentNullException ||
+                                   ex is ArgumentException ||
+                                   ex is InvalidFieldLengthException)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "An unknown error occurred during the addition of the object. Please retry.");
+                return BadRequest(ex.Message);
+            }
+            catch (UnavailableDatabaseException ex)
+            {
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while adding a new celestial object.", Details = ex.Message });
             }
         }
 
@@ -109,30 +143,42 @@ namespace StellarApi.RestApi.Controllers
         /// <returns>The action result indicating the success or failure of the operation.</returns>
         [MapToApiVersion(1)]
         [HttpPut]
-        public async Task<ActionResult<bool>> PutCelestialObject(int id, CelestialObjectDTO celestialObject)
+        [Route("edit")]
+        public async Task<ActionResult> PutCelestialObject(int id, [FromBody] CelestialObjectInput celestialObject)
         {
-            CelestialObject? userObject = null;
             try
             {
-                userObject = celestialObject.ToModel();
-                _ = userObject ?? throw new Exception("The object was not created.");
-            }
-            catch (ArgumentException err)
-            {
-                return BadRequest(err.Message);
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "An unknown error occurred during the conversion of the object. Please retry.");
-            }
+                CelestialObject userObject = celestialObject.ToModel();
 
-            if (await _service.PutCelestialObject(id, userObject))
-            {
-                return Ok($"The celestial object {celestialObject.Name} was successfully edited.");
+                var wasEdited = await _service.PutCelestialObject(id, userObject);
+                if (wasEdited)
+                {
+                    return Ok("Celestial object edited successfully.");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "The celestial object could not be edited due to an unknown error.");
+                }
             }
-            else
+            catch (Exception ex) when (ex is WrongCelestialObjectTypeException || 
+                                   ex is InvalidEnumArgumentException ||  
+                                   ex is ArgumentNullException ||
+                                   ex is ArgumentException ||
+                                   ex is InvalidFieldLengthException)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "An unknown error occurred during the edition of the object. Please retry.");
+                return BadRequest(ex.Message);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (UnavailableDatabaseException ex)
+            {
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while editing the celestial object's information.", Details = ex.Message });
             }
         }
 
@@ -143,15 +189,31 @@ namespace StellarApi.RestApi.Controllers
         /// <returns>The action result indicating the success or failure of the operation.</returns>
         [MapToApiVersion(1)]
         [HttpDelete]
-        public async Task<ActionResult<bool>> DeleteCelestialObject(int id)
+        [Route("remove")]
+        public async Task<ActionResult> DeleteCelestialObject(int id)
         {
-            if (await _service.DeleteCelestialObject(id))
+            try
             {
-                return Ok($"The celestial object n°{id} was successfully deleted.");
+                if (await _service.DeleteCelestialObject(id))
+                {
+                    return Ok($"The Celestial object n°{id} was successfully deleted.");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, $"The Celestial object n°{id} could not be deleted due to an unknown error.");
+                }
             }
-            else
+            catch (EntityNotFoundException ex)
             {
-                return NotFound();
+                return NotFound(ex.Message);
+            }
+            catch (UnavailableDatabaseException ex)
+            {
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while deleting celestial object data.", Details = ex.Message });
             }
         }
     }

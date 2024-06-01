@@ -1,6 +1,5 @@
 using StellarApi.Model.Geometry;
 using System.Globalization;
-using StellarApi.Helpers;
 
 namespace StellarApi.Model.Space
 {
@@ -34,32 +33,32 @@ namespace StellarApi.Model.Space
         /// <summary>
         /// Gets or sets the description of the celestial object.
         /// </summary>
-        public string Description { get; set; }
+        public string Description { get; private set; }
 
         /// <summary>
         /// Gets or sets the image path of the celestial object.
         /// </summary>
-        public string Image { get; set; }
+        public string? Image { get; private set; }
 
         /// <summary>
         /// Gets or sets the position of the celestial object.
         /// </summary>
-        public Position? Position { get; set; }
+        public Position? Position { get; private set; }
 
         /// <summary>
         /// Gets or sets the mass of the celestial object.
         /// </summary>
-        public double Mass { get; set; }
+        public double Mass { get; private set; }
 
         /// <summary>
         /// Gets or sets the temperature of the celestial object.
         /// </summary>
-        public double Temperature { get; set; }
+        public double Temperature { get; private set; }
 
         /// <summary>
         /// Gets or sets the radius of the celestial object.
         /// </summary>
-        public double Radius { get; set; }
+        public double Radius { get; private set; }
 
         /// <summary>
         /// Gets the creation date of the celestial object.
@@ -84,20 +83,9 @@ namespace StellarApi.Model.Space
         /// <param name="radius">The radius of the celestial object.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="name"/> is null or empty.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="radius"/> or <paramref name="mass"/> is less than or equal to 0 or when <paramref name="creationDate"/> or <paramref name="modificationDate"/> is in the future or invalid.</exception>
-        public CelestialObject(int id, string name, string description, string image, Position? position, double mass, 
+        public CelestialObject(int id, string name, string description, string? image, Position? position, double mass, 
             double temperature, double radius, DateTime? creationDate = null, DateTime? modificationDate = null)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentNullException(nameof(name), "The name of the object cannot be null or empty.");
-
-            if (radius <= 0)
-                throw new ArgumentException("The radius of the object cannot be less than or equal to 0.", nameof(radius));
-
-            if (mass <= 0)
-                throw new ArgumentException("The mass of the object cannot be less than or equal to 0.", nameof(mass));
-
-            (CreationDate, ModificationDate) = DateHelper.CheckDates(creationDate, modificationDate);
-
             Id = id;
             Name = name;
             Description = description;
@@ -106,6 +94,8 @@ namespace StellarApi.Model.Space
             Mass = mass;
             Temperature = temperature;
             Radius = radius;
+            CreationDate = creationDate ?? DateTime.Now;
+            ModificationDate = modificationDate ?? DateTime.Now;
         }
 
         /// <inheritdoc/>

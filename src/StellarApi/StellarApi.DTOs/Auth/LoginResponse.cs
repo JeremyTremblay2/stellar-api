@@ -15,12 +15,12 @@ namespace StellarApi.RestApi.Auth
         /// <summary>
         /// Gets or sets the refresh token.
         /// </summary>
-        public string RefreshToken { get; set; }
+        public string? RefreshToken { get; set; }
 
         /// <summary>
         /// Gets or sets the expiration time of the refresh token.
         /// </summary>
-        public DateTime RefreshTokenExpirationTime { get; set; }
+        public DateTime? RefreshTokenExpirationTime { get; set; }
 
         /// <summary>
         /// Gets or sets the email of the user.

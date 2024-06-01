@@ -1,10 +1,9 @@
-﻿using StellarApi.DTOs;
-using StellarApi.Model.Geometry;
+﻿using StellarApi.DTOs.Geometry;
 
 namespace StellarApi.DTOtoModel
 {
     /// <summary>
-    /// Represents a way to transform <see cref="Position"/> objects into <see cref="PositionDTO"/> objects.
+    /// Represents a way to transform <see cref="Model.Geometry.Position"/> objects into <see cref="Position"/> objects.
     /// </summary>
     public static class PositionExtensions
     {
@@ -13,15 +12,15 @@ namespace StellarApi.DTOtoModel
         /// </summary>
         /// <param name="model">The model to transform.</param>
         /// <returns>A DTO representing the model object.</returns>
-        public static PositionDTO? ToDTO(this Position? model)
-            => model is null ? null :new PositionDTO(model.X, model.Y, model.Z);
+        public static Position? ToDTO(this Model.Geometry.Position? model)
+            => model is null ? null :new Position(model.X, model.Y, model.Z);
 
         /// <summary>
         /// Converts a Position to a PositionDTO.
         /// </summary>
         /// <param name="dto">The DTO to transform.</param>
         /// <returns>A model representing the DTO object.</returns>
-        public static Position? ToModel(this PositionDTO? dto)
-            => dto is null ? null : new Position(dto.X, dto.Y, dto.Z);
+        public static Model.Geometry.Position? ToModel(this Position? dto)
+            => dto is null ? null : new Model.Geometry.Position(dto.X, dto.Y, dto.Z);
     }
 }

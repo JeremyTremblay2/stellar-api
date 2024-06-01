@@ -1,31 +1,45 @@
-﻿using StellarApi.DTOs;
-using StellarApi.DTOtoModel.Exceptions;
+﻿using StellarApi.DTOtoModel.Exceptions;
 using StellarApi.Model.Space;
-using StellarApi.Helpers;
+using StellarApi.DTOs.Space;
+using System.ComponentModel;
+using StellarApi.Model.Users;
 
 namespace StellarApi.DTOtoModel
 {
     /// <summary>
-    /// Extension methods for converting between <see cref="CelestialObject"/> and <see cref="CelestialObjectDTO"/>.
+    /// Extension methods for converting between <see cref="CelestialObject"/> and <see cref="CelestialObjectOutput"/> and <see cref="CelestialObjectInput"/>.
     /// </summary>
     public static class CelestialObjectExtensions
     {
         /// <summary>
-        /// Converts a CelestialObjectDTO to a CelestialObject.
+        /// Converts a CelestialObjectInput to a CelestialObject.
         /// </summary>
-        /// <param name="dto">The CelestialObjectDTO to convert.</param>
+        /// <param name="dto">The CelestialObjectInput to convert.</param>
         /// <returns>The converted CelestialObject.</returns>
-        public static CelestialObject ToModel(this CelestialObjectDTO dto)
+        public static CelestialObject ToModel(this CelestialObjectInput dto)
         {
-            if (dto.Type.Equals("Planet"))
+            if (string.IsNullOrWhiteSpace(dto.Type))
             {
+                throw new ArgumentException("The type cannot be null or empty.", nameof(dto.Type));
+            }
+            else if (dto.Type.Equals("Planet"))
+            {
+                if (!Enum.TryParse(dto.PlanetType ?? "Undefined", out PlanetType planetType))
+                {
+                    throw new InvalidEnumArgumentException($"The planet type {dto.PlanetType} is not supported.");
+                }
                 return new Planet(dto.Id, dto.Name, dto.Description, dto.Image, PositionExtensions.ToModel(dto.Position), dto.Mass, 
-                    dto.Temperature, dto.Radius, dto.IsWater ?? false, dto.IsLife ?? false, Enum.Parse<PlanetType>(dto.PlanetType ?? "Undefined"));
+                    dto.Temperature, dto.Radius, dto.IsWater ?? false, dto.IsLife ?? false, planetType);
+                
             }
             else if (dto.Type.Equals("Star"))
             {
+                if (!Enum.TryParse(dto.StarType ?? "Undefined", out StarType starType))
+                {
+                    throw new InvalidEnumArgumentException($"The star type {dto.StarType} is not supported.");
+                }
                 return new Star(dto.Id, dto.Name, dto.Description, dto.Image, PositionExtensions.ToModel(dto.Position),
-                    dto.Mass, dto.Temperature, dto.Radius, dto.Brightness ?? 1, Enum.Parse<StarType>(dto.StarType ?? "Undefined"));
+                    dto.Mass, dto.Temperature, dto.Radius, dto.Brightness ?? 0, starType);
             }
             else
             {
@@ -34,25 +48,25 @@ namespace StellarApi.DTOtoModel
         }
 
         /// <summary>
-        /// Converts a collection of CelestialObjectDTOs to CelestialObjects.
+        /// Converts a collection of CelestialObjectInput to CelestialObjects.
         /// </summary>
-        /// <param name="dtos">The collection of CelestialObjectDTOs to convert.</param>
+        /// <param name="dtos">The collection of CelestialObjectInput to convert.</param>
         /// <returns>The converted collection of CelestialObjects.</returns>
-        public static IEnumerable<CelestialObject> ToModel(this IEnumerable<CelestialObjectDTO> dtos)
+        public static IEnumerable<CelestialObject> ToModel(this IEnumerable<CelestialObjectInput> dtos)
         {
             return dtos.Select(dto => dto.ToModel()).Where(obj => obj != null).Select(obj => obj!);
         }
 
         /// <summary>
-        /// Converts a CelestialObject to a CelestialObjectDTO.
+        /// Converts a CelestialObject to a CelestialObjectOutput.
         /// </summary>
         /// <param name="model">The CelestialObject to convert.</param>
-        /// <returns>The converted CelestialObjectDTO.</returns>
-        public static CelestialObjectDTO ToDTO(this CelestialObject model)
+        /// <returns>The converted CelestialObjectOutput.</returns>
+        public static CelestialObjectOutput ToDTO(this CelestialObject model)
         {
             Planet? planet = model is Planet ? (Planet)model : null;
             Star? star = model is Star ? (Star)model : null;
-            return new CelestialObjectDTO
+            return new CelestialObjectOutput
             {
                 Id = model.Id,
                 Name = model.Name,
@@ -74,39 +88,13 @@ namespace StellarApi.DTOtoModel
         }
 
         /// <summary>
-        /// Converts a collection of CelestialObjects to CelestialObjectDTOs.
+        /// Converts a collection of CelestialObjects to CelestialObjectOutput.
         /// </summary>
         /// <param name="models">The collection of CelestialObjects to convert.</param>
-        /// <returns>The converted collection of CelestialObjectDTOs.</returns>
-        public static IEnumerable<CelestialObjectDTO> ToDTO(this IEnumerable<CelestialObject> models)
+        /// <returns>The converted collection of CelestialObjectOutput.</returns>
+        public static IEnumerable<CelestialObjectOutput> ToDTO(this IEnumerable<CelestialObject> models)
         {
             return models.Select(model => model.ToDTO()).Where(obj => obj != null).Select(obj => obj!);
-        }
-
-        /// <summary>
-        /// Gets the value of a property from a collection of PropertyDTOs.
-        /// </summary>
-        /// <typeparam name="T">The type of the property value.</typeparam>
-        /// <param name="properties">The collection of PropertyDTOs.</param>
-        /// <param name="propertyName">The name of the property.</param>
-        /// <returns>The value of the property if found; otherwise, null.</returns>
-        private static T? GetPropertyValue<T>(IEnumerable<PropertyDTO> properties, string propertyName) where T : struct
-        {
-            foreach (var prop in properties)
-            {
-                if (prop.Name == propertyName && prop.Type.Equals(typeof(T).Name, StringComparison.CurrentCultureIgnoreCase))
-                {
-                    if (ValueParserHelpers.TryParseValue(prop.Value, out T result))
-                    {
-                        return result;
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-            }
-            return null;
         }
     }
 }

@@ -21,7 +21,7 @@ namespace StellarApi.Repository.Context
         /// <summary>
         /// Gets or sets the DbSet of space images.
         /// </summary>
-        public DbSet<SpaceImageEntity> SpaceImages { get; private set; }
+        public DbSet<SpaceImageEntity> SpaceImages { get; protected set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpaceDbContext"/> class.

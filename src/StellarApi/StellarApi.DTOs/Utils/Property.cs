@@ -1,9 +1,9 @@
-﻿namespace StellarApi.DTOs
+﻿namespace StellarApi.DTOs.Utils
 {
     /// <summary>
     /// Represents a property with a name, value, and type.
     /// </summary>
-    public class PropertyDTO
+    public class Property
     {
         /// <summary>
         /// Gets or sets the name of the property.
@@ -21,12 +21,12 @@
         public string Type { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyDTO"/> class.
+        /// Initializes a new instance of the <see cref="Property"/> class.
         /// </summary>
         /// <param name="name">The name of the property.</param>
         /// <param name="value">The value of the property.</param>
         /// <param name="type">The type of the property.</param>
-        public PropertyDTO(string name, string type, string value)
+        public Property(string name, string type, string value)
         {
             Name = name;
             Type = type;
@@ -34,9 +34,9 @@
         }
 
         /// <summary>
-        /// Create a new instance of the <see cref="PropertyDTO"/> class without values.
+        /// Create a new instance of the <see cref="Property"/> class without values.
         /// </summary>
-        public PropertyDTO()
+        public Property()
         {
 
         }

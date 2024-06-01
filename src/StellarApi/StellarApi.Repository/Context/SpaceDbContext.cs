@@ -11,12 +11,17 @@ namespace StellarApi.Repository.Context
         /// <summary>
         /// Gets or sets the DbSet of celestial objects.
         /// </summary>
-        public DbSet<CelestialObjectEntity> CelestialObjects { get; private set; }
+        public DbSet<CelestialObjectEntity> CelestialObjects { get; protected set; }
 
         /// <summary>
         /// Gets or sets the DbSet of users.
         /// </summary>
-        public DbSet<UserEntity> Users { get; private set; }
+        public DbSet<UserEntity> Users { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the DbSet of space images.
+        /// </summary>
+        public DbSet<SpaceImageEntity> SpaceImages { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpaceDbContext"/> class.
@@ -33,15 +38,12 @@ namespace StellarApi.Repository.Context
         }
 
         /// <summary>
-        /// Configures the database connection and other options for the context.
+        /// Initializes a new instance of the <see cref="SpaceDbContext"/> class with the specified options.
         /// </summary>
-        /// <param name="optionsBuilder">The builder used to create or modify options for this context.</param>
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        /// <param name="options">The options for configuring the context.</param>
+        protected SpaceDbContext(DbContextOptions options) : base(options)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlite(@"Data Source=..\StellarApi.Repository\Database\SpaceDatabase.db");
-            }
+
         }
     }
 }

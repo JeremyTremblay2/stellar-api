@@ -12,17 +12,30 @@ namespace StellarApi.Repository.Repositories
     public class CelestialObjectRepository : ICelestialObjectRepository
     {
         /// <summary>
+        /// Represents the database context for managing celestial object data.
+        /// </summary>
+        private readonly SpaceDbContext _context;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CelestialObjectRepository"/> class.
+        /// </summary>
+        /// <param name="context">The database context for managing celestial object data.</param>
+        public CelestialObjectRepository(SpaceDbContext context)
+        {
+            _context = context;
+        }
+
+        /// <summary>
         /// Adds a new celestial object to the database.
         /// </summary>
         /// <param name="celestialObject">The celestial object to add.</param>
         /// <returns>A task that represents the asynchronous operation and returns true if the addition was successful; otherwise, false.</returns>
         public async Task<bool> AddCelestialObject(CelestialObject celestialObject)
         {
-            using SpaceDbContext context = new();
-            if (context.CelestialObjects is null) return false;
+            if (_context.CelestialObjects is null) return false;
 
-            await context.CelestialObjects.AddAsync(celestialObject.ToEntity());
-            return await context.SaveChangesAsync() == 1;
+            await _context.CelestialObjects.AddAsync(celestialObject.ToEntity());
+            return await _context.SaveChangesAsync() == 1;
         }
 
         /// <summary>
@@ -33,9 +46,8 @@ namespace StellarApi.Repository.Repositories
         /// <returns>A task that represents the asynchronous operation and returns true if the update was successful; otherwise, false.</returns>
         public async Task<bool> EditCelestialObject(int id, CelestialObject celestialObject)
         {
-            using SpaceDbContext context = new();
-            if (context.CelestialObjects is null) return false;
-            var existingCelestialObject = await context.CelestialObjects.FindAsync(id);
+            if (_context.CelestialObjects is null) return false;
+            var existingCelestialObject = await _context.CelestialObjects.FindAsync(id);
             if (existingCelestialObject == null)
                 return false;
             var entity = celestialObject.ToEntity();
@@ -54,8 +66,8 @@ namespace StellarApi.Repository.Repositories
             existingCelestialObject.IsLife = entity.IsLife;
             existingCelestialObject.IsWater = entity.IsWater;
             existingCelestialObject.Brightness = entity.Brightness;
-            context.CelestialObjects.Update(existingCelestialObject);
-            return await context.SaveChangesAsync() == 1;
+            _context.CelestialObjects.Update(existingCelestialObject);
+            return await _context.SaveChangesAsync() == 1;
         }
 
         /// <summary>
@@ -65,9 +77,8 @@ namespace StellarApi.Repository.Repositories
         /// <returns>A task that represents the asynchronous operation and returns the retrieved celestial object, or null if not found.</returns>
         public async Task<CelestialObject?> GetCelestialObject(int id)
         {
-            using SpaceDbContext context = new();
-            if (context.CelestialObjects is null) return null;
-            return (await context.CelestialObjects.FindAsync(id)).ToModel();
+            if (_context.CelestialObjects is null) return null;
+            return (await _context.CelestialObjects.FindAsync(id)).ToModel();
         }
 
         /// <summary>
@@ -79,10 +90,9 @@ namespace StellarApi.Repository.Repositories
         public async Task<IEnumerable<CelestialObject>> GetCelestialObjects(int page, int pageSize)
         {
             var celestialObjects = new List<CelestialObject>();
-            using SpaceDbContext context = new();
-            if (context.CelestialObjects is null) return celestialObjects;
+            if (_context.CelestialObjects is null) return celestialObjects;
 
-            return (await context.CelestialObjects
+            return (await _context.CelestialObjects
                 .Skip(page * pageSize)
                 .Take(pageSize)
                 .ToListAsync())
@@ -96,13 +106,12 @@ namespace StellarApi.Repository.Repositories
         /// <returns>A task that represents the asynchronous operation and returns true if the removal was successful; otherwise, false.</returns>
         public async Task<bool> RemoveCelestialObject(int id)
         {
-            using SpaceDbContext context = new();
-            if (context.CelestialObjects is null) return false;
-            var celestialObject = await context.CelestialObjects.FindAsync(id);
+            if (_context.CelestialObjects is null) return false;
+            var celestialObject = await _context.CelestialObjects.FindAsync(id);
             if (celestialObject == null) return false;
 
-            context.CelestialObjects.Remove(celestialObject);
-            return await context.SaveChangesAsync() == 1;
+            _context.CelestialObjects.Remove(celestialObject);
+            return await _context.SaveChangesAsync() == 1;
         }
     }
 }

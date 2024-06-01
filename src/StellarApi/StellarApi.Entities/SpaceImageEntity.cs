@@ -1,0 +1,44 @@
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace StellarApi.Entities
+{
+    /// <summary>
+    /// Entity representing a Space Image.
+    /// </summary>
+    public class SpaceImageEntity
+    {
+        /// <summary>
+        /// The unique identifier of the space image.
+        /// </summary>
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; private set; }
+
+        /// <summary>
+        /// The title of the space image.
+        /// </summary>
+        [Required(AllowEmptyStrings = false, ErrorMessage = "The title cannot be empty.")]
+        [MaxLength(100, ErrorMessage = "The title should be less than 100 caracters.")]
+        public string Title { get; set; }
+
+        /// <summary>
+        /// The description of the space image.
+        /// </summary>
+        [Required(AllowEmptyStrings = false, ErrorMessage = "The description cannot be empty.")]
+        [MaxLength(3000, ErrorMessage = "The description should be less than 3000 caracters.")]
+        public string Description { get; set; }
+
+        /// <summary>
+        /// The image url of the space image.
+        /// </summary>
+        [Required(AllowEmptyStrings = false, ErrorMessage = "The image URL cannot be empty.")]
+        public string Image { get; set; }
+
+        /// <summary>
+        /// The shooting date of the space image.
+        /// </summary>
+        [Required(ErrorMessage = "The shooting date cannot be empty.")]
+        public DateTime ShootingDate { get; set; }
+    }
+}

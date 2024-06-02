@@ -3,6 +3,7 @@ using StellarApi.Infrastructure.Repository;
 using StellarApi.Model.Users;
 using StellarApi.Helpers;
 using StellarApi.Business.Exceptions;
+using Microsoft.Extensions.Logging;
 
 namespace StellarApi.Business
 {
@@ -27,12 +28,19 @@ namespace StellarApi.Business
         private readonly IUserRepository _repository;
 
         /// <summary>
+        /// Logger used by this service.
+        /// </summary>
+        private readonly ILogger<UserService> _logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="UserService"/> class.
         /// </summary>
+        /// <param name="logger">The logger used by this service.</param>
         /// <param name="userRepository">The repository used by this service.</param>
-        public UserService(IUserRepository userRepository)
+        public UserService(ILogger<UserService> logger, IUserRepository userRepository)
         {
-            this._repository = userRepository;
+            _logger = logger;
+            _repository = userRepository;
         }
 
         /// <inheritdoc/>
@@ -92,6 +100,7 @@ namespace StellarApi.Business
         {
             if (user == null)
             {
+                _logger.LogWarning("The user was null while checking its values.");
                 throw new ArgumentNullException(nameof(user));
             }
             if (string.IsNullOrWhiteSpace(user.Email))
@@ -121,6 +130,7 @@ namespace StellarApi.Business
             var existingUser = await _repository.GetUserByEmail(user.Email);
             if (existingUser != null && existingUser.Id != user.Id)
             {
+                _logger.LogTrace($"The email address {user.Email} is already used bu user n°{existingUser.Id} and cannot be edited for user n°{user.Id}.");
                 throw new DuplicateUserException("The email address is already used.");
             }
         }

@@ -59,6 +59,8 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
         Id = id;
         Name = name;
         CelestialObjects = new ReadOnlyCollection<CelestialObject>(celestialObjects);
+        CreationDate = creationDate ?? DateTime.Now;
+        ModificationDate = modificationDate ?? DateTime.Now;
     }
     
     public Map(int id, string name, IEnumerable<CelestialObject> celestialObject, DateTime? creationDate = null, DateTime? modificationDate = null)
@@ -70,6 +72,8 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
         Name = name;
         CelestialObjects = new ReadOnlyCollection<CelestialObject>(celestialObjects);
         celestialObjects.AddRange(celestialObject);
+        CreationDate = creationDate ?? DateTime.Now;
+        ModificationDate = modificationDate ?? DateTime.Now;
     } 
 
     /// <inheritdoc/>

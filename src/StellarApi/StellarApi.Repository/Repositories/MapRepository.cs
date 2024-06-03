@@ -3,6 +3,7 @@ using StellarApi.Infrastructure.Repository;
 using StellarApi.Model.Space;
 using StellarApi.Repository.Context;
 using StellarApi.EntityToModel;
+using StellarApi.Repository.Exceptions;
 
 namespace StellarApi.Repository.Repositories;
 
@@ -11,58 +12,67 @@ namespace StellarApi.Repository.Repositories;
 /// </summary>
 public class MapRepository : IMapRepository
 {
+    /// <summary>
+    /// Represents the database _context for managing map data.
+    /// </summary>
+    private readonly SpaceDbContext _context;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MapRepository"/> class.
+    /// </summary>
+    /// <param name="context">The database context for managing map data.</param>
+    public MapRepository(SpaceDbContext context)
+    {
+        _context = context;
+    }
+
     /// <inheritdoc/>
     public async Task<bool> AddMap(Map map)
     {
-        using SpaceDbContext context = new();
-        if (context.Maps is null) return false;
+        if (_context.Maps is null) throw new UnavailableDatabaseException();
 
-        await context.Maps.AddAsync(map.ToEntity());
-        return await context.SaveChangesAsync() == 1;
+        await _context.Maps.AddAsync(map.ToEntity());
+        return await _context.SaveChangesAsync() == 1;
     }
 
     /// <inheritdoc/>
     public async Task<bool> EditMap(int id, Map map)
     {
-        using SpaceDbContext context = new();
-        if (context.Maps is null) return false;
-        var existingMap = await context.Maps.FindAsync(id);
-        if (existingMap == null)
-            return false;
+        if (_context.Maps is null) throw new UnavailableDatabaseException();
+        var existingMap = await _context.Maps.FindAsync(id);
+        if (existingMap == null) throw new EntityNotFoundException(id.ToString(), "The map was not found.");
         var entity = map.ToEntity();
-        entity.Id = id;
-        context.Maps.Update(entity);
-        return await context.SaveChangesAsync() == 1;
+        existingMap.Name = entity.Name;
+        existingMap.CelestialObjects = entity.CelestialObjects;
+        _context.Maps.Update(existingMap);
+        return await _context.SaveChangesAsync() == 1;
     }
 
     /// <inheritdoc/>
     public async Task<Map?> GetMap(int id)
     {
-        using SpaceDbContext context = new();
-        if (context.Maps is null) return null;
-        return (await context.Maps.FindAsync(id)).ToModel();
+        if (_context.Maps is null) return null;
+        return (await _context.Maps.FindAsync(id)).ToModel();
     }
 
     /// <inheritdoc/>
     public async Task<IEnumerable<Map>> GetMaps(int page, int pageSize)
     {
-        using SpaceDbContext context = new();
-        if (context.Maps is null) return new List<Map>();
-        return await context.Maps
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .Select(map => map.ToModel())
-            .ToListAsync();
+        if (_context.Maps is null) throw new UnavailableDatabaseException();
+        return (await _context.Maps
+                .Skip(page * pageSize)
+                .Take(pageSize)
+                .ToListAsync())
+            .ToModel();
     }
 
     /// <inheritdoc/>
     public async Task<bool> RemoveMap(int id)
     {
-        using SpaceDbContext context = new();
-        if (context.Maps is null) return false;
-        var map = await context.Maps.FindAsync(id);
+        if (_context.Maps is null) throw new UnavailableDatabaseException();
+        var map = await _context.Maps.FindAsync(id);
         if (map is null) return false;
-        context.Maps.Remove(map);
-        return await context.SaveChangesAsync() == 1;
+        _context.Maps.Remove(map);
+        return await _context.SaveChangesAsync() == 1;
     }
 }

@@ -7,7 +7,7 @@ using StellarApi.Model.Users;
 namespace StellarApi.DTOtoModel
 {
     /// <summary>
-    /// Extension methods for converting between <see cref="CelestialObject"/> and <see cref="CelestialObjectOutput"/> and <see cref="CelestialObjectInput"/>.
+    /// Extension methods for converting between <see cref="CelestialObject"/>, <see cref="CelestialObjectOutput"/> and <see cref="CelestialObjectInput"/>.
     /// </summary>
     public static class CelestialObjectExtensions
     {

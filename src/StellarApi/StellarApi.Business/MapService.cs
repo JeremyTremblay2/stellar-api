@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+using StellarApi.Business.Exceptions;
 using StellarApi.Infrastructure.Business;
 using StellarApi.Infrastructure.Repository;
 using StellarApi.Model.Space;
@@ -9,14 +11,28 @@ namespace StellarApi.Business;
 /// </summary>
 public class MapService : IMapService
 {
+    /// <summary>
+    /// Constant that represents the maximum length of a name.
+    /// </summary>
+    private const int MaxLengthName = 50;
+
+    /// <summary>
+    /// The repository used by this service.
+    /// </summary>
     private readonly IMapRepository _repository;
+
+    /// <summary>
+    /// Logger used by this service.
+    /// </summary>
+    private readonly ILogger<IMapService> _logger;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MapService"/> class.
     /// </summary>
     /// <param name="repository">The repository used for accessing maps.</param>
-    public MapService(IMapRepository repository)
+    public MapService(ILogger<IMapService> logger, IMapRepository repository)
     {
+        _logger = logger;
         _repository = repository;
     }
 
@@ -48,5 +64,23 @@ public class MapService : IMapService
     public Task<bool> DeleteMap(int id)
     {
         return _repository.RemoveMap(id);
+    }
+
+
+    private void CheckMapData(Map map)
+    {
+        if (map == null)
+        {
+            _logger.LogWarning("The map was null while checking its data.");
+            throw new ArgumentNullException(nameof(map));
+        }
+        if (string.IsNullOrWhiteSpace(map.Name))
+        {
+            throw new ArgumentException("The map name cannot be null or empty.");
+        }
+        if (map.Name.Length > MaxLengthName)
+        {
+            throw new InvalidFieldLengthException($"The map name cannot be longer than {MaxLengthName} characters.");
+        }
     }
 }

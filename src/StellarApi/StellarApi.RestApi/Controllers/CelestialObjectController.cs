@@ -159,8 +159,7 @@ namespace StellarApi.RestApi.Controllers
         /// <param name="celestialObject">The celestial object with updated information.</param>
         /// <returns>The action result indicating the success or failure of the operation.</returns>
         [MapToApiVersion(1)]
-        [HttpPut]
-        [Route("edit")]
+        [HttpPut("edit/{id}")]
         public async Task<ActionResult> PutCelestialObject(int id, [FromBody] CelestialObjectInput celestialObject)
         {
             _logger.LogInformation($"Editing celestial object n°{id} with new data: {celestialObject}.");
@@ -212,8 +211,7 @@ namespace StellarApi.RestApi.Controllers
         /// <param name="id">The unique identifier of the celestial object to delete.</param>
         /// <returns>The action result indicating the success or failure of the operation.</returns>
         [MapToApiVersion(1)]
-        [HttpDelete]
-        [Route("remove")]
+        [HttpDelete("remove/{id}")]
         public async Task<ActionResult> DeleteCelestialObject(int id)
         {
             _logger.LogInformation($"Deleting celestial object data for celestial object n°{id}.");

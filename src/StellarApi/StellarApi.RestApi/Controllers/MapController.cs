@@ -163,7 +163,7 @@ public class MapController : ControllerBase
     /// <param name="map">The map object containing the new data.</param>
     /// <returns>The action result indicating the success or failure of the operation.</returns>
     [MapToApiVersion(1)]
-    [HttpPut]
+    [HttpPut("edit/{id}")]
     public async Task<ActionResult> PutMap(int id, MapInput map)
     {
         _logger.LogInformation($"Update request for map n°{id} with object: {map}.");
@@ -212,8 +212,7 @@ public class MapController : ControllerBase
     /// <param name="id">The unique identifier of the map to delete.</param>
     /// <returns>The action result indicating the success or failure of the operation.</returns>
     [MapToApiVersion(1)]
-    [HttpDelete()]
-    [Route("delete")]
+    [HttpDelete("remove/{id}")]
     public async Task<ActionResult> DeleteMap(int id)
     {
         _logger.LogInformation($"Delete request for map n°{id}.");

@@ -16,7 +16,7 @@ namespace StellarApi.Repository.Context
         /// <summary>
         /// Gets or sets the DbSet of maps.
         /// </summary>
-        public DbSet<MapEntity> Maps { get; private set; }
+        public DbSet<MapEntity> Maps { get; protected set; }
 
         /// <summary>
         /// Gets or sets the DbSet of users.

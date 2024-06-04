@@ -76,8 +76,8 @@ public static partial class Program
         builder.Services.AddScoped<IMapService, MapService>();
         builder.Services.AddScoped<IUserService, UserService>();
 
-        builder.Services.AddScoped<IMapRepository, MapRepository>();
         builder.Services.AddScoped<ICelestialObjectRepository, CelestialObjectRepository>();
+        builder.Services.AddScoped<IMapRepository, MapRepository>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
 
         builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);

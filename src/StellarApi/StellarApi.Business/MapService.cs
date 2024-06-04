@@ -51,12 +51,17 @@ public class MapService : IMapService
     /// <inheritdoc/>
     public Task<bool> PostMap(Map map)
     {
+        CheckMapData(map);
+        map.CreationDate = DateTime.Now;
+        map.ModificationDate = DateTime.Now;
         return _repository.AddMap(map);
     }
 
     /// <inheritdoc/>
     public Task<bool> PutMap(int id, Map map)
     {
+        CheckMapData(map);
+        map.ModificationDate = DateTime.Now;
         return _repository.EditMap(id, map);
     }
 
@@ -66,6 +71,17 @@ public class MapService : IMapService
         return _repository.RemoveMap(id);
     }
 
+    /// <inheritdoc/>
+    public Task<bool> AddCelestialObject(int mapId, int celestialObjectId)
+    {
+        return _repository.AddCelestialObject(mapId, celestialObjectId);
+    }
+
+    /// <inheritdoc/>
+    public Task<bool> RemoveCelestialObject(int mapId, int celestialObjectId)
+    {
+        return _repository.RemoveCelestialObject(mapId, celestialObjectId);
+    }
 
     private void CheckMapData(Map map)
     {
@@ -74,10 +90,12 @@ public class MapService : IMapService
             _logger.LogWarning("The map was null while checking its data.");
             throw new ArgumentNullException(nameof(map));
         }
+
         if (string.IsNullOrWhiteSpace(map.Name))
         {
             throw new ArgumentException("The map name cannot be null or empty.");
         }
+
         if (map.Name.Length > MaxLengthName)
         {
             throw new InvalidFieldLengthException($"The map name cannot be longer than {MaxLengthName} characters.");

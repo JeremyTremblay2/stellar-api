@@ -26,7 +26,7 @@ public class MapEntity
     /// <summary>
     /// Gets or sets the celestial objects in the map.
     /// </summary>
-    public List<CelestialObjectEntity>? CelestialObjects { get; set; }
+    public List<CelestialObjectEntity> CelestialObjects { get; set; } = new();
 
     /// <summary>
     /// Gets or sets the creation date of the map.

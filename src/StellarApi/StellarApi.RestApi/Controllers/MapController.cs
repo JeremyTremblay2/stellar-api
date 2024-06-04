@@ -115,7 +115,7 @@ public class MapController : ControllerBase
     [MapToApiVersion(1)]
     [HttpPost]
     [Route("create")]
-    public async Task<ActionResult> PostMap(MapInput map)
+    public async Task<ActionResult> PostMap([FromBody] MapInput map)
     {
         _logger.LogInformation($"New map creation request for object: {map}.");
         try
@@ -164,7 +164,7 @@ public class MapController : ControllerBase
     /// <returns>The action result indicating the success or failure of the operation.</returns>
     [MapToApiVersion(1)]
     [HttpPut("edit/{id}")]
-    public async Task<ActionResult> PutMap(int id, MapInput map)
+    public async Task<ActionResult> PutMap(int id, [FromBody] MapInput map)
     {
         _logger.LogInformation($"Update request for map n°{id} with object: {map}.");
         try
@@ -212,7 +212,7 @@ public class MapController : ControllerBase
     /// <param name="id">The unique identifier of the map to delete.</param>
     /// <returns>The action result indicating the success or failure of the operation.</returns>
     [MapToApiVersion(1)]
-    [HttpDelete("remove/{id}")]
+    [HttpDelete("delete/{id}")]
     public async Task<ActionResult> DeleteMap(int id)
     {
         _logger.LogInformation($"Delete request for map n°{id}.");
@@ -248,6 +248,86 @@ public class MapController : ControllerBase
                 $"An unexpected error occurred while deleting the Map n°{id}. More details: {ex.Message}.");
             return StatusCode(StatusCodes.Status500InternalServerError,
                 new { Message = $"An unexpected error occurred while deleting the Map n°{id}.", Details = ex.Message });
+        }
+    }
+
+    [MapToApiVersion(1)]
+    [HttpPost("{mapId}/add/{celestialObjectId}")]
+    public async Task<ActionResult> AddCelestialObject(int mapId, int celestialObjectId)
+    {
+        _logger.LogInformation($"Add celestial object request for map n°{mapId} and celestial object n°{celestialObjectId}.");
+        try
+        {
+            if (await _service.AddCelestialObject(mapId, celestialObjectId))
+            {
+                _logger.LogInformation($"The Celestial Object n°{celestialObjectId} was successfully added to the Map n°{mapId}.");
+                return Ok($"The Celestial Object n°{celestialObjectId} was successfully added to the Map n°{mapId}.");
+            }
+            else
+            {
+                _logger.LogError($"The Celestial Object n°{celestialObjectId} could not be added to the Map n°{mapId} due to an unknown error.");
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"The Celestial Object n°{celestialObjectId} could not be added to the Map n°{mapId} due to an unknown error.");
+            }
+        }
+        catch (EntityNotFoundException ex)
+        {
+            _logger.LogError(
+                $"The Celestial Object n°{celestialObjectId} could not be added to the Map n°{mapId} because it was not found. More details: {ex.Message}.");
+            return NotFound(ex.Message);
+        }
+        catch (UnavailableDatabaseException ex)
+        {
+            _logger.LogError(
+                $"The Celestial Object n°{celestialObjectId} could not be added to the Map n°{mapId} due to an unavailable database. More details: {ex.Message}.");
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                $"An unexpected error occurred while adding the Celestial Object n°{celestialObjectId} to the Map n°{mapId}. More details: {ex.Message}.");
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                new { Message = $"An unexpected error occurred while adding the Celestial Object n°{celestialObjectId} to the Map n°{mapId}.", Details = ex.Message });
+        }
+    }
+
+    [MapToApiVersion(1)]
+    [HttpDelete("{mapId}/remove/{celestialObjectId}")]
+    public async Task<ActionResult> RemoveCelestialObject(int mapId, int celestialObjectId)
+    {
+        _logger.LogInformation($"Remove celestial object request for map n°{mapId} and celestial object n°{celestialObjectId}.");
+        try
+        {
+            if (await _service.RemoveCelestialObject(mapId, celestialObjectId))
+            {
+                _logger.LogInformation($"The Celestial Object n°{celestialObjectId} was successfully removed from the Map n°{mapId}.");
+                return Ok($"The Celestial Object n°{celestialObjectId} was successfully removed from the Map n°{mapId}.");
+            }
+            else
+            {
+                _logger.LogError($"The Celestial Object n°{celestialObjectId} could not be removed from the Map n°{mapId} due to an unknown error.");
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"The Celestial Object n°{celestialObjectId} could not be removed from the Map n°{mapId} due to an unknown error.");
+            }
+        }
+        catch (EntityNotFoundException ex)
+        {
+            _logger.LogError(
+                $"The Celestial Object n°{celestialObjectId} could not be removed from the Map n°{mapId} because it was not found. More details: {ex.Message}.");
+            return NotFound(ex.Message);
+        }
+        catch (UnavailableDatabaseException ex)
+        {
+            _logger.LogError(
+                $"The Celestial Object n°{celestialObjectId} could not be removed from the Map n°{mapId} due to an unavailable database. More details: {ex.Message}.");
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                $"An unexpected error occurred while removing the Celestial Object n°{celestialObjectId} from the Map n°{mapId}. More details: {ex.Message}.");
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                new { Message = $"An unexpected error occurred while removing the Celestial Object n°{celestialObjectId} from the Map n°{mapId}.", Details = ex.Message });
         }
     }
 }

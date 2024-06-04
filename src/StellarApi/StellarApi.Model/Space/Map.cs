@@ -35,12 +35,12 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
     /// <summary>
     /// The creation date of the map.
     /// </summary>
-    public DateTime CreationDate { get; private set; }
+    public DateTime CreationDate { get; set; }
 
     /// <summary>
     /// The modification date of the map.
     /// </summary>
-    public DateTime ModificationDate { get; private set; }
+    public DateTime ModificationDate { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Map"/> class with specified properties.

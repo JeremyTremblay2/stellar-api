@@ -43,4 +43,20 @@ public interface IMapService
     /// <param name="id">The unique identifier of the map to delete.</param>
     /// <returns>A task that represents the asynchronous operation and returns true if the deletion was successful; otherwise, false.</returns>
     Task<bool> DeleteMap(int id);
+
+    /// <summary>
+    /// Adds a celestial object to a map.
+    /// </summary>
+    /// <param name="mapId">The unique identifier of the map.</param>
+    /// <param name="celestialObjectId">The unique identifier of the celestial object to add.</param>
+    /// <returns>A task that represents the asynchronous operation and returns true if the addition was successful; otherwise, false.</returns>
+    Task<bool> AddCelestialObject(int mapId, int celestialObjectId);
+
+    /// <summary>
+    /// Removes a celestial object from a map.
+    /// </summary>
+    /// <param name="mapId">The unique identifier of the map.</param>
+    /// <param name="celestialObjectId">The unique identifier of the celestial object to remove.</param>
+    /// <returns>A task that represents the asynchronous operation and returns true if the removal was successful; otherwise, false.</returns>
+    Task<bool> RemoveCelestialObject(int mapId, int celestialObjectId);
 }

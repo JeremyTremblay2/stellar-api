@@ -75,4 +75,30 @@ public class MapRepository : IMapRepository
         _context.Maps.Remove(map);
         return await _context.SaveChangesAsync() == 1;
     }
+
+    /// <inheritdoc/>
+    public async Task<bool> AddCelestialObject(int mapId, int celestialObjectId)
+    {
+        if (_context.Maps is null || _context.CelestialObjects is null) throw new UnavailableDatabaseException();
+        var map = await _context.Maps.FindAsync(mapId);
+        if (map is null) throw new EntityNotFoundException(mapId.ToString(), "The map was not found.");
+        var celestialObject = await _context.CelestialObjects.FindAsync(celestialObjectId);
+        if (celestialObject is null)
+            throw new EntityNotFoundException(celestialObjectId.ToString(), "The celestial object was not found.");
+        map.CelestialObjects.Add(celestialObject);
+        return await _context.SaveChangesAsync() == 1;
+    }
+
+    /// <inheritdoc/>
+    public async Task<bool> RemoveCelestialObject(int mapId, int celestialObjectId)
+    {
+        if (_context.Maps is null || _context.CelestialObjects is null) throw new UnavailableDatabaseException();
+        var map = await _context.Maps.FindAsync(mapId);
+        if (map is null) throw new EntityNotFoundException(mapId.ToString(), "The map was not found.");
+        var celestialObject = await _context.CelestialObjects.FindAsync(celestialObjectId);
+        if (celestialObject is null)
+            throw new EntityNotFoundException(celestialObjectId.ToString(), "The celestial object was not found.");
+        map.CelestialObjects.Remove(celestialObject);
+        return await _context.SaveChangesAsync() == 1;
+    }
 }

@@ -8,11 +8,6 @@ namespace StellarApi.DTOs.Space
     public class CelestialObjectInput
     {
         /// <summary>
-        /// Gets or sets the unique identifier of the celestial object.
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
         /// Gets or sets the name of the celestial object.
         /// </summary>
         public string Name { get; set; } = string.Empty;
@@ -80,7 +75,6 @@ namespace StellarApi.DTOs.Space
         /// <summary>
         /// Initializes a new instance of the <see cref="CelestialObjectInput"/> class with specified properties.
         /// </summary>
-        /// <param name="id">The unique identifier of the celestial object.</param>
         /// <param name="name">The name of the celestial object.</param>
         /// <param name="description">The description of the celestial object.</param>
         /// <param name="mass">The mass of the celestial object.</param>
@@ -92,10 +86,9 @@ namespace StellarApi.DTOs.Space
         /// <param name="isLife">The possibility of life on the celestial object.</param>
         /// <param name="starType">The type of the star.</param>
         /// <param name="brightness">The brightness of the celestial object.</param>
-        public CelestialObjectInput(int id, string name, string description, Position? position, double mass, double temperature, double radius,
+        public CelestialObjectInput(string name, string description, Position? position, double mass, double temperature, double radius,
             string image, string type, string? planetType = null, bool? isWater = null, bool? isLife = null, string? starType = null, double? brightness = null)
         {
-            Id = id;
             Name = name;
             Description = description;
             Position = position;

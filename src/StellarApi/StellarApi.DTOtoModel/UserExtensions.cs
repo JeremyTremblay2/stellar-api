@@ -18,7 +18,7 @@ namespace DTOtoModel
             if (dto is null)
                 return null;
 
-            return new User(dto.Id, dto.Email, dto.Username, dto.Password, Role.Member);
+            return new User(0, dto.Email, dto.Username, dto.Password, Role.Member);
         }
 
         /// <summary>

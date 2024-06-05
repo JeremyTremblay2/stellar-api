@@ -28,7 +28,7 @@ namespace StellarApi.DTOtoModel
                 {
                     throw new InvalidEnumArgumentException($"The planet type {dto.PlanetType} is not supported.");
                 }
-                return new Planet(dto.Id, dto.Name, dto.Description, dto.Image, PositionExtensions.ToModel(dto.Position), dto.Mass, 
+                return new Planet(0, dto.Name, dto.Description, dto.Image, PositionExtensions.ToModel(dto.Position), dto.Mass,
                     dto.Temperature, dto.Radius, dto.IsWater ?? false, dto.IsLife ?? false, planetType);
                 
             }
@@ -38,7 +38,7 @@ namespace StellarApi.DTOtoModel
                 {
                     throw new InvalidEnumArgumentException($"The star type {dto.StarType} is not supported.");
                 }
-                return new Star(dto.Id, dto.Name, dto.Description, dto.Image, PositionExtensions.ToModel(dto.Position),
+                return new Star(0, dto.Name, dto.Description, dto.Image, PositionExtensions.ToModel(dto.Position),
                     dto.Mass, dto.Temperature, dto.Radius, dto.Brightness ?? 0, starType);
             }
             else

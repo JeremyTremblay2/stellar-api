@@ -1,4 +1,4 @@
-﻿using Asp.Versioning;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using StellarApi.Infrastructure.Business;
 using StellarApi.Model.Space;

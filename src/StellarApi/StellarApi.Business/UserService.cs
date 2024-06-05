@@ -66,19 +66,19 @@ namespace StellarApi.Business
         {
             user.CreationDate = DateTime.Now;
             user.ModificationDate = DateTime.Now;
-            await CheckUserData(user);
+            await CheckUserData(0, user);
             return await _repository.AddUser(user);
         }
 
         /// <inheritdoc/>
-        public async Task<bool> PutUser(User user, bool shouldUpdateModificationDate)
+        public async Task<bool> PutUser(int id, User user, bool shouldUpdateModificationDate)
         {
             if (shouldUpdateModificationDate)
             {
                 user.ModificationDate = DateTime.Now;
             }
-            await CheckUserData(user);
-            return await _repository.EditUser(user);
+            await CheckUserData(id, user);
+            return await _repository.EditUser(id, user);
         }
 
         /// <inheritdoc/>
@@ -96,7 +96,7 @@ namespace StellarApi.Business
         /// <exception cref="InvalidEmailFormatException">If the email format is invalid.</exception>
         /// <exception cref="InvalidFieldLengthException">If the email or username is greater than the maximum length.</exception>
         /// <exception cref="DuplicateUserException">If the email is already used.</exception>
-        private async Task CheckUserData(User user)
+        private async Task CheckUserData(int id, User user)
         {
             if (user == null)
             {
@@ -128,7 +128,7 @@ namespace StellarApi.Business
                 throw new ArgumentException("The password cannot be null or empty.", nameof(user.Password));
             }
             var existingUser = await _repository.GetUserByEmail(user.Email);
-            if (existingUser != null && existingUser.Id != user.Id)
+            if (existingUser != null && existingUser.Id != id)
             {
                 _logger.LogTrace($"The email address {user.Email} is already used bu user n°{existingUser.Id} and cannot be edited for user n°{user.Id}.");
                 throw new DuplicateUserException("The email address is already used.");

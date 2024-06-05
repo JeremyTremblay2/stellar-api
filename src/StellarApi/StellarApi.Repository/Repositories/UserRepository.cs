@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using StellarApi.EntityToModel;
 using StellarApi.Infrastructure.Repository;
 using StellarApi.Model.Users;
@@ -42,15 +42,16 @@ namespace StellarApi.Repository.Repositories
         /// <summary>
         /// Edits an existing user in the repository.
         /// </summary>
+        /// <param name="id">The ID of the user to edit.</param>
         /// <param name="user">The user to edit.</param>
         /// <returns>A boolean indicating whether the user was successfully edited.</returns>
         /// <exception cref="EntityNotFoundException">Thrown when the user is not found.</exception>
         /// <exception cref="UnavailableDatabaseException">Thrown when the database is not available.</exception>
-        public async Task<bool> EditUser(User user)
+        public async Task<bool> EditUser(int id, User user)
         {
             if (_context.Users is null) throw new UnavailableDatabaseException();
-            var existingUser = await _context.Users.FindAsync(user.Id);
-            if (existingUser == null) throw new EntityNotFoundException(user.Id.ToString(), "The user was not found.");
+            var existingUser = await _context.Users.FindAsync(id);
+            if (existingUser == null) throw new EntityNotFoundException(id.ToString(), "The user was not found.");
             var entity = user.ToEntity();
             existingUser.Email = entity.Email;
             existingUser.Username = entity.Username;

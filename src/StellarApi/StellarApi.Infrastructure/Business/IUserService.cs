@@ -39,10 +39,11 @@ namespace StellarApi.Infrastructure.Business
         /// <summary>
         /// Updates an existing user.
         /// </summary>
+        /// <param name="id">The unique identifier of the user to update.</param>
         /// <param name="user">The user to update.</param>
         /// <param name="shouldUpdateModificationDate">A boolean indicating whether the modification date should be updated.</param>
         /// <returns>A task that represents the asynchronous operation and true if the user was successfully updated, false otherwise.</returns>
-        Task<bool> PutUser(User user, bool shouldUpdateModificationDate);
+        Task<bool> PutUser(int id, User user, bool shouldUpdateModificationDate);
 
         /// <summary>
         /// Deletes a user.

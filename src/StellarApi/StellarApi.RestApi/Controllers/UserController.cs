@@ -154,7 +154,7 @@ namespace StellarApi.RestApi.Controllers
 
             try
             {
-                var wasEdited = await _service.PutUser(user, false);
+                var wasEdited = await _service.PutUser(user.Id, user, false);
                 if (wasEdited)
                 {
                     _logger.LogInformation($"The user {request.Email} was successfully authenticated and his token updated.");
@@ -253,27 +253,28 @@ namespace StellarApi.RestApi.Controllers
         /// <summary>
         /// Updates an existing user.
         /// </summary>
+        /// <param name="id">The ID of the user to update.</param>
         /// <param name="user">The user object to update.</param>
         /// <returns>Returns <see cref="OkResult"/> if the user is successfully updated. Returns <see cref="BadRequestResult"/> if the user object is invalid.</returns>
         [MapToApiVersion(1)]
         [HttpPut]
         [Authorize(Roles = "Member, Administrator")]
-        [Route("edit")]
-        public async Task<ActionResult> PutUser([FromBody] UserInput user)
+        [Route("edit/{id}")]
+        public async Task<ActionResult> PutUser(int id, [FromBody] UserInput user)
         {
-            _logger.LogInformation($"Editing user data for user n°{user.Id}.");
+            _logger.LogInformation($"Editing user data for user n°{id}.");
             User userObject = user.ToModel();
             try
             {
-                var wasEdited = await _service.PutUser(userObject, true);
+                var wasEdited = await _service.PutUser(id, userObject, true);
                 if (wasEdited)
                 {
-                    _logger.LogInformation($"User n°{user.Id} edited successfully.");
+                    _logger.LogInformation($"User n°{id} edited successfully.");
                     return Ok("User edited successfully.");
                 }
                 else
                 {
-                    _logger.LogError($"The user n°{user.Id} could not be edited due to an unknown error.");
+                    _logger.LogError($"The user n°{id} could not be edited due to an unknown error.");
                     return StatusCode(StatusCodes.Status500InternalServerError, "The user could not be edited due to an unknown error.");
                 }
             }
@@ -282,22 +283,22 @@ namespace StellarApi.RestApi.Controllers
                                    ex is InvalidEmailFormatException ||
                                    ex is InvalidFieldLengthException)
             {
-                _logger.LogInformation($"The user n°{user.Id} could not be edited due to an invalid field: {ex.Message}.");
+                _logger.LogInformation($"The user n°{id} could not be edited due to an invalid field: {ex.Message}.");
                 return BadRequest(ex.Message);
             }
             catch (DuplicateUserException ex)
             {
-                _logger.LogInformation($"The user n°{user.Id} could not be edited because a user already exists with this email. More details: {ex.Message}.");
+                _logger.LogInformation($"The user n°{id} could not be edited because a user already exists with this email. More details: {ex.Message}.");
                 return Conflict(ex.Message);
             }
             catch (EntityNotFoundException ex)
             {
-                _logger.LogInformation($"The user n°{user.Id} could not be edited because it could not be found.");
+                _logger.LogInformation($"The user n°{id} could not be edited because it could not be found.");
                 return NotFound(ex.Message);
             }
             catch (UnavailableDatabaseException ex)
             {
-                _logger.LogError($"The user n°{user.Id} could not be edited due to an unavailable database. More details: {ex.Message}.");
+                _logger.LogError($"The user n°{id} could not be edited due to an unavailable database. More details: {ex.Message}.");
                 return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
             }
             catch (Exception ex)

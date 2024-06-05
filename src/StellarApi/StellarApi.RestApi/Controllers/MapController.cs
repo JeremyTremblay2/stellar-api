@@ -39,12 +39,29 @@ public class MapController : ControllerBase
     }
 
     /// <summary>
-    /// Retrieves a map by its unique identifier.
+    /// (Needs Auth) Retrieves a map by its unique identifier.
     /// </summary>
+    /// <remarks>
+    ///
+    /// This route is used to retrieve a map by its unique identifier.
+    ///
+    /// A Map is a representation of a celestial map that contains a collection of celestial objects.
+    ///
+    /// A 404 error will be returned if the map is not found.
+    ///
+    /// Sample request:
+    ///
+    ///     GET /api/v1/maps/1
+    ///
+    /// </remarks>
     /// <param name="id">The unique identifier of the map to retrieve.</param>
-    /// <returns>The action result containing the retrieved map or a NotFound result if not found.</returns>
+    /// <returns>The retrieved map.</returns>
     [MapToApiVersion(1)]
     [HttpGet("{id}")]
+    [ProducesResponseType<MapOutput>(StatusCodes.Status200OK)]
+    [ProducesResponseType<object>(StatusCodes.Status404NotFound)]
+    [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
     public async Task<ActionResult<MapOutput?>> GetMapById(int id)
     {
         _logger.LogInformation($"Getting map n°{id}.");
@@ -76,16 +93,50 @@ public class MapController : ControllerBase
     }
 
     /// <summary>
-    /// Retrieves a collection of maps with pagination.
+    /// (Need Auth) Retrieves a collection of maps with pagination.
     /// </summary>
+    /// <remarks>
+    ///
+    /// This route is used to retrieve a collection of maps with pagination.
+    ///
+    /// A Map is a representation of a celestial map that contains a collection of celestial objects.
+    ///
+    /// The page and page size parameters are mandatory and must be greater than 0.
+    ///
+    /// A 400 error will be returned if the page or page size is less than or equal to 0.
+    ///
+    /// Sample request:
+    ///
+    ///     GET /api/v1/maps?page=1&pageSize=10
+    ///
+    /// </remarks>
     /// <param name="page">The page number.</param>
     /// <param name="pageSize">The number of items per page.</param>
-    /// <returns>The action result containing the collection of maps.</returns>
+    /// <returns>The retrieved collection of map.</returns>
     [MapToApiVersion(1)]
     [HttpGet]
+    [ProducesResponseType<IEnumerable<MapOutput>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
     public async Task<ActionResult<IEnumerable<MapOutput>>> GetMaps(int page, int pageSize)
     {
         _logger.LogInformation($"Getting maps from page {page} with a page size of {pageSize}.");
+
+        if (page <= 0)
+        {
+            _logger.LogInformation(
+                $"Maps data for page {page} with {pageSize} items per page could not be fetched because the page was a negative number.");
+            return BadRequest("The page number must be greater than 0.");
+        }
+
+        if (pageSize <= 0)
+        {
+            _logger.LogInformation(
+                $"Maps data for page {page} with {pageSize} items per page could not be fetched because the page size was not a negative number.");
+            return BadRequest("The page size must be greater than 0.");
+        }
+
         try
         {
             var maps = (await _service.GetMaps(page, pageSize)).ToDTO();
@@ -108,10 +159,28 @@ public class MapController : ControllerBase
     }
 
     /// <summary>
-    /// Creates a new map.
+    /// (Needs Auth) Creates a new map.
     /// </summary>
+    /// <remarks>
+    ///
+    /// This route is used to create a new map.
+    ///
+    /// A Map is a representation of a celestial map that contains a collection of celestial objects.
+    ///
+    /// The name of the map should not be null or empty and should be less than 100 characters.
+    ///
+    /// A 400 error will be returned if the map data is invalid.
+    ///
+    /// Sample request:
+    ///
+    ///     POST /api/v1/maps/create
+    ///     {
+    ///         "name": "Map name",
+    ///     }
+    ///
+    /// </remarks>
     /// <param name="map">The map to create.</param>
-    /// <returns>The action result indicating the success or failure of the creation.</returns>
+    /// <returns>>A message indicating if the map was added or not.</returns>
     [MapToApiVersion(1)]
     [HttpPost]
     [Route("create")]
@@ -157,13 +226,36 @@ public class MapController : ControllerBase
     }
 
     /// <summary>
-    /// Updates an existing map.
+    /// (Needs Auth) Updates an existing map.
     /// </summary>
+    /// <remarks>
+    ///
+    /// This route is used to update an existing map.
+    ///
+    /// A map is a representation of a celestial map that contains a collection of celestial objects.
+    ///
+    /// The name of the map should not be null or empty and should be less than 100 characters.
+    ///
+    /// A 400 error will be returned if the map data is invalid.
+    ///
+    /// Sample request:
+    ///
+    ///     PUT /api/v1/maps/edit/1
+    ///     {
+    ///         "name": "Edited map name",
+    ///     }
+    ///
+    /// </remarks>
     /// <param name="id">The unique identifier of the map to update.</param>
     /// <param name="map">The map object containing the new data.</param>
-    /// <returns>The action result indicating the success or failure of the operation.</returns>
+    /// <returns>A message indicating if the map was updated or not.</returns>
     [MapToApiVersion(1)]
     [HttpPut("edit/{id}")]
+    [ProducesResponseType<string>(StatusCodes.Status200OK)]
+    [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<string>(StatusCodes.Status404NotFound)]
+    [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
     public async Task<ActionResult> PutMap(int id, [FromBody] MapInput map)
     {
         _logger.LogInformation($"Update request for map n°{id} with object: {map}.");
@@ -207,12 +299,29 @@ public class MapController : ControllerBase
 
 
     /// <summary>
-    /// Deletes a map by its unique identifier.
+    /// (Needs Auth) Deletes a map by its unique identifier.
     /// </summary>
+    /// <remarks>
+    ///
+    /// This route is used to delete a map by its unique identifier.
+    ///
+    /// A map is a representation of a celestial map that contains a collection of celestial objects.
+    ///
+    /// A 404 error will be returned if the map is not found.
+    ///
+    /// Sample request:
+    ///
+    ///     DELETE /api/v1/maps/delete/1
+    ///
+    /// </remarks>
     /// <param name="id">The unique identifier of the map to delete.</param>
-    /// <returns>The action result indicating the success or failure of the operation.</returns>
+    /// <returns>A message indicating if the map was deleted or not.</returns>
     [MapToApiVersion(1)]
     [HttpDelete("delete/{id}")]
+    [ProducesResponseType<string>(StatusCodes.Status200OK)]
+    [ProducesResponseType<string>(StatusCodes.Status404NotFound)]
+    [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
     public async Task<ActionResult> DeleteMap(int id)
     {
         _logger.LogInformation($"Delete request for map n°{id}.");
@@ -251,21 +360,47 @@ public class MapController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// (Needs Auth) Adds a celestial object to a map.
+    /// </summary>
+    /// <remarks>
+    ///
+    /// This route is used to add a celestial object to a map.
+    ///
+    /// A map is a representation of a celestial map that contains a collection of celestial objects.
+    ///
+    /// A 404 error will be returned if the map or the celestial object is not found.
+    ///
+    /// Sample request:
+    ///
+    ///     POST /api/v1/maps/1/add/1
+    ///
+    /// </remarks>
+    /// <param name="mapId">The unique identifier of the map.</param>
+    /// <param name="celestialObjectId">The unique identifier of the celestial object to add.</param>
+    /// <returns>A message indicating if the celestial object was added or not.</returns>
     [MapToApiVersion(1)]
     [HttpPost("{mapId}/add/{celestialObjectId}")]
+    [ProducesResponseType<string>(StatusCodes.Status200OK)]
+    [ProducesResponseType<string>(StatusCodes.Status404NotFound)]
+    [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
     public async Task<ActionResult> AddCelestialObject(int mapId, int celestialObjectId)
     {
-        _logger.LogInformation($"Add celestial object request for map n°{mapId} and celestial object n°{celestialObjectId}.");
+        _logger.LogInformation(
+            $"Add celestial object request for map n°{mapId} and celestial object n°{celestialObjectId}.");
         try
         {
             if (await _service.AddCelestialObject(mapId, celestialObjectId))
             {
-                _logger.LogInformation($"The Celestial Object n°{celestialObjectId} was successfully added to the Map n°{mapId}.");
+                _logger.LogInformation(
+                    $"The Celestial Object n°{celestialObjectId} was successfully added to the Map n°{mapId}.");
                 return Ok($"The Celestial Object n°{celestialObjectId} was successfully added to the Map n°{mapId}.");
             }
             else
             {
-                _logger.LogError($"The Celestial Object n°{celestialObjectId} could not be added to the Map n°{mapId} due to an unknown error.");
+                _logger.LogError(
+                    $"The Celestial Object n°{celestialObjectId} could not be added to the Map n°{mapId} due to an unknown error.");
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     $"The Celestial Object n°{celestialObjectId} could not be added to the Map n°{mapId} due to an unknown error.");
             }
@@ -287,25 +422,56 @@ public class MapController : ControllerBase
             _logger.LogError(
                 $"An unexpected error occurred while adding the Celestial Object n°{celestialObjectId} to the Map n°{mapId}. More details: {ex.Message}.");
             return StatusCode(StatusCodes.Status500InternalServerError,
-                new { Message = $"An unexpected error occurred while adding the Celestial Object n°{celestialObjectId} to the Map n°{mapId}.", Details = ex.Message });
+                new
+                {
+                    Message =
+                        $"An unexpected error occurred while adding the Celestial Object n°{celestialObjectId} to the Map n°{mapId}.",
+                    Details = ex.Message
+                });
         }
     }
 
+    /// <summary>
+    /// (Needs Auth) Removes a celestial object from a map.
+    /// </summary>
+    /// <remarks>
+    ///
+    /// This route is used to remove a celestial object from a map.
+    ///
+    /// A map is a representation of a celestial map that contains a collection of celestial objects.
+    ///
+    /// Sample request:
+    ///
+    ///     DELETE /api/v1/maps/1/remove/1
+    ///
+    /// </remarks>
+    /// <param name="mapId">The unique identifier of the map.</param>
+    /// <param name="celestialObjectId">The unique identifier of the celestial object to remove.</param>
+    /// <returns>A message indicating if the celestial object was removed or not.</returns>
     [MapToApiVersion(1)]
     [HttpDelete("{mapId}/remove/{celestialObjectId}")]
+    [ProducesResponseType<string>(StatusCodes.Status200OK)]
+    [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<string>(StatusCodes.Status404NotFound)]
+    [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
     public async Task<ActionResult> RemoveCelestialObject(int mapId, int celestialObjectId)
     {
-        _logger.LogInformation($"Remove celestial object request for map n°{mapId} and celestial object n°{celestialObjectId}.");
+        _logger.LogInformation(
+            $"Remove celestial object request for map n°{mapId} and celestial object n°{celestialObjectId}.");
         try
         {
             if (await _service.RemoveCelestialObject(mapId, celestialObjectId))
             {
-                _logger.LogInformation($"The Celestial Object n°{celestialObjectId} was successfully removed from the Map n°{mapId}.");
-                return Ok($"The Celestial Object n°{celestialObjectId} was successfully removed from the Map n°{mapId}.");
+                _logger.LogInformation(
+                    $"The Celestial Object n°{celestialObjectId} was successfully removed from the Map n°{mapId}.");
+                return Ok(
+                    $"The Celestial Object n°{celestialObjectId} was successfully removed from the Map n°{mapId}.");
             }
             else
             {
-                _logger.LogError($"The Celestial Object n°{celestialObjectId} could not be removed from the Map n°{mapId} due to an unknown error.");
+                _logger.LogError(
+                    $"The Celestial Object n°{celestialObjectId} could not be removed from the Map n°{mapId} due to an unknown error.");
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     $"The Celestial Object n°{celestialObjectId} could not be removed from the Map n°{mapId} due to an unknown error.");
             }
@@ -333,7 +499,12 @@ public class MapController : ControllerBase
             _logger.LogError(
                 $"An unexpected error occurred while removing the Celestial Object n°{celestialObjectId} from the Map n°{mapId}. More details: {ex.Message}.");
             return StatusCode(StatusCodes.Status500InternalServerError,
-                new { Message = $"An unexpected error occurred while removing the Celestial Object n°{celestialObjectId} from the Map n°{mapId}.", Details = ex.Message });
+                new
+                {
+                    Message =
+                        $"An unexpected error occurred while removing the Celestial Object n°{celestialObjectId} from the Map n°{mapId}.",
+                    Details = ex.Message
+                });
         }
     }
 }

@@ -38,11 +38,11 @@ public class MapOutput
     /// <param name="celestialObjects">The celestial objects in the map.</param>
     /// <param name="creationDate">The creation date of the map.</param>
     /// <param name="modificationDate">The last modification date of the map.</param>
-    public MapOutput(int id, string name, List<CelestialObjectOutput>? celestialObjects, DateTime? creationDate, DateTime? modificationDate)
+    public MapOutput(int id, string name, IEnumerable<CelestialObjectOutput>? celestialObjects, DateTime? creationDate, DateTime? modificationDate)
     {
         Id = id;
         Name = name;
-        CelestialObjects = celestialObjects;
+        CelestialObjects = celestialObjects is null ? new List<CelestialObjectOutput>() : celestialObjects.ToList();
         CreationDate = creationDate;
         ModificationDate = modificationDate;
     }

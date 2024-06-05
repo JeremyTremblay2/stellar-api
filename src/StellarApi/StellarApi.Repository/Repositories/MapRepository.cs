@@ -44,6 +44,7 @@ public class MapRepository : IMapRepository
         var entity = map.ToEntity();
         existingMap.Name = entity.Name;
         existingMap.CelestialObjects = entity.CelestialObjects;
+        existingMap.ModificationDate = entity.ModificationDate;
         _context.Maps.Update(existingMap);
         return await _context.SaveChangesAsync() == 1;
     }
@@ -52,7 +53,10 @@ public class MapRepository : IMapRepository
     public async Task<Map?> GetMap(int id)
     {
         if (_context.Maps is null) return null;
-        return (await _context.Maps.FindAsync(id)).ToModel();
+        return (await _context.Maps
+                .Include(m => m.CelestialObjects)
+                .FirstOrDefaultAsync())
+            .ToModel();
     }
 
     /// <inheritdoc/>
@@ -60,7 +64,8 @@ public class MapRepository : IMapRepository
     {
         if (_context.Maps is null) throw new UnavailableDatabaseException();
         return (await _context.Maps
-                .Skip(page * pageSize)
+                .Include(m => m.CelestialObjects) // Eagerly load CelestialObjects
+                .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync())
             .ToModel();
@@ -80,7 +85,7 @@ public class MapRepository : IMapRepository
     public async Task<bool> AddCelestialObject(int mapId, int celestialObjectId)
     {
         if (_context.Maps is null || _context.CelestialObjects is null) throw new UnavailableDatabaseException();
-        var map = await _context.Maps.FindAsync(mapId);
+        var map = await _context.Maps.Include(m => m.CelestialObjects).FirstOrDefaultAsync(m => m.Id == mapId);
         if (map is null) throw new EntityNotFoundException(mapId.ToString(), "The map was not found.");
         var celestialObject = await _context.CelestialObjects.FindAsync(celestialObjectId);
         if (celestialObject is null)
@@ -93,11 +98,16 @@ public class MapRepository : IMapRepository
     public async Task<bool> RemoveCelestialObject(int mapId, int celestialObjectId)
     {
         if (_context.Maps is null || _context.CelestialObjects is null) throw new UnavailableDatabaseException();
-        var map = await _context.Maps.FindAsync(mapId);
+        var map = await _context.Maps.Include(m => m.CelestialObjects).FirstOrDefaultAsync(m => m.Id == mapId);
         if (map is null) throw new EntityNotFoundException(mapId.ToString(), "The map was not found.");
         var celestialObject = await _context.CelestialObjects.FindAsync(celestialObjectId);
         if (celestialObject is null)
             throw new EntityNotFoundException(celestialObjectId.ToString(), "The celestial object was not found.");
+        if (map.CelestialObjects.Contains(celestialObject) == false)
+        {
+            throw new CelestialObjectNotInMapException(celestialObjectId, mapId);
+        }
+
         map.CelestialObjects.Remove(celestialObject);
         return await _context.SaveChangesAsync() == 1;
     }

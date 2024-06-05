@@ -96,7 +96,7 @@ namespace StellarApi.Repository.Repositories
             var celestialObjects = new List<CelestialObject>();
             if (_context.CelestialObjects is null) throw new UnavailableDatabaseException();
             return (await _context.CelestialObjects
-                .Skip(page * pageSize)
+                .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync())
                 .ToModel();

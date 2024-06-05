@@ -15,7 +15,7 @@ namespace StellarApi.RestApi.Controllers;
 [ApiController]
 [ApiVersion(1)]
 [Route("api/v{v:apiVersion}/maps/")]
-[Authorize(Roles = "Member, Administrator")]
+// [Authorize(Roles = "Member, Administrator")]
 public class MapController : ControllerBase
 {
     /// <summary>
@@ -309,6 +309,12 @@ public class MapController : ControllerBase
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     $"The Celestial Object n°{celestialObjectId} could not be removed from the Map n°{mapId} due to an unknown error.");
             }
+        }
+        catch (CelestialObjectNotInMapException ex)
+        {
+            _logger.LogError(
+                $"The Celestial Object n°{celestialObjectId} could not be removed from the Map n°{mapId} because it was not found in the map. More details: {ex.Message}.");
+            return BadRequest(ex.Message);
         }
         catch (EntityNotFoundException ex)
         {

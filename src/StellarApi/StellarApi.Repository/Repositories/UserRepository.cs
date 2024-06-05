@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using StellarApi.EntityToModel;
 using StellarApi.Infrastructure.Repository;
 using StellarApi.Model.Users;
@@ -97,7 +97,7 @@ namespace StellarApi.Repository.Repositories
         {
             if (_context.Users is null) throw new UnavailableDatabaseException();
             return (await _context.Users
-                .Skip(page * pageSize)
+                .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .Select(u => u.ToModel())
                 .ToListAsync());

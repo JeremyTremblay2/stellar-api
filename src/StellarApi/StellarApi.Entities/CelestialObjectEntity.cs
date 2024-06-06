@@ -95,5 +95,16 @@ namespace StellarApi.Entities
         /// Gets or sets the type of a star.
         /// </summary>
         public string? StarType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the map id this celestial object belongs to.
+        /// </summary>
+        public int? MapId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the map this celestial object belongs to.
+        /// </summary>
+        [ForeignKey("MapId")]
+        public MapEntity? Map { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using StellarApi.DTOtoModel.Exceptions;
+using StellarApi.DTOtoModel.Exceptions;
 using StellarApi.Model.Space;
 using StellarApi.DTOs.Space;
 using System.ComponentModel;
@@ -7,7 +7,7 @@ using StellarApi.Model.Users;
 namespace StellarApi.DTOtoModel
 {
     /// <summary>
-    /// Extension methods for converting between <see cref="CelestialObject"/> and <see cref="CelestialObjectOutput"/> and <see cref="CelestialObjectInput"/>.
+    /// Extension methods for converting between <see cref="CelestialObject"/>, <see cref="CelestialObjectOutput"/> and <see cref="CelestialObjectInput"/>.
     /// </summary>
     public static class CelestialObjectExtensions
     {
@@ -28,8 +28,8 @@ namespace StellarApi.DTOtoModel
                 {
                     throw new InvalidEnumArgumentException($"The planet type {dto.PlanetType} is not supported.");
                 }
-                return new Planet(dto.Id, dto.Name, dto.Description, dto.Image, PositionExtensions.ToModel(dto.Position), dto.Mass, 
-                    dto.Temperature, dto.Radius, dto.IsWater ?? false, dto.IsLife ?? false, planetType);
+                return new Planet(0, dto.Name, dto.Description, dto.Image, PositionExtensions.ToModel(dto.Position), dto.Mass,
+                    dto.Temperature, dto.Radius, dto.IsWater ?? false, dto.IsLife ?? false, planetType, null, null, dto.MapId);
                 
             }
             else if (dto.Type.Equals("Star"))
@@ -38,8 +38,8 @@ namespace StellarApi.DTOtoModel
                 {
                     throw new InvalidEnumArgumentException($"The star type {dto.StarType} is not supported.");
                 }
-                return new Star(dto.Id, dto.Name, dto.Description, dto.Image, PositionExtensions.ToModel(dto.Position),
-                    dto.Mass, dto.Temperature, dto.Radius, dto.Brightness ?? 0, starType);
+                return new Star(0, dto.Name, dto.Description, dto.Image, PositionExtensions.ToModel(dto.Position),
+                    dto.Mass, dto.Temperature, dto.Radius, dto.Brightness ?? 0, starType, null, null, dto.MapId);
             }
             else
             {
@@ -79,6 +79,7 @@ namespace StellarApi.DTOtoModel
                 CreationDate = model.CreationDate,
                 ModificationDate = model.ModificationDate,
                 Type = Enum.Parse<CelestialObjectType>(model.GetType().Name),
+                MapId = model.MapId,
                 IsWater = model is Planet ? planet!.IsWater : null,
                 IsLife = model is Planet ? planet!.IsLife : null,
                 PlanetType = model is Planet ? planet!.PlanetType : null,

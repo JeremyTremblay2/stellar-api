@@ -14,7 +14,7 @@ public static class MapExtensions
     /// <param name="entity">The entity to transform.</param>
     /// <returns>The new Map object.</returns>
     public static Map ToModel(this MapEntity? entity)
-        => entity is null ? null : new Map(entity.Id, entity.Name, entity.CreationDate, entity.ModificationDate);
+        => entity is null ? null : new Map(entity.Id, entity.Name, entity.CelestialObjects.ToModel(), entity.CreationDate, entity.ModificationDate);
 
     /// <summary>
     /// Converts a <see cref="Map"/> to a <see cref="MapEntity"/>.

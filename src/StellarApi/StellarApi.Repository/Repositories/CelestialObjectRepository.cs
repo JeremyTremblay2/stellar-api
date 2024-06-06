@@ -68,6 +68,7 @@ namespace StellarApi.Repository.Repositories
             existingCelestialObject.IsLife = entity.IsLife;
             existingCelestialObject.IsWater = entity.IsWater;
             existingCelestialObject.Brightness = entity.Brightness;
+            existingCelestialObject.MapId = entity.MapId;
             _context.CelestialObjects.Update(existingCelestialObject);
             return await _context.SaveChangesAsync() == 1;
         }
@@ -93,7 +94,6 @@ namespace StellarApi.Repository.Repositories
         /// <exception cref="UnavailableDatabaseException">Thrown when the database is not available.</exception>
         public async Task<IEnumerable<CelestialObject>> GetCelestialObjects(int page, int pageSize)
         {
-            var celestialObjects = new List<CelestialObject>();
             if (_context.CelestialObjects is null) throw new UnavailableDatabaseException();
             return (await _context.CelestialObjects
                 .Skip((page - 1) * pageSize)

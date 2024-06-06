@@ -12,11 +12,6 @@ namespace StellarApi.DTOs.Space
     public class CelestialObjectInput : IValidatableObject
     {
         /// <summary>
-        /// Gets or sets the unique identifier of the celestial object.
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
         /// Gets or sets the name of the celestial object.
         /// </summary>
         [SwaggerSchema(Description = "The name of the celestial object.", Nullable = false)]
@@ -96,24 +91,31 @@ namespace StellarApi.DTOs.Space
         public double? Brightness { get; set; }
 
         /// <summary>
+        /// Gets or sets the unique identifier of the map.
+        /// </summary>
+        [SwaggerSchema(Description = "The unique identifier of the map.", Nullable = true)]
+        public int? MapId { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CelestialObjectInput"/> class with specified properties.
         /// </summary>
-        /// <param name="id">The unique identifier of the celestial object.</param>
         /// <param name="name">The name of the celestial object.</param>
         /// <param name="description">The description of the celestial object.</param>
         /// <param name="mass">The mass of the celestial object.</param>
         /// <param name="temperature">The temperature of the celestial object.</param>
         /// <param name="radius">The radius of the celestial object.</param>
         /// <param name="image">The image path of the celestial object.</param>
+        /// <param name="position">The position of the celestial object.</param>
+        /// <param name="type">The type of the celestial object.</param>
+        /// <param name="mapId">The unique identifier of the map.</param>
         /// <param name="planetType">The type of the planet.</param>
         /// <param name="isWater">The possibility of water on the celestial object.</param>
         /// <param name="isLife">The possibility of life on the celestial object.</param>
         /// <param name="starType">The type of the star.</param>
         /// <param name="brightness">The brightness of the celestial object.</param>
-        public CelestialObjectInput(int id, string name, string description, Position? position, double mass, double temperature, double radius,
-            string image, string type, string? planetType = null, bool? isWater = null, bool? isLife = null, string? starType = null, double? brightness = null)
+        public CelestialObjectInput(string name, string description, Position? position, double mass, double temperature, double radius,
+            string image, string type, int? mapId = null, string? planetType = null, bool? isWater = null, bool? isLife = null, string? starType = null, double? brightness = null)
         {
-            Id = id;
             Name = name;
             Description = description;
             Position = position;
@@ -122,6 +124,7 @@ namespace StellarApi.DTOs.Space
             Radius = radius;
             Image = image;
             Type = type;
+            MapId = mapId;
             PlanetType = planetType;
             IsWater = isWater;
             IsLife = isLife;

@@ -141,7 +141,7 @@ namespace StellarApi.RestApi.Controllers
                 var newAccessToken = _tokenService.GenerateAccessToken(user);
                 var newRefreshToken = _tokenService.GenerateRefreshToken();
                 user.RefreshToken = newRefreshToken;
-                var wasEdited = await _service.PutUser(user, false);
+                var wasEdited = await _service.PutUser(user.Id, user, false);
                 if (!wasEdited)
                 {
                     _logger.LogError($"An unknown error occurred while renewing the user's privileges for {emailClaim}.");
@@ -227,7 +227,7 @@ namespace StellarApi.RestApi.Controllers
             {
                 user.RefreshToken = null;
                 user.RefreshTokenExpiryTime = null;
-                var wasEdited = await _service.PutUser(user, false);
+                var wasEdited = await _service.PutUser(user.Id, user, false);
                 if (!wasEdited)
                 {
                     _logger.LogError($"An unknown error occurred while revoking the user's privileges for {emailClaim}.");

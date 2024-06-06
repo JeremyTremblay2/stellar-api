@@ -20,13 +20,13 @@ public class MapEntity
     /// Gets or sets the name of the map.
     /// </summary>
     [Required(AllowEmptyStrings = false, ErrorMessage = "The name cannot be empty.")]
-    [MaxLength(50, ErrorMessage = "The name should be less than 50 characters.")]
+    [MaxLength(100, ErrorMessage = "The name should be less than 100 characters.")]
     public required string Name { get; set; }
 
     /// <summary>
     /// Gets or sets the celestial objects in the map.
     /// </summary>
-    public List<CelestialObjectEntity>? CelestialObjects { get; set; }
+    public ICollection<CelestialObjectEntity> CelestialObjects { get; set; }
 
     /// <summary>
     /// Gets or sets the creation date of the map.

@@ -14,6 +14,11 @@ namespace StellarApi.Repository.Context
         public DbSet<CelestialObjectEntity> CelestialObjects { get; protected set; }
 
         /// <summary>
+        /// Gets or sets the DbSet of maps.
+        /// </summary>
+        public DbSet<MapEntity> Maps { get; protected set; }
+
+        /// <summary>
         /// Gets or sets the DbSet of users.
         /// </summary>
         public DbSet<UserEntity> Users { get; protected set; }

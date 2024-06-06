@@ -35,12 +35,12 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
     /// <summary>
     /// The creation date of the map.
     /// </summary>
-    public DateTime CreationDate { get; private set; }
+    public DateTime CreationDate { get; set; }
 
     /// <summary>
     /// The modification date of the map.
     /// </summary>
-    public DateTime ModificationDate { get; private set; }
+    public DateTime ModificationDate { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Map"/> class with specified properties.
@@ -59,6 +59,8 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
         Id = id;
         Name = name;
         CelestialObjects = new ReadOnlyCollection<CelestialObject>(celestialObjects);
+        CreationDate = creationDate ?? DateTime.Now;
+        ModificationDate = modificationDate ?? DateTime.Now;
     }
     
     public Map(int id, string name, IEnumerable<CelestialObject> celestialObject, DateTime? creationDate = null, DateTime? modificationDate = null)
@@ -70,6 +72,8 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
         Name = name;
         CelestialObjects = new ReadOnlyCollection<CelestialObject>(celestialObjects);
         celestialObjects.AddRange(celestialObject);
+        CreationDate = creationDate ?? DateTime.Now;
+        ModificationDate = modificationDate ?? DateTime.Now;
     } 
 
     /// <inheritdoc/>
@@ -107,37 +111,6 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
         if (other == null) return 1;
 
         return string.Compare(Name, other.Name, StringComparison.OrdinalIgnoreCase);
-    }
-
-    /// <summary>
-    /// Adds a celestial object to the map.
-    /// </summary>
-    /// <param name="celestialObject">The celestial object to add to the map.</param>
-    public bool AddCelestialObject(CelestialObject? celestialObject)
-    {
-        if (celestialObject == null)
-            return false;
-
-        if (CelestialObjects.Contains(celestialObject))
-            return false;
-
-        celestialObjects.Add(celestialObject);
-        return true;
-    }
-
-    /// <summary>
-    /// Removes a celestial object from the map.
-    /// </summary>
-    /// <param name="celestialObject">The celestial object to remove from the map.</param>
-    public bool RemoveCelestialObject(CelestialObject? celestialObject)
-    {
-        if (celestialObject == null)
-            return false;
-
-        if (!CelestialObjects.Contains(celestialObject))
-            return false;
-
-        return celestialObjects.Remove(celestialObject);
     }
 
     /// <inheritdoc/>

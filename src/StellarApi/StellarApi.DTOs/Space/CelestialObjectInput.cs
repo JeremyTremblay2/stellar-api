@@ -1,5 +1,7 @@
 ﻿using StellarApi.DTOs.Geometry;
+using StellarApi.Model.Space;
 using Swashbuckle.AspNetCore.Annotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace StellarApi.DTOs.Space
 {
@@ -7,7 +9,7 @@ namespace StellarApi.DTOs.Space
     /// Represents a Data Transfer Object (DTO) for a celestial object in input (less data than the complete object), including its properties.
     /// </summary>
     [SwaggerSchema("A celestial object in input, used to create or update a celestial object in the application.", ReadOnly = true)]
-    public class CelestialObjectInput
+    public class CelestialObjectInput : IValidatableObject
     {
         /// <summary>
         /// Gets or sets the unique identifier of the celestial object.
@@ -60,7 +62,8 @@ namespace StellarApi.DTOs.Space
         /// Gets or sets the type of the celestial object.
         /// </summary>
         [SwaggerSchema(Description = "The type of the celestial object.", Nullable = false)]
-        public string Type { get; set; } = string.Empty;
+        
+        public string Type { get; set; }
 
         /// <summary>
         /// Gets or sets the planet type of the celestial object.
@@ -124,6 +127,35 @@ namespace StellarApi.DTOs.Space
             IsLife = isLife;
             StarType = starType;
             Brightness = brightness;
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (!Enum.TryParse(Type, true, out CelestialObjectType celestialObjectType))
+            {
+                var enumValues = string.Join(", ", Enum.GetNames(typeof(CelestialObjectType)));
+                yield return new ValidationResult($"Invalid value '{Type}' for the field '{nameof(Type)}'. Valid values are: {enumValues}.");
+            }
+            Type = celestialObjectType.ToString();
+
+            if (PlanetType != null)
+            {
+                if (!Enum.TryParse(PlanetType, true, out PlanetType planetType))
+                {
+                    var enumValues = string.Join(", ", Enum.GetNames(typeof(PlanetType)));
+                    yield return new ValidationResult($"Invalid value '{PlanetType}' for the field '{nameof(PlanetType)}'. Valid values are: {enumValues}.");
+                }
+                PlanetType = planetType.ToString();
+            }
+            if (StarType != null)
+            {
+                if (!Enum.TryParse(StarType, true, out StarType starType))
+                {
+                    var enumValues = string.Join(", ", Enum.GetNames(typeof(StarType)));
+                    yield return new ValidationResult($"Invalid value '{StarType}' for the field '{nameof(StarType)}'. Valid values are: {enumValues}.");
+                }
+                StarType = starType.ToString();
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using StellarApi.DTOs.Geometry;
+using StellarApi.Model.Space;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace StellarApi.DTOs.Space
@@ -61,7 +62,7 @@ namespace StellarApi.DTOs.Space
         /// Gets or sets the type of the celestial object.
         /// </summary>
         [SwaggerSchema(Description = "The type of the celestial object.", Nullable = false)]
-        public string Type { get; set; } = string.Empty;
+        public CelestialObjectType Type { get; set; }
 
         /// <summary>
         /// Gets or sets the creation date of the celestial object.
@@ -79,7 +80,7 @@ namespace StellarApi.DTOs.Space
         /// Gets or sets the planet type of the celestial object.
         /// </summary>
         [SwaggerSchema(Description = "The type of the planet if the celestial object is a Planet.", Nullable = true)]
-        public string? PlanetType { get; set; }
+        public PlanetType? PlanetType { get; set; }
 
         /// <summary>
         /// Gets or sets the possibility of water on the celestial object.
@@ -97,7 +98,7 @@ namespace StellarApi.DTOs.Space
         /// Gets or set the star type of the celestial object.
         /// </summary>
         [SwaggerSchema(Description = "The type of the star if the celestial object is a Star.", Nullable = true)]
-        public string? StarType { get; set; }
+        public StarType? StarType { get; set; }
 
         /// <summary>
         /// Gets or sets the brightness of the celestial object.
@@ -130,8 +131,8 @@ namespace StellarApi.DTOs.Space
         /// <param name="starType">The type of the star.</param>
         /// <param name="brightness">The brightness of the celestial object.</param>
         public CelestialObjectOutput(int id, string name, string description, Position? position, double mass, double temperature, double radius,
-            string image, DateTime creationDate, DateTime modificationDate, string type, string? planetType = null, bool? isWater = null,
-            bool? isLife = null, string? starType = null, double? brightness = null)
+            string image, DateTime creationDate, DateTime modificationDate, CelestialObjectType type, PlanetType? planetType = null, bool? isWater = null,
+            bool? isLife = null, StarType? starType = null, double? brightness = null)
         {
             Id = id;
             Name = name;

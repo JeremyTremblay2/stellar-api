@@ -9,6 +9,7 @@ using StellarApi.Infrastructure.Business;
 using StellarApi.Infrastructure.Repository;
 using StellarApi.Repository.Context;
 using StellarApi.Repository.Repositories;
+using StellarApi.RestApi;
 using StellarApi.RestApi.Auth;
 using System.Reflection;
 using System.Text;
@@ -110,6 +111,7 @@ public static partial class Program
 
             option.EnableAnnotations();
             option.UseInlineDefinitionsForEnums();
+            option.SchemaFilter<EnumSchemaFilter>();
 
             option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {

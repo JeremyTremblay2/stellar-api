@@ -78,12 +78,12 @@ namespace StellarApi.DTOtoModel
                 Radius = model.Radius,
                 CreationDate = model.CreationDate,
                 ModificationDate = model.ModificationDate,
-                Type = model.GetType().Name,
+                Type = Enum.Parse<CelestialObjectType>(model.GetType().Name),
                 IsWater = model is Planet ? planet!.IsWater : null,
                 IsLife = model is Planet ? planet!.IsLife : null,
-                PlanetType = model is Planet ? planet!.PlanetType.ToString() : null,
+                PlanetType = model is Planet ? planet!.PlanetType : null,
                 Brightness = model is Star ? star!.Brightness : null,
-                StarType = model is Star ? star!.StarType.ToString() : null
+                StarType = model is Star ? star!.StarType : null
             };
         }
 

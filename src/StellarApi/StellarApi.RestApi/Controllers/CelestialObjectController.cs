@@ -167,46 +167,46 @@ namespace StellarApi.RestApi.Controllers
         /// 
         /// Sample request:
         /// 
-        ///    POST /api/v1/celestial-objects/add
+        ///     POST /api/v1/celestial-objects/add
         ///     {
-        ///      "id": 0,
-        ///      "name": "Sun",
-        ///      "description": "The Sun is the star at the center of the Solar System.",
-        ///      "mass": 1989000000000000000000000000000,
-        ///      "temperature": 5778,
-        ///      "radius": 696340,
-        ///      "image": "https://image_sun.png",
-        ///      "position": {
-        ///        "x": 20,
-        ///        "y": 57,
-        ///        "z": 75
-        ///      },
-        ///      "type": "Star",
-        ///      "starType": "YellowDwarf",
-        ///      "brightness": 382800000000000000000000000
-        ///    }
+        ///         "id": 0,
+        ///         "name": "Sun",
+        ///         "description": "The Sun is the star at the center of the Solar System.",
+        ///         "mass": 1989000000000000000000000000000,
+        ///         "temperature": 5778,
+        ///         "radius": 696340,
+        ///         "image": "https://image_sun.png",
+        ///         "position": {
+        ///             "x": 20,
+        ///             "y": 57,
+        ///            "z": 75
+        ///         },
+        ///         "type": "Star",
+        ///         "starType": "YellowDwarf",
+        ///         "brightness": 382800000000000000000000000
+        ///     }
         ///    
         /// or
         /// 
         ///     POST /api/v1/celestial-objects/add
         ///     {
-        ///      "id": 0,
-        ///      "name": "Earth",
-        ///      "description": "The Earth is the third planet from the Sun and the only astronomical object known to harbor and support life.",
-        ///      "mass": 5972200000000000000000000,
-        ///      "temperature": 21,
-        ///      "radius": 6 371,
-        ///      "image": "https://image_earth.png",
-        ///      "position": {
-        ///        "x": 124,
-        ///        "y": 77,
-        ///        "z": 4
-        ///      },
-        ///      "type": "Planet",
-        ///      "planetType": "Terrestrial",
-        ///      "isWater": true,
-        ///      "isLife": true
-        ///    }
+        ///         "id": 0,
+        ///         "name": "Earth",
+        ///         "description": "The Earth is the third planet from the Sun and the only astronomical object known to harbor and support life.",
+        ///         "mass": 5972200000000000000000000,
+        ///         "temperature": 21,
+        ///         "radius": 6371,
+        ///         "image": "https://image_earth.png",
+        ///         "position": {
+        ///             "x": 124,
+        ///             "y": 77,
+        ///             "z": 4
+        ///         },
+        ///         "type": "Planet",
+        ///         "planetType": "Terrestrial",
+        ///         "isWater": true,
+        ///         "isLife": true
+        ///     }
         /// 
         /// </remarks>
         /// <param name="celestialObject">The celestial object to add.</param>
@@ -276,46 +276,46 @@ namespace StellarApi.RestApi.Controllers
         /// 
         /// Sample request:
         /// 
-        ///    PUT /api/v1/celestial-objects/edit/1
+        ///     PUT /api/v1/celestial-objects/edit/1
         ///     {
-        ///      "id": 0,
-        ///      "name": "Sun",
-        ///      "description": "The Sun is the star at the center of the Solar System.",
-        ///      "mass": 1989000000000000000000000000000,
-        ///      "temperature": 5778,
-        ///      "radius": 696340,
-        ///      "image": "https://image_sun.png",
-        ///      "position": {
-        ///        "x": 20,
-        ///        "y": 57,
-        ///        "z": 75
-        ///      },
-        ///      "type": "Star",
-        ///      "starType": "YellowDwarf",
-        ///      "brightness": 382800000000000000000000000
-        ///    }
+        ///         "id": 0,
+        ///         "name": "Sun",
+        ///         "description": "The Sun is the star at the center of the Solar System.",
+        ///         "mass": 1989000000000000000000000000000,
+        ///         "temperature": 5778,
+        ///         "radius": 696340,
+        ///         "image": "https://image_sun.png",
+        ///         "position": {
+        ///             "x": 20,
+        ///             "y": 57,
+        ///             "z": 75
+        ///         },
+        ///         "type": "Star",
+        ///         "starType": "YellowDwarf",
+        ///         "brightness": 382800000000000000000000000
+        ///     }
         ///    
         /// or
         /// 
         ///     PUT /api/v1/celestial-objects/edit/1
         ///     {
-        ///      "id": 0,
-        ///      "name": "Earth",
-        ///      "description": "The Earth is the third planet from the Sun and the only astronomical object known to harbor and support life.",
-        ///      "mass": 5972200000000000000000000,
-        ///      "temperature": 21,
-        ///      "radius": 6 371,
-        ///      "image": "https://image_earth.png",
-        ///      "position": {
-        ///        "x": 124,
-        ///        "y": 77,
-        ///        "z": 4
-        ///      },
-        ///      "type": "Planet",
-        ///      "planetType": "Terrestrial",
-        ///      "isWater": true,
-        ///      "isLife": true
-        ///    }
+        ///         "id": 0,
+        ///         "name": "Earth",
+        ///         "description": "The Earth is the third planet from the Sun and the only astronomical object known to harbor and support life.",
+        ///         "mass": 5972200000000000000000000,
+        ///         "temperature": 21,
+        ///         "radius": 6371,
+        ///         "image": "https://image_earth.png",
+        ///         "position": {
+        ///             "x": 124,
+        ///             "y": 77,
+        ///             "z": 4
+        ///         },
+        ///         "type": "Planet",
+        ///         "planetType": "Terrestrial",
+        ///         "isWater": true,
+        ///         "isLife": true
+        ///     }
         /// 
         /// </remarks>
         /// <param name="id">The unique identifier of the celestial object to update.</param>

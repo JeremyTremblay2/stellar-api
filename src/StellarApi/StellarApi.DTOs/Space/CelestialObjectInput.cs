@@ -93,6 +93,7 @@ namespace StellarApi.DTOs.Space
         /// <summary>
         /// Gets or sets the unique identifier of the map.
         /// </summary>
+        [SwaggerSchema(Description = "The unique identifier of the map.", Nullable = true)]
         public int? MapId { get; set; }
 
         /// <summary>

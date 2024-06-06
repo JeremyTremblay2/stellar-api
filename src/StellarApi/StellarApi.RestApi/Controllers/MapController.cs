@@ -107,7 +107,7 @@ public class MapController : ControllerBase
     ///
     /// Sample request:
     ///
-    ///     GET /api/v1/maps?page=1&pageSize=10
+    ///     GET /api/v1/maps?page=1&amp;pageSize=10
     ///
     /// </remarks>
     /// <param name="page">The page number.</param>

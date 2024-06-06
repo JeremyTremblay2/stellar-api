@@ -1,23 +1,29 @@
-﻿namespace StellarApi.DTOs.Geometry
+﻿using Swashbuckle.AspNetCore.Annotations;
+
+namespace StellarApi.DTOs.Geometry
 {
     /// <summary>
     /// Represents a position in a three-dimensional space.
     /// </summary>
+    [SwaggerSchema("A position in a three-dimensional space, used to place a celestial object on a map.", ReadOnly = true)]
     public class Position
     {
         /// <summary>
         /// Gets or sets the X coordinate of the position.
         /// </summary>
+        [SwaggerSchema(Description = "The X coordinate of the position.", Nullable = false)]
         public int X { get; set; }
 
         /// <summary>
         /// Gets or sets the Y coordinate of the position.
         /// </summary>
+        [SwaggerSchema(Description = "The Y coordinate of the position.", Nullable = false)]
         public int Y { get; set; }
 
         /// <summary>
         /// Gets or sets the Z coordinate of the position.
         /// </summary>
+        [SwaggerSchema(Description = "The Z coordinate of the position.", Nullable = false)]
         public int Z { get; set; }
 
         /// <summary>

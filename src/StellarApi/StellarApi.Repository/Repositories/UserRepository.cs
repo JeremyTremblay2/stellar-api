@@ -97,7 +97,7 @@ namespace StellarApi.Repository.Repositories
         {
             if (_context.Users is null) throw new UnavailableDatabaseException();
             return (await _context.Users
-                .Skip(page * pageSize)
+                .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .Select(u => u.ToModel())
                 .ToListAsync());

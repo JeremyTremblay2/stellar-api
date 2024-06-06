@@ -1,6 +1,7 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using StellarApi.Business;
@@ -8,7 +9,9 @@ using StellarApi.Infrastructure.Business;
 using StellarApi.Infrastructure.Repository;
 using StellarApi.Repository.Context;
 using StellarApi.Repository.Repositories;
+using StellarApi.RestApi;
 using StellarApi.RestApi.Auth;
+using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -89,7 +92,27 @@ public static partial class Program
     {
         builder.Services.AddSwaggerGen(option =>
         {
-            option.SwaggerDoc("v1", new OpenApiInfo { Title = "Stellar API", Version = "v1" });
+            option.SwaggerDoc("v1", 
+                new OpenApiInfo { 
+                    Title = "Stellar API", 
+                    Version = "v1",
+                    Description = "Stellar API is an API to manage space data and allows users to create space map with no limitations.",
+                    Contact = new OpenApiContact()
+                    {
+                        Name = "Jérémy Tremblay",
+                        Email = "jeremy-tremblay@outlook.fr",
+                    }
+                });
+
+            // Enable documentation
+            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            option.IncludeXmlComments(xmlPath);
+
+            option.EnableAnnotations();
+            option.UseInlineDefinitionsForEnums();
+            option.SchemaFilter<EnumSchemaFilter>();
+
             option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,

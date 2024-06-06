@@ -14,7 +14,7 @@ namespace StellarApi.Business
         /// <summary>
         /// Constant that represents the maximum length of a name.
         /// </summary>
-        private const int MaxLengthName = 50;
+        private const int MaxLengthName = 100;
 
         /// <summary>
         /// Constant that represents the maximum length of a description.

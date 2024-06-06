@@ -1,4 +1,4 @@
-﻿using Asp.Versioning;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using StellarApi.Infrastructure.Business;
 using StellarApi.DTOtoModel;
@@ -56,11 +56,40 @@ namespace StellarApi.RestApi.Controllers
         /// <summary>
         /// Creates a new user.
         /// </summary>
+        /// <remarks>
+        /// 
+        /// This route is used to create a new user with the given information.
+        /// 
+        /// All the parameters in the request body are mandatory.
+        /// 
+        /// The username must have a maximum length of 30 characters and the email a maximum length of 100 characters.
+        /// 
+        /// A 400 error will be returned if the user information contains invalid data.
+        /// 
+        /// A 409 error will be returned if a user is already registered with the same email address.
+        /// 
+        /// **DO NOT** include the user's password in plain text in the request body. Instead, make sure to hash the password before calling this method.
+        ///  
+        /// Sample request:
+        ///
+        ///     POST /api/v1/users/register
+        ///     {
+        ///         "username": "JohnDoe",
+        ///         "password": "f4k3p4ssw0rd",
+        ///         "email": "johndoe@example.com"
+        ///     }
+        ///     
+        /// </remarks>
         /// <param name="request">The request containing the user's information.</param>
-        /// <returns>The created user object wrapped in an <see cref="ActionResult"/>.</returns>
+        /// <returns>A message indicating the result of the operation.</returns>
         [MapToApiVersion(1)]
         [HttpPost]
         [Route("register")]
+        [ProducesResponseType<string>(StatusCodes.Status200OK)]
+        [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType<string>(StatusCodes.Status409Conflict)]
+        [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
         public async Task<ActionResult> PostUser([FromBody] RegistrationRequest request)
         {
             _logger.LogInformation($"New registration request for a user: {request.Email} named {request.Username}.");
@@ -105,12 +134,37 @@ namespace StellarApi.RestApi.Controllers
         }
 
         /// <summary>
-        /// Authenticates a user.
+        /// Authenticates a user and give him the credentials to connects him to the API.
         /// </summary>
+        /// <remarks>
+        /// 
+        /// This route is used to authenticate a user and generate an access token and a refresh token for the user to use when accessing the API.
+        /// 
+        /// Once connected, the user can use the access token to access the API and the refresh token to generate a new access token when the current one expires.
+        /// 
+        /// A 400 error will be returned if the user credentials are invalid.
+        /// 
+        /// **DO NOT** include the user's password in plain text in the request body. Instead, make sure to hash the password before calling this route.
+        /// 
+        /// **DO NOT** expose the refresh token to the client-side. The refresh token should be securely stored on the server-side and only used to generate new access tokens when needed.
+        /// 
+        /// Sample request:
+        ///
+        ///     POST /api/v1/users/login
+        ///     {
+        ///         "email": "johndoe@example.com",
+        ///         "password": "f4k3p4ssw0rd"
+        ///     }
+        ///     
+        /// </remarks>
         /// <param name="request">The request containing the user's email and password.</param>
-        /// <returns>A response containing the user's information and a token.</returns>
+        /// <returns>A response containing the user's information its connexion a token.</returns>
         [HttpPost]
         [Route("login")]
+        [ProducesResponseType<LoginResponse>(StatusCodes.Status200OK)]
+        [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
         public async Task<ActionResult<LoginResponse>> Authenticate([FromBody] LoginRequest request)
         {
             _logger.LogInformation($"New login request for a user: {request.Email}.");
@@ -187,13 +241,30 @@ namespace StellarApi.RestApi.Controllers
         }
 
         /// <summary>
-        /// Retrieves a user object by its ID.
+        /// (Needs Auth) Retrieves a user object by its unique identifier.
         /// </summary>
+        /// <remarks>
+        /// 
+        /// This route is used to retrieve a user object with its data by its unique identifier.
+        /// 
+        /// In the response, the user's password and user passwords are not included for security reasons.
+        /// 
+        /// A 404 error will be returned if the user is not found.
+        /// 
+        /// Sample request:
+        /// 
+        ///     GET /api/v1/users/1
+        ///     
+        /// </remarks>
         /// <param name="id">The ID of the user to retrieve.</param>
-        /// <returns>The user object wrapped in an <see cref="ActionResult"/>.</returns>
+        /// <returns>The user object data.</returns>
         [MapToApiVersion(1)]
         [HttpGet("{id}")]
         [Authorize(Roles = "Member, Administrator")]
+        [ProducesResponseType<UserOutput>(StatusCodes.Status200OK)]
+        [ProducesResponseType<object>(StatusCodes.Status404NotFound)]
+        [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
         public async Task<ActionResult<UserOutput?>> GetUserById(int id)
         {
             _logger.LogInformation($"Fetching user data for user n°{id}.");
@@ -221,17 +292,48 @@ namespace StellarApi.RestApi.Controllers
         }
 
         /// <summary>
-        /// Retrieves a list of users.
+        /// (Needs Auth) Retrieves a list of users.
         /// </summary>
+        /// <remarks>
+        /// 
+        /// This route is used to retrieve a list of users with their data.
+        /// 
+        /// The page and page size parameters are mandatory and must be greater than 0.
+        /// 
+        /// In the response list, the user's password and user passwords are not included for security reasons.
+        /// 
+        /// A 400 error will be returned if the page or page size is invalid.
+        /// 
+        /// Sample request:
+        /// 
+        ///     GET /api/v1/users?page=1&amp;pageSize=10
+        /// 
+        /// </remarks>
         /// <param name="page">The page number of the users to retrieve.</param>
         /// <param name="pageSize">The number of users per page.</param>
-        /// <returns>The list of users wrapped in an <see cref="ActionResult"/>.</returns>
+        /// <returns>The list of users and the associated data.</returns>
         [MapToApiVersion(1)]
         [HttpGet]
         [Authorize(Roles = "Administrator")]
+        [ProducesResponseType<List<UserOutput>>(StatusCodes.Status200OK)]
+        [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
         public async Task<ActionResult<IEnumerable<UserOutput>>> GetUsers(int page, int pageSize)
         {
             _logger.LogInformation($"Fetching user data for page {page} with {pageSize} users per page.");
+
+            if (page <= 0)
+            {
+                _logger.LogInformation($"User data for page {page} with {pageSize} items per page could not be fetched because the page was a negative number.");
+                return BadRequest("The page number must be greater than 0.");
+            }
+            if (pageSize <= 0)
+            {
+                _logger.LogInformation($"User data for page {page} with {pageSize} items per page could not be fetched because the page size was not a negative number.");
+                return BadRequest("The page size must be greater than 0.");
+            }
+
             try
             {
                 var users = (await _service.GetUsers(page, pageSize)).ToDTO();
@@ -251,15 +353,45 @@ namespace StellarApi.RestApi.Controllers
         }
 
         /// <summary>
-        /// Updates an existing user.
+        /// (Needs Auth) Updates an existing user.
         /// </summary>
-        /// <param name="id">The ID of the user to update.</param>
+        /// <remarks>
+        /// 
+        /// This route is used to update an existing user with new data. This can be used to update the user's email, username, or password.
+        /// 
+        /// The username must have a maximum length of 30 characters and the email a maximum length of 100 characters. The id is mandatory.
+        /// 
+        /// A 400 error will be returned if the user information contains invalid data.
+        /// 
+        /// A 404 will be returned if the user to update is not found.
+        /// 
+        /// A 409 will be returned if a user already exists with the same email, it means that two users cannot exist with the same email.
+        /// 
+        /// **DO NOT** include the user's password in plain text in the request body. Instead, make sure to hash the password before calling this route.
+        /// 
+        /// Sample request:
+        /// 
+        ///     PUT /api/v1/users/edit
+        ///     {
+        ///         "id": 1,
+        ///         "username": "JohnDoe",
+        ///         "password": "f4k3p4ssw0rd",
+        ///         "email": "johndoe@example.com"
+        ///     }
+        /// 
+        /// </remarks>
         /// <param name="user">The user object to update.</param>
-        /// <returns>Returns <see cref="OkResult"/> if the user is successfully updated. Returns <see cref="BadRequestResult"/> if the user object is invalid.</returns>
+        /// <returns>Returns a response indicating if the user was updated or not.</returns>
         [MapToApiVersion(1)]
         [HttpPut]
         [Authorize(Roles = "Member, Administrator")]
         [Route("edit/{id}")]
+        [ProducesResponseType<string>(StatusCodes.Status200OK)]
+        [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType<string>(StatusCodes.Status404NotFound)]
+        [ProducesResponseType<string>(StatusCodes.Status409Conflict)]
+        [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
         public async Task<ActionResult> PutUser(int id, [FromBody] UserInput user)
         {
             _logger.LogInformation($"Editing user data for user n°{id}.");
@@ -309,14 +441,31 @@ namespace StellarApi.RestApi.Controllers
         }
 
         /// <summary>
-        /// Deletes a user by its ID.
+        /// (Needs Auth) Deletes a user by its unique identifier.
         /// </summary>
+        /// <remarks>
+        /// 
+        /// This route is used to deleter a user object by its unique identifier. The data cannot be recovered once deleted.
+        /// 
+        /// A 404 error will be returned if the user is not found.
+        /// 
+        /// Currently, this route needs privileges to be accessed.
+        /// 
+        /// Sample request:
+        /// 
+        ///     DELETE /api/v1/users/remove/1
+        /// 
+        /// </remarks>
         /// <param name="id">The ID of the user to delete.</param>
-        /// <returns>Returns <see cref="OkResult"/> if the user is successfully deleted. Returns <see cref="NotFoundResult"/> if the user is not found.</returns>
+        /// <returns>Return a message indicating if the user was deleted or not.</returns>
         [MapToApiVersion(1)]
         [HttpDelete]
         [Authorize(Roles = "Administrator")]
-        [Route("remove")]
+        [Route("remove/{id}")]
+        [ProducesResponseType<string>(StatusCodes.Status200OK)]
+        [ProducesResponseType<string>(StatusCodes.Status404NotFound)]
+        [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
         public async Task<ActionResult> DeleteUser(int id)
         {
             _logger.LogInformation($"Deleting user data for user n°{id}.");

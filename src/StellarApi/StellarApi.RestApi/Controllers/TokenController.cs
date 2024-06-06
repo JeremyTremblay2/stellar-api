@@ -47,12 +47,38 @@ namespace StellarApi.RestApi.Controllers
         }
 
         /// <summary>
-        /// Retrieves a new token for the specified user.
+        /// Retrieves a new set of tokens based on the user's tokens specified.
         /// </summary>
-        /// <param name="apiTokenRequest">The request containing the user's information (last tokens).</param>
+        /// <remarks>
+        /// 
+        /// This route is used to refresh the user's token. The user must provide their current access token and refresh token to get a new set of tokens. These new tokens can then be used to access the application's resources.
+        /// 
+        /// The parameters are provided in the request body as a JSON object. The access token and refresh token are required to refresh the user's token.
+        /// 
+        /// A 400 Bad Request response is returned if the request is invalid or the tokens are not provided.
+        /// 
+        /// A 401 Unauthorized response is returned if the access token or refresh token is invalid.
+        /// 
+        /// **DO NOT** expose the refresh token to the client-side. The refresh token should be securely stored on the server-side and only used to generate new access tokens when needed.
+        /// 
+        /// Sample request:
+        /// 
+        ///     POST /api/v1/tokens/refresh
+        ///     {
+        ///         "accessToken": "eyJfhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+        ///         "refreshToken": "f4bGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+        ///     }
+        /// 
+        /// </remarks>
+        /// <param name="apiTokenRequest">The request containing the user's information (the last tokens).</param>
         /// <returns>A new set of tokens for the user.</returns>
         [HttpPost]
         [Route("refresh")]
+        [ProducesResponseType<LoginResponse>(StatusCodes.Status200OK)]
+        [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType<string>(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
         public async Task<ActionResult<LoginResponse>> Refresh([FromBody] ApiTokenRequest apiTokenRequest)
         {
             _logger.LogInformation("Refreshing the user's token.");
@@ -145,12 +171,26 @@ namespace StellarApi.RestApi.Controllers
         }
 
         /// <summary>
-        /// Revokes the current token for the user.
+        /// (Needs Auth) Revokes the current token for the connected user, disconnecting him.
         /// </summary>
+        /// <remarks>
+        /// 
+        /// This route is used to revoke the user's token. The user must be connected to the application to revoke their token. This will disconnect the user from the application and require them to log in again to access the application's resources.
+        /// 
+        /// Once called, the refresh token is removed from the user's information and the user is disconnected from the application.
+        /// 
+        /// Sample request:
+        ///     
+        ///     POST /api/v1/tokens/revoke
+        /// 
+        /// </remarks>
         /// <returns>A response indicating the success of the operation.</returns>
         [HttpPost]
         [Route("revoke")]
         [Authorize(Roles = "Member, Administrator")]
+        [ProducesResponseType<object>(StatusCodes.Status204NoContent)]
+        [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
         public async Task<ActionResult> Revoke()
         {
             var emailClaim = User.FindFirstValue(ClaimTypes.Email);

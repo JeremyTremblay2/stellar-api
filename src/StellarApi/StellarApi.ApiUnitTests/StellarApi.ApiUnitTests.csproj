@@ -26,4 +26,8 @@
     <ProjectReference Include="..\StellarApi.RestApi\StellarApi.RestApi.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="StellarApi.Repository\Repositories\" />
+  </ItemGroup>
+
 </Project>

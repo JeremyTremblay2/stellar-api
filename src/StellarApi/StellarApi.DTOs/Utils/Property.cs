@@ -1,23 +1,29 @@
-﻿namespace StellarApi.DTOs.Utils
+﻿using Swashbuckle.AspNetCore.Annotations;
+
+namespace StellarApi.DTOs.Utils
 {
     /// <summary>
     /// Represents a property with a name, value, and type.
     /// </summary>
+    [SwaggerSchema("A property, containing information about a property of an object.", ReadOnly = true)]
     public class Property
     {
         /// <summary>
         /// Gets or sets the name of the property.
         /// </summary>
+        [SwaggerSchema(Description = "The name of the property.", Nullable = false)]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the value of the property.
         /// </summary>
+        [SwaggerSchema(Description = "The value of the property.", Nullable = false)]
         public string Value { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the property.
         /// </summary>
+        [SwaggerSchema(Description = "The type of the property.", Nullable = false)]
         public string Type { get; set; }
 
         /// <summary>

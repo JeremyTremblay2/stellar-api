@@ -27,7 +27,7 @@ namespace StellarApi.Entities
         /// Gets or sets the name of the celestial object.
         /// </summary>
         [Required(AllowEmptyStrings = false, ErrorMessage = "The name cannot be empty.")]
-        [MaxLength(50, ErrorMessage = "The name should be less than 50 caracters.")]
+        [MaxLength(100, ErrorMessage = "The name should be less than 50 caracters.")]
         public required string Name { get; set; }
 
         /// <summary>

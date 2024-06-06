@@ -68,6 +68,7 @@ namespace StellarApi.Repository.Repositories
             existingCelestialObject.IsLife = entity.IsLife;
             existingCelestialObject.IsWater = entity.IsWater;
             existingCelestialObject.Brightness = entity.Brightness;
+            existingCelestialObject.MapId = entity.MapId;
             _context.CelestialObjects.Update(existingCelestialObject);
             return await _context.SaveChangesAsync() == 1;
         }

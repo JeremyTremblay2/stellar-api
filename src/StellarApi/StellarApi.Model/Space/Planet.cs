@@ -38,8 +38,8 @@ namespace StellarApi.Model.Space
         /// <param name="creationDate">The creation date of the planet.</param>
         /// <param name="modificationDate">The last modification date of the planet.</param>
         public Planet(int id, string name, string description, string image, Position? position, double mass, double temperature, 
-            double radius, bool isWater, bool isLife, PlanetType planetType, DateTime? creationDate = null, DateTime? modificationDate = null) 
-            : base(id, name, description, image, position, mass, temperature, radius, creationDate, modificationDate)
+            double radius, bool isWater, bool isLife, PlanetType planetType, DateTime? creationDate = null, DateTime? modificationDate = null, int? mapId = null)
+            : base(id, name, description, image, position, mass, temperature, radius, creationDate, modificationDate, mapId)
         {
             IsWater = isWater;
             IsLife = isLife;

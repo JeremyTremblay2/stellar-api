@@ -88,6 +88,11 @@ namespace StellarApi.DTOs.Space
         public double? Brightness { get; set; }
 
         /// <summary>
+        /// Gets or sets the unique identifier of the map.
+        /// </summary>
+        public int? MapId { get; set; }
+
+        /// <summary>
         /// Creates a new instance of the <see cref="CelestialObjectOutput"/> class.
         /// </summary>
         public CelestialObjectOutput()
@@ -106,13 +111,15 @@ namespace StellarApi.DTOs.Space
         /// <param name="image">The image path of the celestial object.</param>
         /// <param name="creationDate">The creation date of the celestial object.</param>
         /// <param name="modificationDate">The last modification date of the celestial object.</param>
+        /// <param name="type">The type of the celestial object.</param>
+        /// <param name="mapId">The unique identifier of the map.</param>
         /// <param name="planetType">The type of the planet.</param>
         /// <param name="isWater">The possibility of water on the celestial object.</param>
         /// <param name="isLife">The possibility of life on the celestial object.</param>
         /// <param name="starType">The type of the star.</param>
         /// <param name="brightness">The brightness of the celestial object.</param>
         public CelestialObjectOutput(int id, string name, string description, Position? position, double mass, double temperature, double radius,
-            string image, DateTime creationDate, DateTime modificationDate, string type, string? planetType = null, bool? isWater = null,
+            string image, DateTime creationDate, DateTime modificationDate, string type, int? mapId = null, string? planetType = null, bool? isWater = null,
             bool? isLife = null, string? starType = null, double? brightness = null)
         {
             Id = id;
@@ -126,6 +133,7 @@ namespace StellarApi.DTOs.Space
             CreationDate = creationDate;
             ModificationDate = modificationDate;
             Type = type;
+            MapId = mapId;
             PlanetType = planetType;
             IsWater = isWater;
             IsLife = isLife;

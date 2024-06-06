@@ -34,8 +34,8 @@ public class Star : CelestialObject
     /// <param name="modificationDate">The last modification date of the star.</param>
     public Star(int id, string name, string description, string image, Position? position, double mass,
         double temperature, double radius, double brightness, StarType starType, DateTime? creationDate = null,
-        DateTime? modificationDate = null) : base(id, name, description, image, position, mass, temperature, radius,
-        creationDate, modificationDate)
+        DateTime? modificationDate = null, int? mapId = null) : base(id, name, description, image, position, mass, temperature, radius,
+        creationDate, modificationDate, mapId)
     {
         Brightness = brightness;
         StarType = starType;

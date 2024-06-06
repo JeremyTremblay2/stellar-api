@@ -15,7 +15,7 @@ namespace StellarApi.RestApi.Controllers;
 [ApiController]
 [ApiVersion(1)]
 [Route("api/v{v:apiVersion}/maps/")]
-// [Authorize(Roles = "Member, Administrator")]
+[Authorize(Roles = "Member, Administrator")]
 public class MapController : ControllerBase
 {
     /// <summary>

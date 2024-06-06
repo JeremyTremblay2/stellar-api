@@ -23,7 +23,7 @@ namespace StellarApi.EntityToModel
                     ? result
                     : PlanetType.Undefined;
                 return new Planet(entity.Id, entity.Name, entity.Description, entity.Image, PositionExtensions.ToModel(entity.Position), entity.Mass,
-                    entity.Temperature, entity.Radius, (bool)entity.IsWater, (bool)entity.IsLife, planetType, entity.CreationDate, entity.ModificationDate);
+                    entity.Temperature, entity.Radius, (bool)entity.IsWater, (bool)entity.IsLife, planetType, entity.CreationDate, entity.ModificationDate, entity.MapId);
             }
             else if (entity.Type.Equals("Star"))
             {
@@ -31,7 +31,7 @@ namespace StellarApi.EntityToModel
                     ? result
                     : StarType.Undefined;
                 return new Star(entity.Id, entity.Name, entity.Description, entity.Image, PositionExtensions.ToModel(entity.Position),
-                    entity.Mass, entity.Temperature, entity.Radius, (double)entity.Brightness, starType, entity.CreationDate, entity.ModificationDate);
+                    entity.Mass, entity.Temperature, entity.Radius, (double)entity.Brightness, starType, entity.CreationDate, entity.ModificationDate, entity.MapId);
             }
             else
             {
@@ -80,7 +80,8 @@ namespace StellarApi.EntityToModel
                 IsLife = model is Planet ? planet!.IsLife : null,
                 PlanetType = model is Planet ? planet!.PlanetType.ToString() : null,
                 Brightness = model is Star ? star!.Brightness : null,
-                StarType = model is Star ? star!.StarType.ToString() : null
+                StarType = model is Star ? star!.StarType.ToString() : null,
+                MapId = model.MapId
             };
         }
 

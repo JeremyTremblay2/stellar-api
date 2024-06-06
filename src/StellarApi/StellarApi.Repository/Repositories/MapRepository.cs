@@ -30,7 +30,6 @@ public class MapRepository : IMapRepository
     public async Task<bool> AddMap(Map map)
     {
         if (_context.Maps is null) throw new UnavailableDatabaseException();
-
         await _context.Maps.AddAsync(map.ToEntity());
         return await _context.SaveChangesAsync() == 1;
     }
@@ -52,10 +51,10 @@ public class MapRepository : IMapRepository
     /// <inheritdoc/>
     public async Task<Map?> GetMap(int id)
     {
-        if (_context.Maps is null) return null;
+        if (_context.Maps is null) throw new UnavailableDatabaseException();
         return (await _context.Maps
                 .Include(m => m.CelestialObjects)
-                .FirstOrDefaultAsync())
+                .FirstOrDefaultAsync(m => m.Id == id))
             .ToModel();
     }
 
@@ -75,10 +74,14 @@ public class MapRepository : IMapRepository
     public async Task<bool> RemoveMap(int id)
     {
         if (_context.Maps is null) throw new UnavailableDatabaseException();
-        var map = await _context.Maps.FindAsync(id);
-        if (map is null) return false;
+        var map = await _context.Maps
+            .Include(m => m.CelestialObjects)
+            .FirstOrDefaultAsync(m => m.Id == id);
+        if (map is null) throw new EntityNotFoundException(id.ToString(), "The map was not found.");
+
+
         _context.Maps.Remove(map);
-        return await _context.SaveChangesAsync() == 1;
+        return await _context.SaveChangesAsync() > 0;
     }
 
     /// <inheritdoc/>

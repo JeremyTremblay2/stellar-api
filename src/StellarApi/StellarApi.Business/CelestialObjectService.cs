@@ -27,6 +27,11 @@ namespace StellarApi.Business
         private readonly ICelestialObjectRepository _repository;
 
         /// <summary>
+        /// The repository used for managing maps.
+        /// </summary>
+        private readonly IMapRepository _mapRepository;
+
+        /// <summary>
         /// Logger used by this service.
         /// </summary>
         private readonly ILogger<CelestialObjectService> _logger;
@@ -35,10 +40,11 @@ namespace StellarApi.Business
         /// Initializes a new instance of the <see cref="CelestialObjectService"/> class.
         /// </summary>
         /// <param name="repository">The repository used for accessing celestial objects.</param>
-        public CelestialObjectService(ILogger<CelestialObjectService> logger, ICelestialObjectRepository repository)
+        public CelestialObjectService(ILogger<CelestialObjectService> logger, ICelestialObjectRepository repository, IMapRepository mapRepository)
         {
             _logger = logger;
             _repository = repository;
+            _mapRepository = mapRepository;
         }
 
         /// <inheritdoc/>
@@ -124,6 +130,10 @@ namespace StellarApi.Business
                 {
                     throw new ArgumentException("The brightness cannot be negative or null.", nameof(star.Brightness));
                 }
+            }
+            if (celestialObject.MapId == null && celestialObject.Position is not null)
+            {
+                throw new ArgumentException("The celestial object cannot have a position without a map.", nameof(celestialObject.Position));
             }
         }
     }

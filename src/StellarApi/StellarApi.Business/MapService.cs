@@ -14,7 +14,7 @@ public class MapService : IMapService
     /// <summary>
     /// Constant that represents the maximum length of a name.
     /// </summary>
-    private const int MaxLengthName = 50;
+    private const int MaxLengthName = 100;
 
     /// <summary>
     /// The repository used by this service.

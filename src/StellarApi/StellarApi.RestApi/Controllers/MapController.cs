@@ -182,8 +182,11 @@ public class MapController : ControllerBase
     /// <param name="map">The map to create.</param>
     /// <returns>>A message indicating if the map was added or not.</returns>
     [MapToApiVersion(1)]
-    [HttpPost]
-    [Route("create")]
+    [HttpPost("create")]
+    [ProducesResponseType<string>(StatusCodes.Status200OK)]
+    [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
     public async Task<ActionResult> PostMap([FromBody] MapInput map)
     {
         _logger.LogInformation($"New map creation request for object: {map}.");
@@ -237,6 +240,8 @@ public class MapController : ControllerBase
     /// The name of the map should not be null or empty and should be less than 100 characters.
     ///
     /// A 400 error will be returned if the map data is invalid.
+    ///
+    /// A 404 error will be returned if the map is not found.
     ///
     /// Sample request:
     ///

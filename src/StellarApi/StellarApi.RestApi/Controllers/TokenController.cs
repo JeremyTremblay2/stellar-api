@@ -141,7 +141,7 @@ namespace StellarApi.RestApi.Controllers
                 var newAccessToken = _tokenService.GenerateAccessToken(user);
                 var newRefreshToken = _tokenService.GenerateRefreshToken();
                 user.RefreshToken = newRefreshToken;
-                var wasEdited = await _service.PutUser(user.Id, user, false);
+                var wasEdited = await _service.PutUser(user.Id, user, user.Id, false);
                 if (!wasEdited)
                 {
                     _logger.LogError($"An unknown error occurred while renewing the user's privileges for {emailClaim}.");
@@ -153,7 +153,6 @@ namespace StellarApi.RestApi.Controllers
                     AccessToken = newAccessToken,
                     RefreshToken = newRefreshToken,
                     RefreshTokenExpirationTime = user.RefreshTokenExpiryTime,
-                    Email = user.Email,
                     Username = user.Username,
                     Role = user.Role.ToString()
                 });
@@ -171,13 +170,13 @@ namespace StellarApi.RestApi.Controllers
         }
 
         /// <summary>
-        /// (Needs Auth) Revokes the current token for the connected user, disconnecting him.
+        /// (Needs Auth) Revokes the current token for the connected user.
         /// </summary>
         /// <remarks>
         /// 
-        /// This route is used to revoke the user's token. The user must be connected to the application to revoke their token. This will disconnect the user from the application and require them to log in again to access the application's resources.
+        /// This route is used to revoke the user's token. The user must be connected to the application to revoke their token. Once called, the refresh token is removed from the user's information and the user is disconnected from the application.
         /// 
-        /// Once called, the refresh token is removed from the user's information and the user is disconnected from the application.
+        /// This will require him to log in again to access the application's resources once its current token will be expired.
         /// 
         /// Sample request:
         ///     
@@ -227,7 +226,7 @@ namespace StellarApi.RestApi.Controllers
             {
                 user.RefreshToken = null;
                 user.RefreshTokenExpiryTime = null;
-                var wasEdited = await _service.PutUser(user.Id, user, false);
+                var wasEdited = await _service.PutUser(user.Id, user, user.Id, false);
                 if (!wasEdited)
                 {
                     _logger.LogError($"An unknown error occurred while revoking the user's privileges for {emailClaim}.");

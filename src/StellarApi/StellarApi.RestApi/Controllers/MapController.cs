@@ -73,7 +73,7 @@ public class MapController : ControllerBase
             if (result == null)
             {
                 _logger.LogWarning($"Map n°{id} was not found.");
-                return NotFound();
+                return NotFound($"The map n°{id} was not found.");
             }
 
             _logger.LogInformation($"Map n°{id} was fetched successfully.");

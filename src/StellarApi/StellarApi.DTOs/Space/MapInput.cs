@@ -15,11 +15,19 @@ public class MapInput
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
+    /// Gets or sets the public status of the map.
+    /// </summary>
+    [SwaggerSchema(Description = "A value indicating if the map is visible by everyone or not.", Nullable = true)]
+    public bool IsPublic { get; set; } = false;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="MapOutput"/> class with specified properties.
     /// </summary>
-    /// <param name="id">The unique identifier of the map.</param>
-    public MapInput(string name)
+    /// <param name="name">The name of the map.</param>
+    /// <param name="isPublic">The public status of the map.</param>
+    public MapInput(string name, bool isPublic)
     {
         Name = name;
+        IsPublic = isPublic;
     }
 }

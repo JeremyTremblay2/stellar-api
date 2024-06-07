@@ -4,7 +4,7 @@ using StellarApi.DTOs.Users;
 namespace DTOtoModel
 {
     /// <summary>
-    /// Extension methods for converting between <see cref="User"/> and <see cref="UserOutput"/>.
+    /// Extension methods for converting between <see cref="User"/> and <see cref="MinimalUserOutput"/>.
     /// </summary>
     public static class UserExtensions
     {
@@ -22,20 +22,33 @@ namespace DTOtoModel
         }
 
         /// <summary>
-        /// Converts a <see cref="User"/> to a <see cref="UserOutput"/>.
+        /// Converts a <see cref="User"/> to a <see cref="MinimalUserOutput"/>.
         /// </summary>
         /// <param name="model">The User to transform.</param>
         /// <returns>The new DTO User object.</returns>
-        public static UserOutput ToDTO(this User? model)
+        public static MinimalUserOutput ToMinimalDTO(this User? model)
         {
             if (model is null)
                 return null;
 
-            return new UserOutput(model.Id, model.Email, model.Username, model.Role.ToString(), model.CreationDate, model.ModificationDate);
+            return new MinimalUserOutput(model.Id, model.Username, model.Role.ToString(), model.CreationDate, model.ModificationDate);
         }
 
         /// <summary>
-        /// Converts a collection of <see cref="UserOutput"/> to a collection of <see cref="User"/>.
+        /// Converts a <see cref="User"/> to a <see cref="MaximalUserOutput"/>.
+        /// </summary>
+        /// <param name="model">The User to transform.</param>
+        /// <returns>The new DTO User object.</returns>
+        public static MaximalUserOutput ToMaximalDTO(this User? model)
+        {
+            if (model is null)
+                return null;
+
+            return new MaximalUserOutput(model.Id, model.Username, model.Email, model.Role.ToString(), model.CreationDate, model.ModificationDate);
+        }
+
+        /// <summary>
+        /// Converts a collection of <see cref="MinimalUserOutput"/> to a collection of <see cref="User"/>.
         /// </summary>
         /// <param name="dtos">The list of DTOs to transform.</param>
         /// <returns>A new list of User.</returns>
@@ -43,11 +56,11 @@ namespace DTOtoModel
             => dtos.Select(dto => dto.ToModel());
 
         /// <summary>
-        /// Converts a collection of <see cref="User"/> to a collection of <see cref="UserOutput"/>.
+        /// Converts a collection of <see cref="User"/> to a collection of <see cref="MinimalUserOutput"/>.
         /// </summary>
         /// <param name="models">The list of User to transform.</param>
         /// <returns>The new list of User DTO.</returns>
-        public static IEnumerable<UserOutput> ToDTO(this IEnumerable<User> models)
-            => models.Select(model => model.ToDTO());
+        public static IEnumerable<MinimalUserOutput> ToMinimalDTO(this IEnumerable<User> models)
+            => models.Select(model => model.ToMinimalDTO());
     }
 }

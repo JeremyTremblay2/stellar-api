@@ -42,6 +42,7 @@ public class MapRepository : IMapRepository
         if (existingMap == null) throw new EntityNotFoundException(id.ToString(), "The map was not found.");
         var entity = map.ToEntity();
         existingMap.Name = entity.Name;
+        existingMap.IsPublic = entity.IsPublic;
         existingMap.ModificationDate = entity.ModificationDate;
         _context.Maps.Update(existingMap);
         return await _context.SaveChangesAsync() == 1;

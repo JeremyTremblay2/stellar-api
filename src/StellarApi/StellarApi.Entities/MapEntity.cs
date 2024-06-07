@@ -48,4 +48,9 @@ public class MapEntity
     /// </summary>
     [ForeignKey("UserAuthorId")]
     public UserEntity? UserAuthor { get; set; }
+
+    /// <summary>
+    /// Gets or sets the public status of the map.
+    /// </summary>
+    public bool IsPublic { get; set; }
 }

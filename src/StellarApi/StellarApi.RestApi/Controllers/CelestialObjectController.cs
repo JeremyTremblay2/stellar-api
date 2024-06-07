@@ -20,7 +20,6 @@ namespace StellarApi.RestApi.Controllers
     [ApiController]
     [ApiVersion(1)]
     [Route("api/v{v:apiVersion}/celestial-objects/")]
-    [Authorize(Roles = "Member, Administrator")]
     public class CelestialObjectController : ControllerBase
     {
         /// <summary>
@@ -45,13 +44,17 @@ namespace StellarApi.RestApi.Controllers
         }
 
         /// <summary>
-        /// (Needs Auth) Retrieves a celestial object by its unique identifier.
+        /// Retrieves a celestial object by its unique identifier.
         /// </summary>
         /// <remarks>
         /// 
         /// This route is used to retrieve a celestial object by its unique identifier.
         /// 
         /// A celestial object is a physical entity in space, such as a planet, star, etc. The fields of the celestial object are empty or not depending on its type. For example, for a Star, the brightness field is filled, while for a Planet, the isWater field is filled. Read carrefully the documentation of the schema to know which fields are filled for each type of celestial object.
+        /// 
+        /// Public celestial objects can be accessed by any user. Private celestial objects can only be accessed by the author of the celestial object.
+        /// 
+        /// A 403 error will be returned if the user is not allowed to access the celestial object.
         /// 
         /// A 404 error will be returned if the celestial object is not found.
         /// 
@@ -65,6 +68,7 @@ namespace StellarApi.RestApi.Controllers
         [MapToApiVersion(1)]
         [HttpGet("{id}")]
         [ProducesResponseType<CelestialObjectOutput>(StatusCodes.Status200OK)]
+        [ProducesResponseType<string>(StatusCodes.Status403Forbidden)]
         [ProducesResponseType<object>(StatusCodes.Status404NotFound)]
         [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
@@ -73,14 +77,25 @@ namespace StellarApi.RestApi.Controllers
             _logger.LogInformation($"Fetching celestial object data for celestial object n°{id}.");
             try
             {
-                var result = await _service.GetCelestialObject(id);
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                int? parsedUserId = null;
+                if (userId != null && int.TryParse(userId, out var tempUserId))
+                {
+                    parsedUserId = tempUserId;
+                }
+                var result = await _service.GetCelestialObject(id, parsedUserId);
                 if (result == null)
                 {
                     _logger.LogInformation($"Celestial object n°{id} was not found.");
-                    return NotFound();
+                    return NotFound($"The celestial object n°{id} was not found.");
                 }
                 _logger.LogInformation($"The celestial object n°{id} was found and fetched successfully.");
                 return Ok(result.ToDTO());
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _logger.LogInformation($"The celestial object could not be fetch because the user is not allowed to access it. More details: {ex.Message}.");
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
             catch (UnavailableDatabaseException ex)
             {
@@ -95,13 +110,84 @@ namespace StellarApi.RestApi.Controllers
         }
 
         /// <summary>
-        /// (Needs Auth) Retrieves a collection of celestial objects with pagination.
+        /// (Needs Auth) Retrieves a collection of the private celestial objects of the current connected user with pagination.
         /// </summary>
         /// <remarks>
         /// 
-        /// This route is used to retrieve a collection of celestial objects with pagination.
+        /// This route is used to retrieve a collection of the user's celestial object when he is connected.
         /// 
         /// A celestial object is a physical entity in space, such as a planet, star, etc. The fields of the celestial object are empty or not depending on its type. For example, for a Star, the brightness field is filled, while for a Planet, the isWater field is filled. Read carrefully the documentation of the schema to know which fields are filled for each type of celestial object.
+        /// 
+        /// Only personal celestial objects of the user are returned with this route.
+        /// 
+        /// The page and page size parameters are mandatory and must be greater than 0.
+        /// 
+        /// A 400 error will be returned if the page or page size is invalid.
+        /// 
+        /// Sample request:
+        /// 
+        ///     GET /api/v1/celestial-objects/personnal?page=1&amp;pageSize=10
+        /// 
+        /// </remarks>
+        /// <param name="page">The page number.</param>
+        /// <param name="pageSize">The number of items per page.</param>
+        /// <returns>The collection of celestial objects retrieve.</returns>
+        [MapToApiVersion(1)]
+        [HttpGet("personnal")]
+        [Authorize(Roles = "Member, Administrator")]
+        [ProducesResponseType<IEnumerable<CelestialObjectOutput>>(StatusCodes.Status200OK)]
+        [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
+        public async Task<ActionResult<IEnumerable<CelestialObjectOutput>>> GetPersonnalCelestialObjects(int page, int pageSize)
+        {
+            _logger.LogInformation($"Fetching personnal celestial object data for page {page} with {pageSize} items per page.");
+
+            if (page <= 0)
+            {
+                _logger.LogInformation($"Personnal Celestial object data for page {page} with {pageSize} items per page could not be fetched because the page was a negative number.");
+                return BadRequest("The page number must be greater than 0.");
+            }
+            if (pageSize <= 0)
+            {
+                _logger.LogInformation($"Personnal Celestial object data for page {page} with {pageSize} items per page could not be fetched because the page size was not a negative number.");
+                return BadRequest("The page size must be greater than 0.");
+            }
+
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (userId is null)
+                {
+                    _logger.LogError("The user ID of the connected user could not be found in the claims.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
+                }
+                var objects = (await _service.GetCelestialObjects(int.Parse(userId), page, pageSize)).ToDTO();
+                _logger.LogInformation($"Personnal Celestial object data for page {page} with {pageSize} items per page was fetched successfully.");
+                return Ok(objects);
+            }
+            catch (UnavailableDatabaseException ex)
+            {
+                _logger.LogError($"Personnal Celestial object data for page {page} with {pageSize} items per page could not be fetched due to an unavailable database. More details: {ex.Message}.");
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An unexpected error occurred while fetching public celestial object data. More details: {ex.Message}.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching public celestial object data.", Details = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Retrieves a collection of public celestial objects with pagination.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// This route is used to retrieve a collection of public celestial objects with pagination.
+        /// 
+        /// A celestial object is a physical entity in space, such as a planet, star, etc. The fields of the celestial object are empty or not depending on its type. For example, for a Star, the brightness field is filled, while for a Planet, the isWater field is filled. Read carrefully the documentation of the schema to know which fields are filled for each type of celestial object.
+        /// 
+        /// The personnal celestial objects of the user are returned with this route only if they are public. To have access to all the celestial objects of the user, use the route /api/v1/celestial-objects/personnal.
         /// 
         /// The page and page size parameters are mandatory and must be greater than 0.
         /// 
@@ -121,36 +207,36 @@ namespace StellarApi.RestApi.Controllers
         [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
         [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
-        public async Task<ActionResult<IEnumerable<CelestialObjectOutput>>> GetCelestialObjects(int page, int pageSize)
+        public async Task<ActionResult<IEnumerable<CelestialObjectOutput>>> GetPublicCelestialObjects(int page, int pageSize)
         {
-            _logger.LogInformation($"Fetching celestial object data for page {page} with {pageSize} items per page.");
+            _logger.LogInformation($"Fetching public celestial object data for page {page} with {pageSize} items per page.");
 
             if (page <= 0)
             {
-                _logger.LogInformation($"Celestial object data for page {page} with {pageSize} items per page could not be fetched because the page was a negative number.");
+                _logger.LogInformation($"Public Celestial object data for page {page} with {pageSize} items per page could not be fetched because the page was a negative number.");
                 return BadRequest("The page number must be greater than 0.");
             }
             if (pageSize <= 0)
             {
-                _logger.LogInformation($"Celestial object data for page {page} with {pageSize} items per page could not be fetched because the page size was not a negative number.");
+                _logger.LogInformation($"Public Celestial object data for page {page} with {pageSize} items per page could not be fetched because the page size was not a negative number.");
                 return BadRequest("The page size must be greater than 0.");
             }
 
             try
             {
-                var objects = (await _service.GetCelestialObjects(page, pageSize)).ToDTO();
-                _logger.LogInformation($"Celestial object data for page {page} with {pageSize} items per page was fetched successfully.");
+                var objects = (await _service.GetPublicCelestialObjects(page, pageSize)).ToDTO();
+                _logger.LogInformation($"Public Celestial object data for page {page} with {pageSize} items per page was fetched successfully.");
                 return Ok(objects);
             }
             catch (UnavailableDatabaseException ex)
             {
-                _logger.LogError($"Celestial object data for page {page} with {pageSize} items per page could not be fetched due to an unavailable database. More details: {ex.Message}.");
+                _logger.LogError($"Public Celestial object data for page {page} with {pageSize} items per page could not be fetched due to an unavailable database. More details: {ex.Message}.");
                 return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"An unexpected error occurred while fetching celestial object data. More details: {ex.Message}.");
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching celestial object data.", Details = ex.Message });
+                _logger.LogError($"An unexpected error occurred while fetching public celestial object data. More details: {ex.Message}.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching public celestial object data.", Details = ex.Message });
             }
         }
 
@@ -214,8 +300,8 @@ namespace StellarApi.RestApi.Controllers
         /// <param name="celestialObject">The celestial object to add.</param>
         /// <returns>A message indicating if the celestial object was added or not.</returns>
         [MapToApiVersion(1)]
-        [HttpPost]
-        [Route("create")]
+        [HttpPost("create")]
+        [Authorize(Roles = "Member, Administrator")]
         [ProducesResponseType<string>(StatusCodes.Status200OK)]
         [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
         [ProducesResponseType<string>(StatusCodes.Status403Forbidden)]
@@ -345,6 +431,7 @@ namespace StellarApi.RestApi.Controllers
         /// <returns>A message indicating if the celestial object was edited or not.</returns>
         [MapToApiVersion(1)]
         [HttpPut("edit/{id}")]
+        [Authorize(Roles = "Member, Administrator")]
         [ProducesResponseType<string>(StatusCodes.Status200OK)]
         [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
         [ProducesResponseType<string>(StatusCodes.Status403Forbidden)]
@@ -432,6 +519,7 @@ namespace StellarApi.RestApi.Controllers
         /// <returns>A message indicating if the celestial object was deleted or not.</returns>
         [MapToApiVersion(1)]
         [HttpDelete("remove/{id}")]
+        [Authorize(Roles = "Member, Administrator")]
         [ProducesResponseType<string>(StatusCodes.Status200OK)]
         [ProducesResponseType<string>(StatusCodes.Status403Forbidden)]
         [ProducesResponseType<string>(StatusCodes.Status404NotFound)]

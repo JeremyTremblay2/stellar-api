@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authorization;
 using StellarApi.DTOs.Users;
 using StellarApi.Business.Exceptions;
 using StellarApi.Repository.Exceptions;
+using System.Security.Claims;
+using StellarApi.Model.Space;
 
 namespace StellarApi.RestApi.Controllers
 {
@@ -190,7 +192,6 @@ namespace StellarApi.RestApi.Controllers
                 return BadRequest("Bad credentials");
             }
 
-            // Add BCrypt password hashing here to compare the hashed password with the one in the database.
             var isPasswordValid = request.Password != null && request.Email != null
                 && request.Password.Equals(user.Password) && request.Email.Equals(user.Email);
             //var isPasswordValid = BCrypt.Net.BCrypt.Verify(request.Password, user.Password);
@@ -208,7 +209,7 @@ namespace StellarApi.RestApi.Controllers
 
             try
             {
-                var wasEdited = await _service.PutUser(user.Id, user, false);
+                var wasEdited = await _service.PutUser(user.Id, user, user.Id, false);
                 if (wasEdited)
                 {
                     _logger.LogInformation($"The user {request.Email} was successfully authenticated and his token updated.");
@@ -217,7 +218,6 @@ namespace StellarApi.RestApi.Controllers
                         AccessToken = accessToken,
                         RefreshToken = refreshToken,
                         RefreshTokenExpirationTime = user.RefreshTokenExpiryTime,
-                        Email = user.Email,
                         Username = user.Username,
                         Role = user.Role.ToString()
                     });
@@ -241,13 +241,67 @@ namespace StellarApi.RestApi.Controllers
         }
 
         /// <summary>
-        /// (Needs Auth) Retrieves a user object by its unique identifier.
+        /// Retrieves complete data of the connected user.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// This route is used to retrieve a the complete data of the connected user (more data than the minimal user output).
+        /// 
+        /// In the response, the user's password is not included for security reasons.
+        /// 
+        /// Sample request:
+        /// 
+        ///     GET /api/v1/users/me
+        ///     
+        /// </remarks>
+        /// <param name="id">The ID of the user to retrieve.</param>
+        /// <returns>The user object data.</returns>
+        [MapToApiVersion(1)]
+        [HttpGet("me")]
+        [Authorize(Roles = "Member, Administrator")]
+        [ProducesResponseType<MaximalUserOutput>(StatusCodes.Status200OK)]
+        [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
+        public async Task<ActionResult<MaximalUserOutput?>> GetCurrentUser()
+        {
+            _logger.LogInformation($"Fetching complete user data for connected user.");
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (userId is null)
+                {
+                    _logger.LogError("The user ID of the connected user could not be found in the claims.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
+                }
+                var result = await _service.GetUserById(int.Parse(userId));
+                if (result == null)
+                {
+                    _logger.LogInformation($"The connected user n°{userId} could not be found.");
+                    return NotFound();
+                }
+                _logger.LogInformation($"The connected user n°{userId} was found and fetched successfully.");
+                return Ok(result.ToMaximalDTO());
+            }
+            catch (UnavailableDatabaseException ex)
+            {
+                _logger.LogError($"The connected user could not be fetched due to an unavailable database. More details: {ex.Message}.");
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An unexpected error occurred while fetching the connected user data. More details: {ex.Message}.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching data of the connected user.", Details = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Retrieves a user object by its unique identifier.
         /// </summary>
         /// <remarks>
         /// 
         /// This route is used to retrieve a user object with its data by its unique identifier.
         /// 
-        /// In the response, the user's password and user passwords are not included for security reasons.
+        /// In the response, the user's password is not included for security reasons.
         /// 
         /// A 404 error will be returned if the user is not found.
         /// 
@@ -260,12 +314,12 @@ namespace StellarApi.RestApi.Controllers
         /// <returns>The user object data.</returns>
         [MapToApiVersion(1)]
         [HttpGet("{id}")]
-        [Authorize(Roles = "Member, Administrator")]
-        [ProducesResponseType<UserOutput>(StatusCodes.Status200OK)]
+        [AllowAnonymous]
+        [ProducesResponseType<MinimalUserOutput>(StatusCodes.Status200OK)]
         [ProducesResponseType<object>(StatusCodes.Status404NotFound)]
         [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
-        public async Task<ActionResult<UserOutput?>> GetUserById(int id)
+        public async Task<ActionResult<MinimalUserOutput?>> GetUserById(int id)
         {
             _logger.LogInformation($"Fetching user data for user n°{id}.");
             try
@@ -274,10 +328,10 @@ namespace StellarApi.RestApi.Controllers
                 if (result == null)
                 {
                     _logger.LogInformation($"The user n°{id} could not be found.");
-                    return NotFound();
+                    return NotFound($"The user n°{id} could not be found.");
                 }
                 _logger.LogInformation($"The user n°{id} was found and fetched successfully.");
-                return Ok(result.ToDTO());
+                return Ok(result.ToMinimalDTO());
             }
             catch (UnavailableDatabaseException ex)
             {
@@ -292,7 +346,7 @@ namespace StellarApi.RestApi.Controllers
         }
 
         /// <summary>
-        /// (Needs Auth) Retrieves a list of users.
+        /// Retrieves a list of users.
         /// </summary>
         /// <remarks>
         /// 
@@ -314,12 +368,12 @@ namespace StellarApi.RestApi.Controllers
         /// <returns>The list of users and the associated data.</returns>
         [MapToApiVersion(1)]
         [HttpGet]
-        [Authorize(Roles = "Administrator")]
-        [ProducesResponseType<List<UserOutput>>(StatusCodes.Status200OK)]
+        [AllowAnonymous]
+        [ProducesResponseType<List<MinimalUserOutput>>(StatusCodes.Status200OK)]
         [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
         [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
-        public async Task<ActionResult<IEnumerable<UserOutput>>> GetUsers(int page, int pageSize)
+        public async Task<ActionResult<IEnumerable<MinimalUserOutput>>> GetUsers(int page, int pageSize)
         {
             _logger.LogInformation($"Fetching user data for page {page} with {pageSize} users per page.");
 
@@ -336,7 +390,7 @@ namespace StellarApi.RestApi.Controllers
 
             try
             {
-                var users = (await _service.GetUsers(page, pageSize)).ToDTO();
+                var users = (await _service.GetUsers(page, pageSize)).ToMinimalDTO();
                 _logger.LogInformation($"User data fetched successfully.");
                 return Ok(users);
             }
@@ -361,7 +415,11 @@ namespace StellarApi.RestApi.Controllers
         /// 
         /// The username must have a maximum length of 30 characters and the email a maximum length of 100 characters. The id is mandatory.
         /// 
+        /// Only a user can update his own account, an administrator can update any account.
+        /// 
         /// A 400 error will be returned if the user information contains invalid data.
+        /// 
+        /// A 403 error will be returned if the user is not allowed to update the user.
         /// 
         /// A 404 will be returned if the user to update is not found.
         /// 
@@ -388,6 +446,7 @@ namespace StellarApi.RestApi.Controllers
         [Route("edit/{id}")]
         [ProducesResponseType<string>(StatusCodes.Status200OK)]
         [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType<string>(StatusCodes.Status403Forbidden)]
         [ProducesResponseType<string>(StatusCodes.Status404NotFound)]
         [ProducesResponseType<string>(StatusCodes.Status409Conflict)]
         [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
@@ -398,7 +457,13 @@ namespace StellarApi.RestApi.Controllers
             User userObject = user.ToModel();
             try
             {
-                var wasEdited = await _service.PutUser(id, userObject, true);
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (userId is null)
+                {
+                    _logger.LogError("The user ID of the connected user could not be found in the claims.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
+                }
+                var wasEdited = await _service.PutUser(id, userObject, int.Parse(userId), true);
                 if (wasEdited)
                 {
                     _logger.LogInformation($"User n°{id} edited successfully.");
@@ -422,6 +487,11 @@ namespace StellarApi.RestApi.Controllers
             {
                 _logger.LogInformation($"The user n°{id} could not be edited because a user already exists with this email. More details: {ex.Message}.");
                 return Conflict(ex.Message);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _logger.LogInformation($"The user n°{id} could not be edited because the user is not allowed to delete it. More details: {ex.Message}.");
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
             catch (EntityNotFoundException ex)
             {
@@ -447,9 +517,11 @@ namespace StellarApi.RestApi.Controllers
         /// 
         /// This route is used to deleter a user object by its unique identifier. The data cannot be recovered once deleted.
         /// 
-        /// A 404 error will be returned if the user is not found.
+        /// Only the user can delete his own account, an administrator can delete any account.
         /// 
-        /// Currently, this route needs privileges to be accessed.
+        /// A 403 error will be returned if the user is not allowed to delete the account.
+        /// 
+        /// A 404 error will be returned if the user is not found.
         /// 
         /// Sample request:
         /// 
@@ -460,9 +532,10 @@ namespace StellarApi.RestApi.Controllers
         /// <returns>Return a message indicating if the user was deleted or not.</returns>
         [MapToApiVersion(1)]
         [HttpDelete]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Member, Administrator")]
         [Route("remove/{id}")]
         [ProducesResponseType<string>(StatusCodes.Status200OK)]
+        [ProducesResponseType<string>(StatusCodes.Status403Forbidden)]
         [ProducesResponseType<string>(StatusCodes.Status404NotFound)]
         [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
@@ -471,7 +544,13 @@ namespace StellarApi.RestApi.Controllers
             _logger.LogInformation($"Deleting user data for user n°{id}.");
             try
             {
-                if (await _service.DeleteUser(id))
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (userId is null)
+                {
+                    _logger.LogError("The user ID of the connected user could not be found in the claims.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
+                }
+                if (await _service.DeleteUser(id, int.Parse(userId)))
                 {
                     _logger.LogInformation($"User n°{id} deleted successfully.");
                     return Ok($"The User n°{id} was successfully deleted.");
@@ -481,6 +560,11 @@ namespace StellarApi.RestApi.Controllers
                     _logger.LogError($"The user n°{id} could not be deleted due to an unknown error.");
                     return StatusCode(StatusCodes.Status500InternalServerError, $"The user n°{id} could not be deleted due to an unknown error.");
                 }
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _logger.LogInformation($"The user n°{id} could not be deleted because the user is not allowed to delete it. More details: {ex.Message}.");
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
             catch (EntityNotFoundException ex)
             {

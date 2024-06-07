@@ -119,6 +119,12 @@ namespace StellarApi.DTOs.Space
         public int? UserAuthorId { get; set; }
 
         /// <summary>
+        /// Gets or sets the public status of the celestial object.
+        /// </summary>
+        [SwaggerSchema(Description = "A value indicating if the celestial object is visible by everyone or not.", Nullable = true)]
+        public bool IsPublic { get; set; } = false;
+
+        /// <summary>
         /// Creates a new instance of the <see cref="CelestialObjectOutput"/> class.
         /// </summary>
         public CelestialObjectOutput()
@@ -139,6 +145,7 @@ namespace StellarApi.DTOs.Space
         /// <param name="creationDate">The creation date of the celestial object.</param>
         /// <param name="modificationDate">The last modification date of the celestial object.</param>
         /// <param name="type">The type of the celestial object.</param>
+        /// <param name="isPublic">The public status of the celestial object.</param>
         /// <param name="mapId">The unique identifier of the map.</param>
         /// <param name="planetType">The type of the planet.</param>
         /// <param name="isWater">The possibility of water on the celestial object.</param>
@@ -146,7 +153,7 @@ namespace StellarApi.DTOs.Space
         /// <param name="starType">The type of the star.</param>
         /// <param name="brightness">The brightness of the celestial object.</param>
         public CelestialObjectOutput(int id, string name, string description, Position? position, double mass, double temperature, double radius, int userAuthorId,
-            string image, DateTime creationDate, DateTime modificationDate, CelestialObjectType type, int? mapId = null, PlanetType? planetType = null, bool? isWater = null,
+            string image, DateTime creationDate, DateTime modificationDate, CelestialObjectType type, bool isPublic = false, int? mapId = null, PlanetType? planetType = null, bool? isWater = null,
             bool? isLife = null, StarType? starType = null, double? brightness = null)
         {
             Id = id;
@@ -161,6 +168,7 @@ namespace StellarApi.DTOs.Space
             CreationDate = creationDate;
             ModificationDate = modificationDate;
             Type = type;
+            IsPublic = isPublic;
             MapId = mapId;
             PlanetType = planetType;
             IsWater = isWater;

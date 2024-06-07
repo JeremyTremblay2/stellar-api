@@ -27,6 +27,55 @@ namespace StellarApi.Repository.Repositories
         }
 
         /// <summary>
+        /// Retrieves a celestial object by its unique identifier from the database.
+        /// </summary>
+        /// <param name="id">The unique identifier of the celestial object.</param>
+        /// <returns>A task that represents the asynchronous operation and returns the retrieved celestial object, or null if not found.</returns>
+        /// <exception cref="UnavailableDatabaseException">Thrown when the database is not available.</exception>
+        public async Task<CelestialObject?> GetCelestialObject(int id)
+        {
+            if (_context.CelestialObjects is null) throw new UnavailableDatabaseException();
+            return (await _context.CelestialObjects.FindAsync(id)).ToModel();
+        }
+
+        /// <summary>
+        /// Retrieves a private collection of celestial objects from the specified user id with pagination from the database.
+        /// </summary>
+        /// <param name="userId">The unique identifier of the user.</param>
+        /// <param name="page">The page number.</param>
+        /// <param name="pageSize">The number of items per page.</param>
+        /// <returns>A task that represents the asynchronous operation and returns the collection of private celestial objects.</returns>
+        /// <exception cref="UnavailableDatabaseException">Thrown when the database is not available.</exception>
+        public async Task<IEnumerable<CelestialObject>> GetCelestialObjects(int userId, int page, int pageSize)
+        {
+            if (_context.CelestialObjects is null) throw new UnavailableDatabaseException();
+            return (await _context.CelestialObjects
+                .Where(c => c.UserAuthorId == userId)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync())
+                .ToModel();
+        }
+
+        /// <summary>
+        /// Retrieves a public collection of celestial objects with pagination from the database.
+        /// </summary>
+        /// <param name="page">The page number.</param>
+        /// <param name="pageSize">The number of items per page.</param>
+        /// <returns>A task that represents the asynchronous operation and returns the collection of public celestial objects.</returns>
+        /// <exception cref="UnavailableDatabaseException">Thrown when the database is not available.</exception>
+        public async Task<IEnumerable<CelestialObject>> GetPublicCelestialObjects(int page, int pageSize)
+        {
+            if (_context.CelestialObjects is null) throw new UnavailableDatabaseException();
+            return (await _context.CelestialObjects
+                .Where(c => c.IsPublic)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync())
+                .ToModel();
+        }
+
+        /// <summary>
         /// Adds a new celestial object to the database.
         /// </summary>
         /// <param name="celestialObject">The celestial object to add.</param>
@@ -68,37 +117,9 @@ namespace StellarApi.Repository.Repositories
             existingCelestialObject.IsWater = entity.IsWater;
             existingCelestialObject.Brightness = entity.Brightness;
             existingCelestialObject.MapId = entity.MapId;
+            existingCelestialObject.IsPublic = entity.IsPublic;
             _context.CelestialObjects.Update(existingCelestialObject);
             return await _context.SaveChangesAsync() == 1;
-        }
-
-        /// <summary>
-        /// Retrieves a celestial object by its unique identifier from the database.
-        /// </summary>
-        /// <param name="id">The unique identifier of the celestial object.</param>
-        /// <returns>A task that represents the asynchronous operation and returns the retrieved celestial object, or null if not found.</returns>
-        /// <exception cref="UnavailableDatabaseException">Thrown when the database is not available.</exception>
-        public async Task<CelestialObject?> GetCelestialObject(int id)
-        {
-            if (_context.CelestialObjects is null) throw new UnavailableDatabaseException();
-            return (await _context.CelestialObjects.FindAsync(id)).ToModel();
-        }
-
-        /// <summary>
-        /// Retrieves a collection of celestial objects with pagination from the database.
-        /// </summary>
-        /// <param name="page">The page number.</param>
-        /// <param name="pageSize">The number of items per page.</param>
-        /// <returns>A task that represents the asynchronous operation and returns the collection of celestial objects.</returns>
-        /// <exception cref="UnavailableDatabaseException">Thrown when the database is not available.</exception>
-        public async Task<IEnumerable<CelestialObject>> GetCelestialObjects(int page, int pageSize)
-        {
-            if (_context.CelestialObjects is null) throw new UnavailableDatabaseException();
-            return (await _context.CelestialObjects
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync())
-                .ToModel();
         }
 
         /// <summary>

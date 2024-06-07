@@ -117,5 +117,10 @@ namespace StellarApi.Entities
         /// </summary>
         [ForeignKey("UserAuthorId")]
         public UserEntity? UserAuthor { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the celestial object is public or not.
+        /// </summary>
+        public bool IsPublic { get; set; }
     }
 }

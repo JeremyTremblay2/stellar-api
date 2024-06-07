@@ -48,16 +48,22 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
     public int UserAuthorId { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating whether the map is public or not.
+    /// </summary>
+    public bool IsPublic { get; set; } 
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="Map"/> class with specified properties.
     /// </summary>
     /// <param name="id">The unique identifier of the map.</param>
     /// <param name="name">The name of the map.</param>
     /// <param name="userAuthorId">The user author identifier of the map.</param>
+    /// <param name="isPublic">The public status of the map.</param>
     /// <param name="creationDate">The creation date of the map.</param>
     /// <param name="modificationDate">The last modification date of the map.</param>
     /// <exception cref="ArgumentNullException">Throw when the name of the object is null or empty.</exception>
     /// <exception cref="ArgumentException">Thrown when the <paramref name="modificationDate"/> is in the future or before the <paramref name="creationDate"/>.</exception>
-    public Map(int id, string name, int userAuthorId, DateTime? creationDate = null, DateTime? modificationDate = null)
+    public Map(int id, string name, int userAuthorId, bool isPublic = false, DateTime? creationDate = null, DateTime? modificationDate = null)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentNullException(nameof(name), "The name of the object cannot be null or empty.");
@@ -65,6 +71,7 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
         Id = id;
         Name = name;
         UserAuthorId = userAuthorId;
+        IsPublic = isPublic;
         CelestialObjects = new ReadOnlyCollection<CelestialObject>(celestialObjects);
         CreationDate = creationDate ?? DateTime.Now;
         ModificationDate = modificationDate ?? DateTime.Now;
@@ -77,11 +84,12 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
     /// <param name="name">The name of the map.</param>
     /// <param name="userAuthorId">The user author identifier of the map.</param>
     /// <param name="celestialObject">The celestial objects in the map.</param>
+    /// <param name="isPublic">The public status of the map.</param>
     /// <param name="creationDate">The creation date of the map.</param>
     /// <param name="modificationDate">The last modification date of the map.</param>
     /// <exception cref="ArgumentNullException">Throw when the name of the object is null or empty.</exception>
     /// <exception cref="ArgumentException">Thrown when the <paramref name="modificationDate"/> is in the future or before the <paramref name="creationDate"/>.</exception>
-    public Map(int id, string name, int userAuthorId, IEnumerable<CelestialObject> celestialObject, DateTime? creationDate = null, DateTime? modificationDate = null)
+    public Map(int id, string name, int userAuthorId, IEnumerable<CelestialObject> celestialObject, bool isPublic = false, DateTime? creationDate = null, DateTime? modificationDate = null)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentNullException(nameof(name), "The name of the object cannot be null or empty.");
@@ -90,6 +98,7 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
         Name = name;
         UserAuthorId = userAuthorId;
         CelestialObjects = new ReadOnlyCollection<CelestialObject>(celestialObjects);
+        IsPublic = isPublic;
         celestialObjects.AddRange(celestialObject);
         CreationDate = creationDate ?? DateTime.Now;
         ModificationDate = modificationDate ?? DateTime.Now;

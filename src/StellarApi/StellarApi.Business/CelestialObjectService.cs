@@ -49,15 +49,26 @@ namespace StellarApi.Business
         }
 
         /// <inheritdoc/>
-        public Task<CelestialObject?> GetCelestialObject(int id)
+        public async Task<CelestialObject?> GetCelestialObject(int id, int? userRequestId)
         {
-            return _repository.GetCelestialObject(id);
+            var celestialObject = await _repository.GetCelestialObject(id);
+            if (celestialObject != null && (!celestialObject.IsPublic && (userRequestId == null || celestialObject.UserAuthorId != userRequestId)))
+            {
+                throw new UnauthorizedAccessException($"You are not allowed to access the celestial object n°{id} because this is not yours.");
+            }
+            return celestialObject;
         }
 
         /// <inheritdoc/>
-        public Task<IEnumerable<CelestialObject>> GetCelestialObjects(int page, int pageSize)
+        public Task<IEnumerable<CelestialObject>> GetCelestialObjects(int userId, int page, int pageSize)
         {
-            return _repository.GetCelestialObjects(page, pageSize);
+            return _repository.GetCelestialObjects(userId, page, pageSize);
+        }
+
+        /// <inheritdoc/>
+        public Task<IEnumerable<CelestialObject>> GetPublicCelestialObjects(int page, int pageSize)
+        {
+            return _repository.GetPublicCelestialObjects(page, pageSize);
         }
 
         /// <inheritdoc/>

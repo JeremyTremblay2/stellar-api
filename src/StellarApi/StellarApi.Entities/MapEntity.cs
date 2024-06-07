@@ -37,4 +37,15 @@ public class MapEntity
     /// Gets or sets the modification date of the map.
     /// </summary>
     public required DateTime ModificationDate { get; set; }
+
+    /// <summary>
+    /// Gets or sets the user author identifier of the map.
+    /// </summary>
+    public int UserAuthorId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the user author of the map.
+    /// </summary>
+    [ForeignKey("UserAuthorId")]
+    public UserEntity? UserAuthor { get; set; }
 }

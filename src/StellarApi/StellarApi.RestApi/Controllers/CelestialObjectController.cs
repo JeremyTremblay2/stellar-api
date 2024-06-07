@@ -9,6 +9,8 @@ using StellarApi.Repository.Exceptions;
 using StellarApi.Business.Exceptions;
 using StellarApi.DTOtoModel.Exceptions;
 using System.ComponentModel;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace StellarApi.RestApi.Controllers
 {
@@ -167,11 +169,14 @@ namespace StellarApi.RestApi.Controllers
         ///
         /// A 400 error will be returned if the celestial object is invalid with incomplete data or invalid fields.
         /// 
+        /// A 403 error will be returned if the user try to add the celestial object to a map that he is not the author.
+        /// 
+        /// A 404 error will be returned if the provided map is not found.
+        /// 
         /// Sample request:
         /// 
-        ///     POST /api/v1/celestial-objects/add
+        ///     POST /api/v1/celestial-objects/create
         ///     {
-        ///         "id": 0,
         ///         "name": "Sun",
         ///         "description": "The Sun is the star at the center of the Solar System.",
         ///         "mass": 1989000000000000000000000000000,
@@ -191,9 +196,8 @@ namespace StellarApi.RestApi.Controllers
         ///    
         /// or
         /// 
-        ///     POST /api/v1/celestial-objects/add
+        ///     POST /api/v1/celestial-objects/create
         ///     {
-        ///         "id": 0,
         ///         "name": "Earth",
         ///         "description": "The Earth is the third planet from the Sun and the only astronomical object known to harbor and support life.",
         ///         "mass": 5972200000000000000000000,
@@ -211,9 +215,11 @@ namespace StellarApi.RestApi.Controllers
         /// <returns>A message indicating if the celestial object was added or not.</returns>
         [MapToApiVersion(1)]
         [HttpPost]
-        [Route("add")]
+        [Route("create")]
         [ProducesResponseType<string>(StatusCodes.Status200OK)]
         [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType<string>(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
         public async Task<ActionResult> PostCelestialObject([FromBody] CelestialObjectInput celestialObject)
@@ -223,6 +229,14 @@ namespace StellarApi.RestApi.Controllers
             {
                 CelestialObject userObject = celestialObject.ToModel();
 
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (userId is null)
+                {
+                    _logger.LogError("The user ID of the connected user could not be found in the claims.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
+                }
+
+                userObject.UserAuthorId = int.Parse(userId);
                 var wasAdded = await _service.PostCelestialObject(userObject);
                 if (wasAdded)
                 {
@@ -243,6 +257,16 @@ namespace StellarApi.RestApi.Controllers
             {
                 _logger.LogInformation($"The celestial object could not be added due to an invalid field. More details: {ex.Message}.");
                 return BadRequest(ex.Message);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _logger.LogInformation($"The celestial object could not be added because the user is not allowed to delete it. More details: {ex.Message}.");
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation($"The celestial object could not be edited because the map {celestialObject.MapId} was not found. More details: {ex.Message}.");
+                return NotFound(ex.Message);
             }
             catch (UnavailableDatabaseException ex)
             {
@@ -270,7 +294,11 @@ namespace StellarApi.RestApi.Controllers
         ///
         /// A Map id can be provided to link the celestial object to an existing map. If the map id is not provided, the celestial object will not be linked to any map. The position of the celestial object can be provided if a map id is provided. If the celestial object was already linked to a map, it will be unlinked from the previous map and linked to the new map.
         ///
+        /// To edit a celestial object, the connected user must be the author of the celestial object.
+        /// 
         /// A 400 error will be returned if the celestial object is invalid with incomplete data or invalid fields.
+        /// 
+        /// A 403 error will be returned if the user is not allowed to edit the celestial object.
         /// 
         /// A 404 error will be returned if the celestial object is not found.
         /// 
@@ -278,7 +306,6 @@ namespace StellarApi.RestApi.Controllers
         /// 
         ///     PUT /api/v1/celestial-objects/edit/1
         ///     {
-        ///         "id": 0,
         ///         "name": "Sun",
         ///         "description": "The Sun is the star at the center of the Solar System.",
         ///         "mass": 1989000000000000000000000000000,
@@ -292,25 +319,20 @@ namespace StellarApi.RestApi.Controllers
         ///         },
         ///         "type": "Star",
         ///         "starType": "YellowDwarf",
-        ///         "brightness": 382800000000000000000000000
+        ///         "brightness": 382800000000000000000000000,
+        ///         "mapId": 1
         ///     }
         ///    
         /// or
         /// 
         ///     PUT /api/v1/celestial-objects/edit/1
         ///     {
-        ///         "id": 0,
         ///         "name": "Earth",
         ///         "description": "The Earth is the third planet from the Sun and the only astronomical object known to harbor and support life.",
         ///         "mass": 5972200000000000000000000,
         ///         "temperature": 21,
         ///         "radius": 6371,
         ///         "image": "https://image_earth.png",
-        ///         "position": {
-        ///             "x": 124,
-        ///             "y": 77,
-        ///             "z": 4
-        ///         },
         ///         "type": "Planet",
         ///         "planetType": "Terrestrial",
         ///         "isWater": true,
@@ -325,6 +347,7 @@ namespace StellarApi.RestApi.Controllers
         [HttpPut("edit/{id}")]
         [ProducesResponseType<string>(StatusCodes.Status200OK)]
         [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType<string>(StatusCodes.Status403Forbidden)]
         [ProducesResponseType<string>(StatusCodes.Status404NotFound)]
         [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
@@ -334,6 +357,15 @@ namespace StellarApi.RestApi.Controllers
             try
             {
                 CelestialObject userObject = celestialObject.ToModel();
+
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (userId is null)
+                {
+                    _logger.LogError("The user ID of the connected user could not be found in the claims.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
+                }
+
+                userObject.UserAuthorId = int.Parse(userId);
 
                 var wasEdited = await _service.PutCelestialObject(id, userObject);
                 if (wasEdited)
@@ -355,6 +387,11 @@ namespace StellarApi.RestApi.Controllers
             {
                 _logger.LogInformation($"The celestial object n°{id} could not be edited due to an invalid field. More details: {ex.Message}.");
                 return BadRequest(ex.Message);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _logger.LogInformation($"The celestial object n°{id} could not be edited because the user is not allowed to delete it. More details: {ex.Message}.");
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
             catch (EntityNotFoundException ex)
             {
@@ -380,6 +417,10 @@ namespace StellarApi.RestApi.Controllers
         /// 
         /// This route is used to delete a celestial object by its unique identifier. The data cannot be recovered once deleted.
         /// 
+        /// To delete a celestial object, the connected user must be the author of the celestial object.
+        /// 
+        /// A 403 error will be returned if the user is not allowed to delete the celestial object.
+        /// 
         /// A 404 error will be returned if the celestial object is not found.
         /// 
         /// Sample request:
@@ -392,6 +433,7 @@ namespace StellarApi.RestApi.Controllers
         [MapToApiVersion(1)]
         [HttpDelete("remove/{id}")]
         [ProducesResponseType<string>(StatusCodes.Status200OK)]
+        [ProducesResponseType<string>(StatusCodes.Status403Forbidden)]
         [ProducesResponseType<string>(StatusCodes.Status404NotFound)]
         [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
@@ -400,7 +442,14 @@ namespace StellarApi.RestApi.Controllers
             _logger.LogInformation($"Deleting celestial object data for celestial object n°{id}.");
             try
             {
-                if (await _service.DeleteCelestialObject(id))
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (userId is null)
+                {
+                    _logger.LogError("The user ID of the connected user could not be found in the claims.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
+                }
+
+                if (await _service.DeleteCelestialObject(id, int.Parse(userId)))
                 {
                     _logger.LogInformation($"The celestial object n°{id} was successfully deleted.");
                     return Ok($"The Celestial object n°{id} was successfully deleted.");
@@ -415,6 +464,11 @@ namespace StellarApi.RestApi.Controllers
             {
                 _logger.LogInformation($"The celestial object n°{id} could not be deleted because it was not found. More details: {ex.Message}.");
                 return NotFound(ex.Message);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _logger.LogInformation($"The celestial object n°{id} could not be deleted because the user is not allowed to delete it. More details: {ex.Message}.");
+                return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
             }
             catch (UnavailableDatabaseException ex)
             {

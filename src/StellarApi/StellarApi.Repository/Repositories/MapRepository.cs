@@ -42,7 +42,6 @@ public class MapRepository : IMapRepository
         if (existingMap == null) throw new EntityNotFoundException(id.ToString(), "The map was not found.");
         var entity = map.ToEntity();
         existingMap.Name = entity.Name;
-        existingMap.CelestialObjects = entity.CelestialObjects;
         existingMap.ModificationDate = entity.ModificationDate;
         _context.Maps.Update(existingMap);
         return await _context.SaveChangesAsync() == 1;
@@ -106,11 +105,6 @@ public class MapRepository : IMapRepository
         var celestialObject = await _context.CelestialObjects.FindAsync(celestialObjectId);
         if (celestialObject is null)
             throw new EntityNotFoundException(celestialObjectId.ToString(), "The celestial object was not found.");
-        if (map.CelestialObjects.Contains(celestialObject) == false)
-        {
-            throw new CelestialObjectNotInMapException(celestialObjectId, mapId);
-        }
-
         map.CelestialObjects.Remove(celestialObject);
         return await _context.SaveChangesAsync() == 1;
     }

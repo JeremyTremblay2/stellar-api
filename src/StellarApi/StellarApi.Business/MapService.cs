@@ -3,6 +3,7 @@ using StellarApi.Business.Exceptions;
 using StellarApi.Infrastructure.Business;
 using StellarApi.Infrastructure.Repository;
 using StellarApi.Model.Space;
+using StellarApi.Repository.Exceptions;
 
 namespace StellarApi.Business;
 
@@ -22,6 +23,11 @@ public class MapService : IMapService
     private readonly IMapRepository _repository;
 
     /// <summary>
+    /// The repository used for managing celestial objects.
+    /// </summary>
+    private readonly ICelestialObjectRepository _celestialObjectRepository;
+
+    /// <summary>
     /// Logger used by this service.
     /// </summary>
     private readonly ILogger<IMapService> _logger;
@@ -30,10 +36,11 @@ public class MapService : IMapService
     /// Initializes a new instance of the <see cref="MapService"/> class.
     /// </summary>
     /// <param name="repository">The repository used for accessing maps.</param>
-    public MapService(ILogger<IMapService> logger, IMapRepository repository)
+    public MapService(ILogger<IMapService> logger, IMapRepository repository, ICelestialObjectRepository celestialObjectRepository)
     {
         _logger = logger;
         _repository = repository;
+        _celestialObjectRepository = celestialObjectRepository;
     }
 
     /// <inheritdoc/>
@@ -58,31 +65,50 @@ public class MapService : IMapService
     }
 
     /// <inheritdoc/>
-    public Task<bool> PutMap(int id, Map map)
+    public async Task<bool> PutMap(int id, Map map)
     {
+        var existingMap = await _repository.GetMap(id);
+        if (existingMap != null && existingMap.UserAuthorId != map.UserAuthorId)
+        {
+            throw new UnauthorizedAccessException($"You are not allowed to modify the map n°{id} because this is not yours.");
+        }
         CheckMapData(map);
         map.ModificationDate = DateTime.Now;
-        return _repository.EditMap(id, map);
+        return await _repository.EditMap(id, map);
     }
 
     /// <inheritdoc/>
-    public Task<bool> DeleteMap(int id)
+    public async Task<bool> DeleteMap(int mapId, int userAuthorId)
     {
-        return _repository.RemoveMap(id);
+        var existingMap = await _repository.GetMap(mapId);
+        if (existingMap != null && existingMap.UserAuthorId != userAuthorId)
+        {
+            throw new UnauthorizedAccessException($"You are not allowed to delete the map n°{mapId} because this is not yours.");
+        }
+        return await _repository.RemoveMap(mapId);
     }
 
     /// <inheritdoc/>
-    public Task<bool> AddCelestialObject(int mapId, int celestialObjectId)
+    public async Task<bool> AddCelestialObject(int mapId, int celestialObjectId, int userAuthorId)
     {
-        return _repository.AddCelestialObject(mapId, celestialObjectId);
+        await CheckObjectOwners(mapId, celestialObjectId, userAuthorId, true);
+        return await _repository.AddCelestialObject(mapId, celestialObjectId);
     }
 
     /// <inheritdoc/>
-    public Task<bool> RemoveCelestialObject(int mapId, int celestialObjectId)
+    public async Task<bool> RemoveCelestialObject(int mapId, int celestialObjectId, int userAuthorId)
     {
-        return _repository.RemoveCelestialObject(mapId, celestialObjectId);
+        await CheckObjectOwners(mapId, celestialObjectId, userAuthorId, false);
+        return await _repository.RemoveCelestialObject(mapId, celestialObjectId);
     }
 
+    /// <summary>
+    /// Checks the data of the map.
+    /// </summary>
+    /// <param name="map">The map to check.</param>
+    /// <exception cref="ArgumentNullException">If the map is null.</exception>
+    /// <exception cref="ArgumentException">If the name is null or empty.</exception>
+    /// <exception cref="InvalidFieldLengthException">If the name is too long.</exception>
     private void CheckMapData(Map map)
     {
         if (map == null)
@@ -99,6 +125,44 @@ public class MapService : IMapService
         if (map.Name.Length > MaxLengthName)
         {
             throw new InvalidFieldLengthException($"The map name cannot be longer than {MaxLengthName} characters.");
+        }
+    }
+
+    /// <summary>
+    /// Checks if the user is the owner of the map and the celestial object.
+    /// </summary>
+    /// <param name="mapId">The unique identifier of the map.</param>
+    /// <param name="celestialObjectId">The unique identifier of the celestial object.</param>
+    /// <param name="userAuthorId">The unique identifier of the user who created the map.</param>
+    /// <returns></returns>
+    /// <exception cref="UnauthorizedAccessException">If the user is not the owner of the map or the celestial object.</exception>
+    private async Task CheckObjectOwners(int mapId, int celestialObjectId, int userAuthorId, bool toBeAdded)
+    {
+        var existingMap = await _repository.GetMap(mapId);
+        var existingCelestialObject = await _celestialObjectRepository.GetCelestialObject(celestialObjectId);
+        if (existingCelestialObject == null)
+        {
+            throw new EntityNotFoundException(celestialObjectId.ToString(), "The celestial object was not found.");
+        }
+        if (existingMap == null)
+        {
+            throw new EntityNotFoundException(mapId.ToString(), "The map was not found.");
+        }
+        if (existingCelestialObject.UserAuthorId != userAuthorId)
+        {
+            throw new UnauthorizedAccessException($"You are not allowed to add the celestial object n°{celestialObjectId} to the map n°{mapId} because this celestial object is not yours.");
+        }
+        if (existingMap.UserAuthorId != userAuthorId)
+        {
+            throw new UnauthorizedAccessException($"You are not allowed to add a celestial object to the map n°{mapId} because this map is not yours.");
+        }
+        if (toBeAdded && existingMap.CelestialObjects.Contains(existingCelestialObject))
+        {
+            throw new CelestialObjectAlreadyInMapException($"The celestial object n°{celestialObjectId} is already in the map n°{mapId} and cannot be linked to it.");
+        }
+        if (!toBeAdded && !existingMap.CelestialObjects.Contains(existingCelestialObject))
+        {
+            throw new CelestialObjectNotInMapException($"The celestial object n°{celestialObjectId} is not in the map n°{mapId} and cannot be removed from it.");
         }
     }
 }

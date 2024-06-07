@@ -107,10 +107,16 @@ namespace StellarApi.DTOs.Space
         public double? Brightness { get; set; }
 
         /// <summary>
-        /// Gets or sets the unique identifier of the map.
+        /// Gets or sets the unique identifier of the celestial object.
         /// </summary>
         [SwaggerSchema(Description = "The unique identifier of the map.", Nullable = true)]
         public int? MapId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the unique identifier of the author of the celestial object.
+        /// </summary>
+        [SwaggerSchema(Description = "The unique identifier of the author of the celestial object.", Nullable = true)]
+        public int? UserAuthorId { get; set; }
 
         /// <summary>
         /// Creates a new instance of the <see cref="CelestialObjectOutput"/> class.
@@ -128,6 +134,7 @@ namespace StellarApi.DTOs.Space
         /// <param name="mass">The mass of the celestial object.</param>
         /// <param name="temperature">The temperature of the celestial object.</param>
         /// <param name="radius">The radius of the celestial object.</param>
+        /// <param name="userAuthorId">The unique identifier of the author of the celestial object.</param>
         /// <param name="image">The image path of the celestial object.</param>
         /// <param name="creationDate">The creation date of the celestial object.</param>
         /// <param name="modificationDate">The last modification date of the celestial object.</param>
@@ -138,7 +145,7 @@ namespace StellarApi.DTOs.Space
         /// <param name="isLife">The possibility of life on the celestial object.</param>
         /// <param name="starType">The type of the star.</param>
         /// <param name="brightness">The brightness of the celestial object.</param>
-        public CelestialObjectOutput(int id, string name, string description, Position? position, double mass, double temperature, double radius,
+        public CelestialObjectOutput(int id, string name, string description, Position? position, double mass, double temperature, double radius, int userAuthorId,
             string image, DateTime creationDate, DateTime modificationDate, CelestialObjectType type, int? mapId = null, PlanetType? planetType = null, bool? isWater = null,
             bool? isLife = null, StarType? starType = null, double? brightness = null)
         {
@@ -149,6 +156,7 @@ namespace StellarApi.DTOs.Space
             Mass = mass;
             Temperature = temperature;
             Radius = radius;
+            UserAuthorId = userAuthorId;
             Image = image;
             CreationDate = creationDate;
             ModificationDate = modificationDate;

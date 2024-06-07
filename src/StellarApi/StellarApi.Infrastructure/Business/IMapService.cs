@@ -40,23 +40,26 @@ public interface IMapService
     /// <summary>
     /// Deletes a map by its unique identifier.
     /// </summary>
-    /// <param name="id">The unique identifier of the map to delete.</param>
+    /// <param name="mapId">The unique identifier of the map to delete.</param>
+    /// <param name="userAuthorId">The unique identifier of the user who created the map.</param>
     /// <returns>A task that represents the asynchronous operation and returns true if the deletion was successful; otherwise, false.</returns>
-    Task<bool> DeleteMap(int id);
+    Task<bool> DeleteMap(int mapId, int userAuthorId);
 
     /// <summary>
     /// Adds a celestial object to a map.
     /// </summary>
     /// <param name="mapId">The unique identifier of the map.</param>
     /// <param name="celestialObjectId">The unique identifier of the celestial object to add.</param>
+    /// <param name="userAuthorId">The unique identifier of the user who created the map.</param>
     /// <returns>A task that represents the asynchronous operation and returns true if the addition was successful; otherwise, false.</returns>
-    Task<bool> AddCelestialObject(int mapId, int celestialObjectId);
+    Task<bool> AddCelestialObject(int mapId, int celestialObjectId, int userAuthorId);
 
     /// <summary>
     /// Removes a celestial object from a map.
     /// </summary>
     /// <param name="mapId">The unique identifier of the map.</param>
     /// <param name="celestialObjectId">The unique identifier of the celestial object to remove.</param>
+    /// <param name="userAuthorId">The unique identifier of the user who created the map.</param>
     /// <returns>A task that represents the asynchronous operation and returns true if the removal was successful; otherwise, false.</returns>
-    Task<bool> RemoveCelestialObject(int mapId, int celestialObjectId);
+    Task<bool> RemoveCelestialObject(int mapId, int celestialObjectId, int userAuthorId);
 }

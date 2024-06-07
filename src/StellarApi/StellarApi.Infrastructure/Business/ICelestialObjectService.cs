@@ -40,8 +40,9 @@ namespace StellarApi.Infrastructure.Business
         /// <summary>
         /// Deletes a celestial object by its unique identifier.
         /// </summary>
-        /// <param name="id">The unique identifier of the celestial object to delete.</param>
+        /// <param name="celestialObjectId">The unique identifier of the celestial object to delete.</param>
+        /// <param name="userAuthorId">The unique identifier of the user who authored the celestial object.</param>
         /// <returns>A task that represents the asynchronous operation and returns true if the deletion was successful; otherwise, false.</returns>
-        Task<bool> DeleteCelestialObject(int id);
+        Task<bool> DeleteCelestialObject(int celestialObjectId, int userAuthorId);
     }
 }

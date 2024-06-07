@@ -29,7 +29,7 @@ namespace StellarApi.DTOtoModel
                     throw new InvalidEnumArgumentException($"The planet type {dto.PlanetType} is not supported.");
                 }
                 return new Planet(0, dto.Name, dto.Description, dto.Image, PositionExtensions.ToModel(dto.Position), dto.Mass,
-                    dto.Temperature, dto.Radius, dto.IsWater ?? false, dto.IsLife ?? false, planetType, null, null, dto.MapId);
+                    dto.Temperature, dto.Radius, 0, dto.IsWater ?? false, dto.IsLife ?? false, planetType, null, null, dto.MapId);
                 
             }
             else if (dto.Type.Equals("Star"))
@@ -39,7 +39,7 @@ namespace StellarApi.DTOtoModel
                     throw new InvalidEnumArgumentException($"The star type {dto.StarType} is not supported.");
                 }
                 return new Star(0, dto.Name, dto.Description, dto.Image, PositionExtensions.ToModel(dto.Position),
-                    dto.Mass, dto.Temperature, dto.Radius, dto.Brightness ?? 0, starType, null, null, dto.MapId);
+                    dto.Mass, dto.Temperature, dto.Radius, 0, dto.Brightness ?? 0, starType, null, null, dto.MapId);
             }
             else
             {
@@ -76,6 +76,7 @@ namespace StellarApi.DTOtoModel
                 Mass = model.Mass,
                 Temperature = model.Temperature,
                 Radius = model.Radius,
+                UserAuthorId = model.UserAuthorId,
                 CreationDate = model.CreationDate,
                 ModificationDate = model.ModificationDate,
                 Type = Enum.Parse<CelestialObjectType>(model.GetType().Name),

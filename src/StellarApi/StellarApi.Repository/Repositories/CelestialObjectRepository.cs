@@ -4,7 +4,6 @@ using StellarApi.Model.Space;
 using StellarApi.Repository.Context;
 using StellarApi.EntityToModel;
 using StellarApi.Repository.Exceptions;
-using StellarApi.Model.Users;
 
 namespace StellarApi.Repository.Repositories
 {

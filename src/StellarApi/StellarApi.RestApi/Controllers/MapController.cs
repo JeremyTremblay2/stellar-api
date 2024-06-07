@@ -6,6 +6,8 @@ using StellarApi.Infrastructure.Business;
 using StellarApi.Model.Space;
 using StellarApi.DTOtoModel;
 using StellarApi.Repository.Exceptions;
+using System.Security.Claims;
+using StellarApi.Business.Exceptions;
 
 namespace StellarApi.RestApi.Controllers;
 
@@ -79,16 +81,13 @@ public class MapController : ControllerBase
         }
         catch (UnavailableDatabaseException ex)
         {
-            _logger.LogError(
-                $"The Map n°{id} could not be fetched due to an unavailable database. More details: {ex.Message}.");
+            _logger.LogError($"The Map n°{id} could not be fetched due to an unavailable database. More details: {ex.Message}.");
             return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
         }
         catch (Exception ex)
         {
-            _logger.LogError(
-                $"An error occurred while fetching the Map n°{id}. More details: {ex.Message}.");
-            return StatusCode(StatusCodes.Status500InternalServerError,
-                new { Message = "An unexpected error occurred while fetching the map data.", Details = ex.Message });
+            _logger.LogError($"An error occurred while fetching the Map n°{id}. More details: {ex.Message}.");
+            return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching the map data.", Details = ex.Message });
         }
     }
 
@@ -125,15 +124,13 @@ public class MapController : ControllerBase
 
         if (page <= 0)
         {
-            _logger.LogInformation(
-                $"Maps data for page {page} with {pageSize} items per page could not be fetched because the page was a negative number.");
+            _logger.LogInformation($"Maps data for page {page} with {pageSize} items per page could not be fetched because the page was a negative number.");
             return BadRequest("The page number must be greater than 0.");
         }
 
         if (pageSize <= 0)
         {
-            _logger.LogInformation(
-                $"Maps data for page {page} with {pageSize} items per page could not be fetched because the page size was not a negative number.");
+            _logger.LogInformation($"Maps data for page {page} with {pageSize} items per page could not be fetched because the page size was not a negative number.");
             return BadRequest("The page size must be greater than 0.");
         }
 
@@ -145,16 +142,13 @@ public class MapController : ControllerBase
         }
         catch (UnavailableDatabaseException ex)
         {
-            _logger.LogError(
-                $"Maps from page {page} with a page size of {pageSize} could not be fetched due to an unavailable database. More details: {ex.Message}.");
+            _logger.LogError($"Maps from page {page} with a page size of {pageSize} could not be fetched due to an unavailable database. More details: {ex.Message}.");
             return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
         }
         catch (Exception ex)
         {
-            _logger.LogError(
-                $"An error occurred while fetching the maps data. More details: {ex.Message}.");
-            return StatusCode(StatusCodes.Status500InternalServerError,
-                new { Message = "An unexpected error occurred while fetching the maps data.", Details = ex.Message });
+            _logger.LogError($"An error occurred while fetching the maps data. More details: {ex.Message}.");
+            return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching the maps data.", Details = ex.Message });
         }
     }
 
@@ -194,6 +188,15 @@ public class MapController : ControllerBase
         {
             Map newMap = map.ToModel();
 
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId is null)
+            {
+                _logger.LogError("The user ID of the connected user could not be found in the claims.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
+            }
+
+            newMap.UserAuthorId = int.Parse(userId);
+
             var wasAdded = await _service.PostMap(newMap);
             if (wasAdded)
             {
@@ -203,14 +206,12 @@ public class MapController : ControllerBase
             else
             {
                 _logger.LogError("The Map could not be added. An unknown error occurred.");
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    "The Map could not be added. An unknown error occurred.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "The Map could not be added. An unknown error occurred.");
             }
         }
         catch (Exception ex) when (ex is ArgumentNullException or ArgumentException)
         {
-            _logger.LogError(
-                $"The Map could not be created due to invalid data. More details: {ex.Message}.");
+            _logger.LogInformation($"The Map could not be created due to invalid data. More details: {ex.Message}.");
             return BadRequest(ex.Message);
         }
         catch (UnavailableDatabaseException ex)
@@ -221,10 +222,8 @@ public class MapController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(
-                $"An unexpected error occurred while creating the Map. More details: {ex.Message}.");
-            return StatusCode(StatusCodes.Status500InternalServerError,
-                new { Message = "An unexpected error occurred while creating the Map.", Details = ex.Message });
+            _logger.LogError($"An unexpected error occurred while creating the Map. More details: {ex.Message}.");
+            return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while creating the Map.", Details = ex.Message });
         }
     }
 
@@ -238,8 +237,12 @@ public class MapController : ControllerBase
     /// A map is a representation of a celestial map that contains a collection of celestial objects.
     ///
     /// The name of the map should not be null or empty and should be less than 100 characters.
+    /// 
+    /// To update a map, the connected user must be the author of the map.
     ///
     /// A 400 error will be returned if the map data is invalid.
+    /// 
+    /// A 403 error will be returned if the connected user is not the author of the map.
     ///
     /// A 404 error will be returned if the map is not found.
     ///
@@ -258,6 +261,7 @@ public class MapController : ControllerBase
     [HttpPut("edit/{id}")]
     [ProducesResponseType<string>(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<string>(StatusCodes.Status403Forbidden)]
     [ProducesResponseType<string>(StatusCodes.Status404NotFound)]
     [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
@@ -267,6 +271,16 @@ public class MapController : ControllerBase
         try
         {
             Map updatedMap = map.ToModel();
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId is null)
+            {
+                _logger.LogError("The user ID of the connected user could not be found in the claims.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
+            }
+
+            updatedMap.UserAuthorId = int.Parse(userId);
+
             var wasUpdated = await _service.PutMap(id, updatedMap);
 
             if (wasUpdated)
@@ -277,15 +291,23 @@ public class MapController : ControllerBase
             else
             {
                 _logger.LogError($"The Map n°{id} could not be updated due to an unknown error.");
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    $"The Map {updatedMap.Name} could not be updated due to an unknown error.");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"The Map {updatedMap.Name} could not be updated due to an unknown error.");
             }
         }
         catch (Exception ex) when (ex is ArgumentNullException or ArgumentException)
         {
-            _logger.LogError(
-                $"The Map n°{id} could not be updated due to invalid data. More details: {ex.Message}.");
+            _logger.LogInformation($"The Map n°{id} could not be updated due to invalid data. More details: {ex.Message}.");
             return BadRequest(ex.Message);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            _logger.LogInformation($"The map n°{id} could not be deleted because the user is not allowed to delete it. More details: {ex.Message}.");
+            return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
+        }
+        catch (EntityNotFoundException ex)
+        {
+            _logger.LogInformation($"The Map n°{id} could not be updated because it was not found. More details: {ex.Message}.");
+            return NotFound(ex.Message);
         }
         catch (UnavailableDatabaseException ex)
         {
@@ -295,10 +317,8 @@ public class MapController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(
-                $"An unexpected error occurred while updating the Map n°{id}. More details: {ex.Message}.");
-            return StatusCode(StatusCodes.Status500InternalServerError,
-                new { Message = $"An unexpected error occurred while updating the Map n°{id}.", Details = ex.Message });
+            _logger.LogError($"An unexpected error occurred while updating the Map n°{id}. More details: {ex.Message}.");
+            return StatusCode(StatusCodes.Status500InternalServerError, new { Message = $"An unexpected error occurred while updating the Map n°{id}.", Details = ex.Message });
         }
     }
 
@@ -311,6 +331,10 @@ public class MapController : ControllerBase
     /// This route is used to delete a map by its unique identifier.
     ///
     /// A map is a representation of a celestial map that contains a collection of celestial objects.
+    /// 
+    /// To delete a map, the connected user must be the author of the map.
+    /// 
+    /// A 403 error will be returned if the connected user is not the author of the map.
     ///
     /// A 404 error will be returned if the map is not found.
     ///
@@ -324,6 +348,7 @@ public class MapController : ControllerBase
     [MapToApiVersion(1)]
     [HttpDelete("delete/{id}")]
     [ProducesResponseType<string>(StatusCodes.Status200OK)]
+    [ProducesResponseType<string>(StatusCodes.Status403Forbidden)]
     [ProducesResponseType<string>(StatusCodes.Status404NotFound)]
     [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
@@ -332,7 +357,14 @@ public class MapController : ControllerBase
         _logger.LogInformation($"Delete request for map n°{id}.");
         try
         {
-            if (await _service.DeleteMap(id))
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId is null)
+            {
+                _logger.LogError("The user ID of the connected user could not be found in the claims.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
+            }
+
+            if (await _service.DeleteMap(id, int.Parse(userId)))
             {
                 _logger.LogInformation($"The Map n°{id} was successfully deleted.");
                 return Ok($"The Map object n°{id} was successfully deleted.");
@@ -340,28 +372,28 @@ public class MapController : ControllerBase
             else
             {
                 _logger.LogError($"The Map n°{id} could not be deleted due to an unknown error.");
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    $"The Map object n°{id} could not be deleted due to an unknown error.");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"The Map object n°{id} could not be deleted due to an unknown error.");
             }
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            _logger.LogInformation($"The map n°{id} could not be deleted because the user is not allowed to delete it. More details: {ex.Message}.");
+            return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
         }
         catch (EntityNotFoundException ex)
         {
-            _logger.LogInformation(
-                $"The Map n°{id} could not be deleted because it was not found. More details: {ex.Message}.");
+            _logger.LogInformation($"The Map n°{id} could not be deleted because it was not found. More details: {ex.Message}.");
             return NotFound(ex.Message);
         }
         catch (UnavailableDatabaseException ex)
         {
-            _logger.LogError(
-                $"The Map n°{id} could not be deleted due to an unavailable database. More details: {ex.Message}.");
+            _logger.LogError( $"The Map n°{id} could not be deleted due to an unavailable database. More details: {ex.Message}.");
             return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
         }
         catch (Exception ex)
         {
-            _logger.LogError(
-                $"An unexpected error occurred while deleting the Map n°{id}. More details: {ex.Message}.");
-            return StatusCode(StatusCodes.Status500InternalServerError,
-                new { Message = $"An unexpected error occurred while deleting the Map n°{id}.", Details = ex.Message });
+            _logger.LogError($"An unexpected error occurred while deleting the Map n°{id}. More details: {ex.Message}.");
+            return StatusCode(StatusCodes.Status500InternalServerError, new { Message = $"An unexpected error occurred while deleting the Map n°{id}.", Details = ex.Message });
         }
     }
 
@@ -370,12 +402,16 @@ public class MapController : ControllerBase
     /// </summary>
     /// <remarks>
     ///
-    /// This route is used to add a celestial object to a map.
-    ///
-    /// A map is a representation of a celestial map that contains a collection of celestial objects.
-    ///
+    /// This route is used to add a celestial object to a map. Once specified with the map and celestial object unique identifiers, the celestial object will be added to the map.
+    /// 
+    /// To add a celestial object to a map, the connected user must be the author of the map and the celestial object.
+    /// 
+    /// A 400 error will be returned if the celestial object is already in the map.
+    /// 
+    /// A 403 error will be returned if the connected user is not the author of the map or the celestial object.
+    /// 
     /// A 404 error will be returned if the map or the celestial object is not found.
-    ///
+    /// 
     /// Sample request:
     ///
     ///     POST /api/v1/maps/1/add/1
@@ -387,45 +423,57 @@ public class MapController : ControllerBase
     [MapToApiVersion(1)]
     [HttpPost("{mapId}/add/{celestialObjectId}")]
     [ProducesResponseType<string>(StatusCodes.Status200OK)]
+    [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<string>(StatusCodes.Status403Forbidden)]
     [ProducesResponseType<string>(StatusCodes.Status404NotFound)]
     [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
     public async Task<ActionResult> AddCelestialObject(int mapId, int celestialObjectId)
     {
-        _logger.LogInformation(
-            $"Add celestial object request for map n°{mapId} and celestial object n°{celestialObjectId}.");
+        _logger.LogInformation($"Add celestial object request for map n°{mapId} and celestial object n°{celestialObjectId}.");
         try
         {
-            if (await _service.AddCelestialObject(mapId, celestialObjectId))
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId is null)
             {
-                _logger.LogInformation(
-                    $"The Celestial Object n°{celestialObjectId} was successfully added to the Map n°{mapId}.");
+                _logger.LogError("The user ID of the connected user could not be found in the claims.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
+            }
+
+            if (await _service.AddCelestialObject(mapId, celestialObjectId, int.Parse(userId)))
+            {
+                _logger.LogInformation($"The Celestial Object n°{celestialObjectId} was successfully added to the Map n°{mapId}.");
                 return Ok($"The Celestial Object n°{celestialObjectId} was successfully added to the Map n°{mapId}.");
             }
             else
             {
-                _logger.LogError(
-                    $"The Celestial Object n°{celestialObjectId} could not be added to the Map n°{mapId} due to an unknown error.");
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    $"The Celestial Object n°{celestialObjectId} could not be added to the Map n°{mapId} due to an unknown error.");
+                _logger.LogError($"The Celestial Object n°{celestialObjectId} could not be added to the Map n°{mapId} due to an unknown error.");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"The Celestial Object n°{celestialObjectId} could not be added to the Map n°{mapId} due to an unknown error.");
             }
+        }
+        catch (CelestialObjectAlreadyInMapException ex)
+        {
+            _logger.LogInformation($"The Celestial Object n°{celestialObjectId} could not be added to the Map n°{mapId} because it is already in the map. More details: {ex.Message}.");
+            return BadRequest(ex.Message);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            _logger.LogInformation($"The Celestial Object n°{celestialObjectId} could not be added to the map n°{mapId} because the user is not allowed to link to it. More details: {ex.Message}.");
+            return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
         }
         catch (EntityNotFoundException ex)
         {
-            _logger.LogError(
-                $"The Celestial Object n°{celestialObjectId} could not be added to the Map n°{mapId} because it was not found. More details: {ex.Message}.");
+            _logger.LogInformation($"The Celestial Object n°{celestialObjectId} could not be added to the Map n°{mapId} because it was not found. More details: {ex.Message}.");
             return NotFound(ex.Message);
         }
         catch (UnavailableDatabaseException ex)
         {
-            _logger.LogError(
-                $"The Celestial Object n°{celestialObjectId} could not be added to the Map n°{mapId} due to an unavailable database. More details: {ex.Message}.");
+            _logger.LogError($"The Celestial Object n°{celestialObjectId} could not be added to the Map n°{mapId} due to an unavailable database. More details: {ex.Message}.");
             return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
         }
         catch (Exception ex)
         {
-            _logger.LogError(
-                $"An unexpected error occurred while adding the Celestial Object n°{celestialObjectId} to the Map n°{mapId}. More details: {ex.Message}.");
+            _logger.LogError($"An unexpected error occurred while adding the Celestial Object n°{celestialObjectId} to the Map n°{mapId}. More details: {ex.Message}.");
             return StatusCode(StatusCodes.Status500InternalServerError,
                 new
                 {
@@ -441,9 +489,15 @@ public class MapController : ControllerBase
     /// </summary>
     /// <remarks>
     ///
-    /// This route is used to remove a celestial object from a map.
-    ///
-    /// A map is a representation of a celestial map that contains a collection of celestial objects.
+    /// This route is used to remove a celestial object from a map. Once specified with the map and celestial object unique identifiers, the celestial object will be removed from the map but will always exist.
+    /// 
+    /// To suppress a celestial object from a map, the connected user must be the author of the map and the celestial object.
+    /// 
+    /// A 400 error will be returned if the celestial object is not in the map.
+    /// 
+    /// A 403 error will be returned if the connected user is not the author of the map or the celestial object.
+    /// 
+    /// A 404 error will be returned if the map or the celestial object is not found.
     ///
     /// Sample request:
     ///
@@ -457,52 +511,55 @@ public class MapController : ControllerBase
     [HttpDelete("{mapId}/remove/{celestialObjectId}")]
     [ProducesResponseType<string>(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<string>(StatusCodes.Status403Forbidden)]
     [ProducesResponseType<string>(StatusCodes.Status404NotFound)]
     [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
     public async Task<ActionResult> RemoveCelestialObject(int mapId, int celestialObjectId)
     {
-        _logger.LogInformation(
-            $"Remove celestial object request for map n°{mapId} and celestial object n°{celestialObjectId}.");
+        _logger.LogInformation($"Remove celestial object request for map n°{mapId} and celestial object n°{celestialObjectId}.");
         try
         {
-            if (await _service.RemoveCelestialObject(mapId, celestialObjectId))
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId is null)
             {
-                _logger.LogInformation(
-                    $"The Celestial Object n°{celestialObjectId} was successfully removed from the Map n°{mapId}.");
-                return Ok(
-                    $"The Celestial Object n°{celestialObjectId} was successfully removed from the Map n°{mapId}.");
+                _logger.LogError("The user ID of the connected user could not be found in the claims.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
+            }
+            if (await _service.RemoveCelestialObject(mapId, celestialObjectId, int.Parse(userId)))
+            {
+                _logger.LogInformation($"The Celestial Object n°{celestialObjectId} was successfully removed from the Map n°{mapId}.");
+                return Ok($"The Celestial Object n°{celestialObjectId} was successfully removed from the Map n°{mapId}.");
             }
             else
             {
-                _logger.LogError(
-                    $"The Celestial Object n°{celestialObjectId} could not be removed from the Map n°{mapId} due to an unknown error.");
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    $"The Celestial Object n°{celestialObjectId} could not be removed from the Map n°{mapId} due to an unknown error.");
+                _logger.LogError($"The Celestial Object n°{celestialObjectId} could not be removed from the Map n°{mapId} due to an unknown error.");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"The Celestial Object n°{celestialObjectId} could not be removed from the Map n°{mapId} due to an unknown error.");
             }
         }
         catch (CelestialObjectNotInMapException ex)
         {
-            _logger.LogError(
-                $"The Celestial Object n°{celestialObjectId} could not be removed from the Map n°{mapId} because it was not found in the map. More details: {ex.Message}.");
+            _logger.LogInformation($"The Celestial Object n°{celestialObjectId} could not be removed from the Map n°{mapId} because it was not found in the map. More details: {ex.Message}.");
             return BadRequest(ex.Message);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            _logger.LogInformation($"The Celestial Object n°{celestialObjectId} could not be removed from the map n°{mapId} because the user is not allowed to suppress it. More details: {ex.Message}.");
+            return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
         }
         catch (EntityNotFoundException ex)
         {
-            _logger.LogError(
-                $"The Celestial Object n°{celestialObjectId} could not be removed from the Map n°{mapId} because it was not found. More details: {ex.Message}.");
+            _logger.LogInformation($"The Celestial Object n°{celestialObjectId} could not be removed from the Map n°{mapId} because it was not found. More details: {ex.Message}.");
             return NotFound(ex.Message);
         }
         catch (UnavailableDatabaseException ex)
         {
-            _logger.LogError(
-                $"The Celestial Object n°{celestialObjectId} could not be removed from the Map n°{mapId} due to an unavailable database. More details: {ex.Message}.");
+            _logger.LogError($"The Celestial Object n°{celestialObjectId} could not be removed from the Map n°{mapId} due to an unavailable database. More details: {ex.Message}.");
             return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
         }
         catch (Exception ex)
         {
-            _logger.LogError(
-                $"An unexpected error occurred while removing the Celestial Object n°{celestialObjectId} from the Map n°{mapId}. More details: {ex.Message}.");
+            _logger.LogError($"An unexpected error occurred while removing the Celestial Object n°{celestialObjectId} from the Map n°{mapId}. More details: {ex.Message}.");
             return StatusCode(StatusCodes.Status500InternalServerError,
                 new
                 {

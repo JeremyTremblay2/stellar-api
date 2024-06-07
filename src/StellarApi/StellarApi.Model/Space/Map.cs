@@ -104,6 +104,46 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
         ModificationDate = modificationDate ?? DateTime.Now;
     } 
 
+    /// <summary>
+    /// Adds a celestial object to the map.
+    /// </summary>
+    /// <param name="celestialObject">The celestial object to add.</param>
+    public void AddCelestialObject(CelestialObject celestialObject)
+    {
+        celestialObjects.Add(celestialObject);
+    }
+
+    /// <summary>
+    /// Removes a celestial object from the map.
+    /// </summary>
+    /// <param name="celestialObject">The celestial object to remove.</param>
+    /// <returns>A value indicating whether the removal was successful.</returns>
+    public bool RemoveCelestialObject(CelestialObject celestialObject)
+    {
+        return celestialObjects.Remove(celestialObject);
+    }
+
+    /// <summary>
+    /// Adds a collection of celestial objects to the map.
+    /// </summary>
+    /// <param name="celestialObjects">The collection of celestial objects to add.</param>
+    public void AddCelestialObjects(IEnumerable<CelestialObject> celestialObjects)
+    {
+        this.celestialObjects.AddRange(celestialObjects);
+    }
+
+    /// <summary>
+    /// Removes a collection of celestial objects from the map.
+    /// </summary>
+    /// <param name="celestialObjects">The collection of celestial objects to remove.</param>
+    public void RemoveCelestialObjects(IEnumerable<CelestialObject> celestialObjects)
+    {
+        foreach (var celestialObject in celestialObjects)
+        {
+            this.celestialObjects.Remove(celestialObject);
+        }
+    }
+
     /// <inheritdoc/>
     public override int GetHashCode() => Id.GetHashCode();
 

@@ -11,11 +11,21 @@ public interface IMapService
     /// Retrieves a map by its unique identifier.
     /// </summary>
     /// <param name="id">The unique identifier of the map.</param>
+    /// <param name="userRequestId">The unique identifier of the user requesting the map.</param>
     /// <returns>A task that represents the asynchronous operation and returns the retrieved map, or null if not found.</returns>
-    Task<Map?> GetMap(int id);
+    Task<Map?> GetMap(int id, int? userRequestId);
 
     /// <summary>
-    /// Retrieves a collection of maps with pagination.
+    /// Retrieves a collection of private maps from the specified user with pagination.
+    /// </summary>
+    /// <param name="userId">The unique identifier of the user.</param>
+    /// <param name="page">The page number.</param>
+    /// <param name="pageSize">The number of items per page.</param>
+    /// <returns>A task that represents the asynchronous operation and returns the collection of maps.</returns>
+    Task<IEnumerable<Map>> GetMaps(int userId, int page, int pageSize);
+
+    /// <summary>
+    /// Retrieves a collection of public maps with pagination.
     /// </summary>
     /// <param name="page">The page number.</param>
     /// <param name="pageSize">The number of items per page.</param>

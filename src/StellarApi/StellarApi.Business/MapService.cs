@@ -44,15 +44,31 @@ public class MapService : IMapService
     }
 
     /// <inheritdoc/>
-    public Task<Map?> GetMap(int id)
+    public async Task<Map?> GetMap(int id, int? userRequestId)
     {
-        return _repository.GetMap(id);
+        var map = await _repository.GetMap(id);
+        if (map != null && !map.IsPublic && (userRequestId == null || map.UserAuthorId != userRequestId))
+        {
+            throw new UnauthorizedAccessException($"You are not allowed to access the map n°{id} because this is not yours.");
+        }
+        if (map != null && map.UserAuthorId != userRequestId)
+        {
+            var toRemove = map.CelestialObjects.Where(c => !c.IsPublic && c.UserAuthorId != userRequestId).ToList();
+            map.RemoveCelestialObjects(toRemove);
+        }
+        return map;
+    }
+
+    /// <inheritdoc/>
+    public Task<IEnumerable<Map>> GetMaps(int userId, int page, int pageSize)
+    {
+        return _repository.GetMaps(userId, page, pageSize);
     }
 
     /// <inheritdoc/>
     public Task<IEnumerable<Map>> GetMaps(int page, int pageSize)
     {
-        return _repository.GetMaps(page, pageSize);
+        return _repository.GetPublicMaps(page, pageSize);
     }
 
     /// <inheritdoc/>

@@ -56,6 +56,172 @@ namespace StellarApi.RestApi.Controllers
         }
 
         /// <summary>
+        /// Retrieves complete data of the connected user.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// This route is used to retrieve a the complete data of the connected user (more data than the minimal user output).
+        /// 
+        /// In the response, the user's password is not included for security reasons.
+        /// 
+        /// Sample request:
+        /// 
+        ///     GET /api/v1/users/me
+        ///     
+        /// </remarks>
+        /// <param name="id">The ID of the user to retrieve.</param>
+        /// <returns>The user object data.</returns>
+        [MapToApiVersion(1)]
+        [HttpGet("me")]
+        [Authorize(Roles = "Member, Administrator")]
+        [ProducesResponseType<MaximalUserOutput>(StatusCodes.Status200OK)]
+        [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
+        public async Task<ActionResult<MaximalUserOutput?>> GetCurrentUser()
+        {
+            _logger.LogInformation($"Fetching complete user data for connected user.");
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (userId is null)
+                {
+                    _logger.LogError("The user ID of the connected user could not be found in the claims.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
+                }
+                var result = await _service.GetUserById(int.Parse(userId));
+                if (result == null)
+                {
+                    _logger.LogInformation($"The connected user n°{userId} could not be found.");
+                    return NotFound();
+                }
+                _logger.LogInformation($"The connected user n°{userId} was found and fetched successfully.");
+                return Ok(result.ToMaximalDTO());
+            }
+            catch (UnavailableDatabaseException ex)
+            {
+                _logger.LogError($"The connected user could not be fetched due to an unavailable database. More details: {ex.Message}.");
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An unexpected error occurred while fetching the connected user data. More details: {ex.Message}.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching data of the connected user.", Details = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Retrieves a user object by its unique identifier.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// This route is used to retrieve a user object with its data by its unique identifier.
+        /// 
+        /// In the response, the user's password is not included for security reasons.
+        /// 
+        /// A 404 error will be returned if the user is not found.
+        /// 
+        /// Sample request:
+        /// 
+        ///     GET /api/v1/users/1
+        ///     
+        /// </remarks>
+        /// <param name="id">The ID of the user to retrieve.</param>
+        /// <returns>The user object data.</returns>
+        [MapToApiVersion(1)]
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        [ProducesResponseType<MinimalUserOutput>(StatusCodes.Status200OK)]
+        [ProducesResponseType<string>(StatusCodes.Status404NotFound)]
+        [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
+        public async Task<ActionResult<MinimalUserOutput?>> GetUserById(int id)
+        {
+            _logger.LogInformation($"Fetching user data for user n°{id}.");
+            try
+            {
+                var result = await _service.GetUserById(id);
+                if (result == null)
+                {
+                    _logger.LogInformation($"The user n°{id} could not be found.");
+                    return NotFound($"The user n°{id} could not be found.");
+                }
+                _logger.LogInformation($"The user n°{id} was found and fetched successfully.");
+                return Ok(result.ToMinimalDTO());
+            }
+            catch (UnavailableDatabaseException ex)
+            {
+                _logger.LogError($"The user n°{id} could not be fetched due to an unavailable database. More details: {ex.Message}.");
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An unexpected error occurred while fetching user data. More details: {ex.Message}.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching user data.", Details = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Retrieves a list of users.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// This route is used to retrieve a list of users with their data.
+        /// 
+        /// The page and page size parameters are mandatory and must be greater than 0.
+        /// 
+        /// In the response list, the user's password and user passwords are not included for security reasons.
+        /// 
+        /// A 400 error will be returned if the page or page size is invalid.
+        /// 
+        /// Sample request:
+        /// 
+        ///     GET /api/v1/users?page=1&amp;pageSize=10
+        /// 
+        /// </remarks>
+        /// <param name="page">The page number of the users to retrieve.</param>
+        /// <param name="pageSize">The number of users per page.</param>
+        /// <returns>The list of users and the associated data.</returns>
+        [MapToApiVersion(1)]
+        [HttpGet]
+        [AllowAnonymous]
+        [ProducesResponseType<List<MinimalUserOutput>>(StatusCodes.Status200OK)]
+        [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
+        public async Task<ActionResult<IEnumerable<MinimalUserOutput>>> GetUsers(int page, int pageSize)
+        {
+            _logger.LogInformation($"Fetching user data for page {page} with {pageSize} users per page.");
+
+            if (page <= 0)
+            {
+                _logger.LogInformation($"User data for page {page} with {pageSize} items per page could not be fetched because the page was a negative number.");
+                return BadRequest("The page number must be greater than 0.");
+            }
+            if (pageSize <= 0)
+            {
+                _logger.LogInformation($"User data for page {page} with {pageSize} items per page could not be fetched because the page size was not a negative number.");
+                return BadRequest("The page size must be greater than 0.");
+            }
+
+            try
+            {
+                var users = (await _service.GetUsers(page, pageSize)).ToMinimalDTO();
+                _logger.LogInformation($"User data fetched successfully.");
+                return Ok(users);
+            }
+            catch (UnavailableDatabaseException ex)
+            {
+                _logger.LogError($"The user data could not be fetched due to an unavailable database. More details: {ex.Message}.");
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"An unexpected error occurred while fetching user data. More details: {ex.Message}.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching user data.", Details = ex.Message });
+            }
+        }
+
+        /// <summary>
         /// Creates a new user.
         /// </summary>
         /// <remarks>
@@ -237,172 +403,6 @@ namespace StellarApi.RestApi.Controllers
             {
                 _logger.LogError($"An unexpected error occurred while updating the refresh token. More details: {ex.Message}.");
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while updating the refresh token.", Details = ex.Message });
-            }
-        }
-
-        /// <summary>
-        /// Retrieves complete data of the connected user.
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// This route is used to retrieve a the complete data of the connected user (more data than the minimal user output).
-        /// 
-        /// In the response, the user's password is not included for security reasons.
-        /// 
-        /// Sample request:
-        /// 
-        ///     GET /api/v1/users/me
-        ///     
-        /// </remarks>
-        /// <param name="id">The ID of the user to retrieve.</param>
-        /// <returns>The user object data.</returns>
-        [MapToApiVersion(1)]
-        [HttpGet("me")]
-        [Authorize(Roles = "Member, Administrator")]
-        [ProducesResponseType<MaximalUserOutput>(StatusCodes.Status200OK)]
-        [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
-        public async Task<ActionResult<MaximalUserOutput?>> GetCurrentUser()
-        {
-            _logger.LogInformation($"Fetching complete user data for connected user.");
-            try
-            {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                if (userId is null)
-                {
-                    _logger.LogError("The user ID of the connected user could not be found in the claims.");
-                    return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
-                }
-                var result = await _service.GetUserById(int.Parse(userId));
-                if (result == null)
-                {
-                    _logger.LogInformation($"The connected user n°{userId} could not be found.");
-                    return NotFound();
-                }
-                _logger.LogInformation($"The connected user n°{userId} was found and fetched successfully.");
-                return Ok(result.ToMaximalDTO());
-            }
-            catch (UnavailableDatabaseException ex)
-            {
-                _logger.LogError($"The connected user could not be fetched due to an unavailable database. More details: {ex.Message}.");
-                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"An unexpected error occurred while fetching the connected user data. More details: {ex.Message}.");
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching data of the connected user.", Details = ex.Message });
-            }
-        }
-
-        /// <summary>
-        /// Retrieves a user object by its unique identifier.
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// This route is used to retrieve a user object with its data by its unique identifier.
-        /// 
-        /// In the response, the user's password is not included for security reasons.
-        /// 
-        /// A 404 error will be returned if the user is not found.
-        /// 
-        /// Sample request:
-        /// 
-        ///     GET /api/v1/users/1
-        ///     
-        /// </remarks>
-        /// <param name="id">The ID of the user to retrieve.</param>
-        /// <returns>The user object data.</returns>
-        [MapToApiVersion(1)]
-        [HttpGet("{id}")]
-        [AllowAnonymous]
-        [ProducesResponseType<MinimalUserOutput>(StatusCodes.Status200OK)]
-        [ProducesResponseType<object>(StatusCodes.Status404NotFound)]
-        [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
-        public async Task<ActionResult<MinimalUserOutput?>> GetUserById(int id)
-        {
-            _logger.LogInformation($"Fetching user data for user n°{id}.");
-            try
-            {
-                var result = await _service.GetUserById(id);
-                if (result == null)
-                {
-                    _logger.LogInformation($"The user n°{id} could not be found.");
-                    return NotFound($"The user n°{id} could not be found.");
-                }
-                _logger.LogInformation($"The user n°{id} was found and fetched successfully.");
-                return Ok(result.ToMinimalDTO());
-            }
-            catch (UnavailableDatabaseException ex)
-            {
-                _logger.LogError($"The user n°{id} could not be fetched due to an unavailable database. More details: {ex.Message}.");
-                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"An unexpected error occurred while fetching user data. More details: {ex.Message}.");
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching user data.", Details = ex.Message });
-            }
-        }
-
-        /// <summary>
-        /// Retrieves a list of users.
-        /// </summary>
-        /// <remarks>
-        /// 
-        /// This route is used to retrieve a list of users with their data.
-        /// 
-        /// The page and page size parameters are mandatory and must be greater than 0.
-        /// 
-        /// In the response list, the user's password and user passwords are not included for security reasons.
-        /// 
-        /// A 400 error will be returned if the page or page size is invalid.
-        /// 
-        /// Sample request:
-        /// 
-        ///     GET /api/v1/users?page=1&amp;pageSize=10
-        /// 
-        /// </remarks>
-        /// <param name="page">The page number of the users to retrieve.</param>
-        /// <param name="pageSize">The number of users per page.</param>
-        /// <returns>The list of users and the associated data.</returns>
-        [MapToApiVersion(1)]
-        [HttpGet]
-        [AllowAnonymous]
-        [ProducesResponseType<List<MinimalUserOutput>>(StatusCodes.Status200OK)]
-        [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
-        public async Task<ActionResult<IEnumerable<MinimalUserOutput>>> GetUsers(int page, int pageSize)
-        {
-            _logger.LogInformation($"Fetching user data for page {page} with {pageSize} users per page.");
-
-            if (page <= 0)
-            {
-                _logger.LogInformation($"User data for page {page} with {pageSize} items per page could not be fetched because the page was a negative number.");
-                return BadRequest("The page number must be greater than 0.");
-            }
-            if (pageSize <= 0)
-            {
-                _logger.LogInformation($"User data for page {page} with {pageSize} items per page could not be fetched because the page size was not a negative number.");
-                return BadRequest("The page size must be greater than 0.");
-            }
-
-            try
-            {
-                var users = (await _service.GetUsers(page, pageSize)).ToMinimalDTO();
-                _logger.LogInformation($"User data fetched successfully.");
-                return Ok(users);
-            }
-            catch (UnavailableDatabaseException ex)
-            {
-                _logger.LogError($"The user data could not be fetched due to an unavailable database. More details: {ex.Message}.");
-                return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"An unexpected error occurred while fetching user data. More details: {ex.Message}.");
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching user data.", Details = ex.Message });
             }
         }
 

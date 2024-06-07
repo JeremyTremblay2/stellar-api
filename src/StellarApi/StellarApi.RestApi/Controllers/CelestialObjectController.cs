@@ -69,7 +69,7 @@ namespace StellarApi.RestApi.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType<CelestialObjectOutput>(StatusCodes.Status200OK)]
         [ProducesResponseType<string>(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType<object>(StatusCodes.Status404NotFound)]
+        [ProducesResponseType<string>(StatusCodes.Status404NotFound)]
         [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
         public async Task<ActionResult<CelestialObjectOutput?>> GetCelestialObjectById(int id)
@@ -173,8 +173,8 @@ namespace StellarApi.RestApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"An unexpected error occurred while fetching public celestial object data. More details: {ex.Message}.");
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching public celestial object data.", Details = ex.Message });
+                _logger.LogError($"An unexpected error occurred while fetching personnal celestial object data. More details: {ex.Message}.");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching personnal celestial object data.", Details = ex.Message });
             }
         }
 
@@ -195,14 +195,14 @@ namespace StellarApi.RestApi.Controllers
         /// 
         /// Sample request:
         /// 
-        ///     GET /api/v1/celestial-objects?page=1&amp;pageSize=10
+        ///     GET /api/v1/celestial-objects/public?page=1&amp;pageSize=10
         /// 
         /// </remarks>
         /// <param name="page">The page number.</param>
         /// <param name="pageSize">The number of items per page.</param>
         /// <returns>The collection of celestial objects retrieve.</returns>
         [MapToApiVersion(1)]
-        [HttpGet]
+        [HttpGet("public")]
         [ProducesResponseType<IEnumerable<CelestialObjectOutput>>(StatusCodes.Status200OK)]
         [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
         [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
@@ -269,6 +269,7 @@ namespace StellarApi.RestApi.Controllers
         ///         "temperature": 5778,
         ///         "radius": 696340,
         ///         "image": "https://image_sun.png",
+        ///         "isPublic": true,
         ///         "position": {
         ///             "x": 20,
         ///             "y": 57,
@@ -293,7 +294,8 @@ namespace StellarApi.RestApi.Controllers
         ///         "type": "Planet",
         ///         "planetType": "Terrestrial",
         ///         "isWater": true,
-        ///         "isLife": true
+        ///         "isLife": true,
+        ///         "isPublic": false
         ///     }
         /// 
         /// </remarks>
@@ -398,6 +400,7 @@ namespace StellarApi.RestApi.Controllers
         ///         "temperature": 5778,
         ///         "radius": 696340,
         ///         "image": "https://image_sun.png",
+        ///         "isPublic": true,
         ///         "position": {
         ///             "x": 20,
         ///             "y": 57,
@@ -422,7 +425,8 @@ namespace StellarApi.RestApi.Controllers
         ///         "type": "Planet",
         ///         "planetType": "Terrestrial",
         ///         "isWater": true,
-        ///         "isLife": true
+        ///         "isLife": true,
+        ///         "isPublic": true
         ///     }
         /// 
         /// </remarks>

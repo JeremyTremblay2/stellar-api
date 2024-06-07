@@ -27,6 +27,43 @@ public class MapRepository : IMapRepository
     }
 
     /// <inheritdoc/>
+    public async Task<Map?> GetMap(int id)
+    {
+        if (_context.Maps is null) throw new UnavailableDatabaseException();
+        return (await _context.Maps
+            .Include(m => m.CelestialObjects)
+            .FirstOrDefaultAsync(m => m.Id == id))
+            .ToModel();
+    }
+
+    /// <inheritdoc/>
+    public async Task<IEnumerable<Map>> GetMaps(int userId, int page, int pageSize)
+    {
+        if (_context.Maps is null) throw new UnavailableDatabaseException();
+        return (await _context.Maps
+                .Where(m => m.UserAuthorId == userId)
+                .Include(m => m.CelestialObjects)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync())
+            .ToModel();
+    }
+
+    /// <inheritdoc/>
+    public async Task<IEnumerable<Map>> GetPublicMaps(int page, int pageSize)
+    {
+        if (_context.Maps is null) throw new UnavailableDatabaseException();
+        return (await _context.Maps
+                .Where(m => m.IsPublic)
+                .Include(m => m.CelestialObjects
+                    .Where(c => c.IsPublic))
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync())
+            .ToModel();
+    }
+
+    /// <inheritdoc/>
     public async Task<bool> AddMap(Map map)
     {
         if (_context.Maps is null) throw new UnavailableDatabaseException();
@@ -46,28 +83,6 @@ public class MapRepository : IMapRepository
         existingMap.ModificationDate = entity.ModificationDate;
         _context.Maps.Update(existingMap);
         return await _context.SaveChangesAsync() == 1;
-    }
-
-    /// <inheritdoc/>
-    public async Task<Map?> GetMap(int id)
-    {
-        if (_context.Maps is null) throw new UnavailableDatabaseException();
-        return (await _context.Maps
-                .Include(m => m.CelestialObjects)
-                .FirstOrDefaultAsync(m => m.Id == id))
-            .ToModel();
-    }
-
-    /// <inheritdoc/>
-    public async Task<IEnumerable<Map>> GetMaps(int page, int pageSize)
-    {
-        if (_context.Maps is null) throw new UnavailableDatabaseException();
-        return (await _context.Maps
-                .Include(m => m.CelestialObjects) // Eagerly load CelestialObjects
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync())
-            .ToModel();
     }
 
     /// <inheritdoc/>

@@ -17,7 +17,6 @@ namespace StellarApi.RestApi.Controllers;
 [ApiController]
 [ApiVersion(1)]
 [Route("api/v{v:apiVersion}/maps/")]
-[Authorize(Roles = "Member, Administrator")]
 public class MapController : ControllerBase
 {
     /// <summary>
@@ -41,13 +40,17 @@ public class MapController : ControllerBase
     }
 
     /// <summary>
-    /// (Needs Auth) Retrieves a map by its unique identifier.
+    /// Retrieves a map by its unique identifier.
     /// </summary>
     /// <remarks>
     ///
     /// This route is used to retrieve a map by its unique identifier.
     ///
     /// A Map is a representation of a celestial map that contains a collection of celestial objects.
+    /// 
+    /// Public maps can be accessed by any user. Private maps can only be accessed by the author of the map. Only the public celestial objects in the map are returned in the map if the user is not the request author.
+    /// 
+    /// A 403 error will be returned if the user is not allowed to access the map.
     ///
     /// A 404 error will be returned if the map is not found.
     ///
@@ -61,7 +64,8 @@ public class MapController : ControllerBase
     [MapToApiVersion(1)]
     [HttpGet("{id}")]
     [ProducesResponseType<MapOutput>(StatusCodes.Status200OK)]
-    [ProducesResponseType<object>(StatusCodes.Status404NotFound)]
+    [ProducesResponseType<string>(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType<string>(StatusCodes.Status404NotFound)]
     [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
     public async Task<ActionResult<MapOutput?>> GetMapById(int id)
@@ -69,7 +73,13 @@ public class MapController : ControllerBase
         _logger.LogInformation($"Getting map n°{id}.");
         try
         {
-            var result = await _service.GetMap(id);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int? parsedUserId = null;
+            if (userId != null && int.TryParse(userId, out var tempUserId))
+            {
+                parsedUserId = tempUserId;
+            }
+            var result = await _service.GetMap(id, parsedUserId);
             if (result == null)
             {
                 _logger.LogWarning($"Map n°{id} was not found.");
@@ -78,6 +88,11 @@ public class MapController : ControllerBase
 
             _logger.LogInformation($"Map n°{id} was fetched successfully.");
             return Ok(result.ToDTO());
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            _logger.LogInformation($"The map could not be fetch because the user is not allowed to access it. More details: {ex.Message}.");
+            return StatusCode(StatusCodes.Status403Forbidden, ex.Message);
         }
         catch (UnavailableDatabaseException ex)
         {
@@ -92,13 +107,85 @@ public class MapController : ControllerBase
     }
 
     /// <summary>
-    /// (Need Auth) Retrieves a collection of maps with pagination.
+    /// (Needs Auth) Retrieves a collection of the private maps of the current connected user with pagination.
     /// </summary>
     /// <remarks>
     ///
-    /// This route is used to retrieve a collection of maps with pagination.
+    /// This route is used to retrieve a collection of the user's maps when he is connected.
     ///
     /// A Map is a representation of a celestial map that contains a collection of celestial objects.
+    ///
+    /// Only personal maps of the user are returned with this route.
+    /// 
+    /// The page and page size parameters are mandatory and must be greater than 0.
+    ///
+    /// A 400 error will be returned if the page or page size is less than or equal to 0.
+    ///
+    /// Sample request:
+    ///
+    ///     GET /api/v1/maps/personnal?page=1&amp;pageSize=10
+    ///
+    /// </remarks>
+    /// <param name="page">The page number.</param>
+    /// <param name="pageSize">The number of items per page.</param>
+    /// <returns>The retrieved collection of map.</returns>
+    [MapToApiVersion(1)]
+    [HttpGet("personnal")]
+    [Authorize(Roles = "Member, Administrator")]
+    [ProducesResponseType<IEnumerable<MapOutput>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
+    public async Task<ActionResult<IEnumerable<MapOutput>>> GetPersonnalMaps(int page, int pageSize)
+    {
+        _logger.LogInformation($"Getting personnal maps from page {page} with a page size of {pageSize}.");
+
+        if (page <= 0)
+        {
+            _logger.LogInformation($"Personnal Maps data for page {page} with {pageSize} items per page could not be fetched because the page was a negative number.");
+            return BadRequest("The page number must be greater than 0.");
+        }
+
+        if (pageSize <= 0)
+        {
+            _logger.LogInformation($"Personnal Maps data for page {page} with {pageSize} items per page could not be fetched because the page size was not a negative number.");
+            return BadRequest("The page size must be greater than 0.");
+        }
+
+        try
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId is null)
+            {
+                _logger.LogError("The user ID of the connected user could not be found in the claims.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
+            }
+            var maps = (await _service.GetMaps(int.Parse(userId), page, pageSize)).ToDTO();
+            _logger.LogInformation($"Personnal Maps from page {page} with a page size of {pageSize} were fetched successfully.");
+            return Ok(maps);
+        }
+        catch (UnavailableDatabaseException ex)
+        {
+            _logger.LogError($"Personnal Maps from page {page} with a page size of {pageSize} could not be fetched due to an unavailable database. More details: {ex.Message}.");
+            return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"An error occurred while fetching the personnal maps data. More details: {ex.Message}.");
+            return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching the personnal maps data.", Details = ex.Message });
+        }
+    }
+
+    /// <summary>
+    /// Retrieves a collection of public maps with pagination.
+    /// </summary>
+    /// <remarks>
+    ///
+    /// This route is used to retrieve a collection of public maps with pagination.
+    ///
+    /// A Map is a representation of a celestial map that contains a collection of celestial objects.
+    /// 
+    /// The personnal maps of the user are returned with this route only if they are public. To have access to all the maps of the user, use the route /api/v1/maps/personnal.
     ///
     /// The page and page size parameters are mandatory and must be greater than 0.
     ///
@@ -106,49 +193,49 @@ public class MapController : ControllerBase
     ///
     /// Sample request:
     ///
-    ///     GET /api/v1/maps?page=1&amp;pageSize=10
+    ///     GET /api/v1/maps/public?page=1&amp;pageSize=10
     ///
     /// </remarks>
     /// <param name="page">The page number.</param>
     /// <param name="pageSize">The number of items per page.</param>
     /// <returns>The retrieved collection of map.</returns>
     [MapToApiVersion(1)]
-    [HttpGet]
+    [HttpGet("public")]
     [ProducesResponseType<IEnumerable<MapOutput>>(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
     [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
-    public async Task<ActionResult<IEnumerable<MapOutput>>> GetMaps(int page, int pageSize)
+    public async Task<ActionResult<IEnumerable<MapOutput>>> GetPublicMaps(int page, int pageSize)
     {
-        _logger.LogInformation($"Getting maps from page {page} with a page size of {pageSize}.");
+        _logger.LogInformation($"Getting public maps from page {page} with a page size of {pageSize}.");
 
         if (page <= 0)
         {
-            _logger.LogInformation($"Maps data for page {page} with {pageSize} items per page could not be fetched because the page was a negative number.");
+            _logger.LogInformation($"Public Maps data for page {page} with {pageSize} items per page could not be fetched because the page was a negative number.");
             return BadRequest("The page number must be greater than 0.");
         }
 
         if (pageSize <= 0)
         {
-            _logger.LogInformation($"Maps data for page {page} with {pageSize} items per page could not be fetched because the page size was not a negative number.");
+            _logger.LogInformation($"Public Maps data for page {page} with {pageSize} items per page could not be fetched because the page size was not a negative number.");
             return BadRequest("The page size must be greater than 0.");
         }
 
         try
         {
             var maps = (await _service.GetMaps(page, pageSize)).ToDTO();
-            _logger.LogInformation($"Maps from page {page} with a page size of {pageSize} were fetched successfully.");
+            _logger.LogInformation($"Public Maps from page {page} with a page size of {pageSize} were fetched successfully.");
             return Ok(maps);
         }
         catch (UnavailableDatabaseException ex)
         {
-            _logger.LogError($"Maps from page {page} with a page size of {pageSize} could not be fetched due to an unavailable database. More details: {ex.Message}.");
+            _logger.LogError($"Public Maps from page {page} with a page size of {pageSize} could not be fetched due to an unavailable database. More details: {ex.Message}.");
             return StatusCode(StatusCodes.Status503ServiceUnavailable, ex.Message);
         }
         catch (Exception ex)
         {
-            _logger.LogError($"An error occurred while fetching the maps data. More details: {ex.Message}.");
-            return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching the maps data.", Details = ex.Message });
+            _logger.LogError($"An error occurred while fetching the public maps data. More details: {ex.Message}.");
+            return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while fetching the public maps data.", Details = ex.Message });
         }
     }
 
@@ -170,6 +257,7 @@ public class MapController : ControllerBase
     ///     POST /api/v1/maps/create
     ///     {
     ///         "name": "Map name",
+    ///         "isPublic": true
     ///     }
     ///
     /// </remarks>
@@ -177,6 +265,7 @@ public class MapController : ControllerBase
     /// <returns>>A message indicating if the map was added or not.</returns>
     [MapToApiVersion(1)]
     [HttpPost("create")]
+    [Authorize(Roles = "Member, Administrator")]
     [ProducesResponseType<string>(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
     [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
@@ -251,6 +340,7 @@ public class MapController : ControllerBase
     ///     PUT /api/v1/maps/edit/1
     ///     {
     ///         "name": "Edited map name",
+    ///         "isPublic": false
     ///     }
     ///
     /// </remarks>
@@ -259,6 +349,7 @@ public class MapController : ControllerBase
     /// <returns>A message indicating if the map was updated or not.</returns>
     [MapToApiVersion(1)]
     [HttpPut("edit/{id}")]
+    [Authorize(Roles = "Member, Administrator")]
     [ProducesResponseType<string>(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
     [ProducesResponseType<string>(StatusCodes.Status403Forbidden)]
@@ -340,13 +431,14 @@ public class MapController : ControllerBase
     ///
     /// Sample request:
     ///
-    ///     DELETE /api/v1/maps/delete/1
+    ///     DELETE /api/v1/maps/remove/1
     ///
     /// </remarks>
     /// <param name="id">The unique identifier of the map to delete.</param>
     /// <returns>A message indicating if the map was deleted or not.</returns>
     [MapToApiVersion(1)]
-    [HttpDelete("delete/{id}")]
+    [HttpDelete("remove/{id}")]
+    [Authorize(Roles = "Member, Administrator")]
     [ProducesResponseType<string>(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status403Forbidden)]
     [ProducesResponseType<string>(StatusCodes.Status404NotFound)]
@@ -414,14 +506,15 @@ public class MapController : ControllerBase
     /// 
     /// Sample request:
     ///
-    ///     POST /api/v1/maps/1/add/1
+    ///     PUT /api/v1/maps/1/add/1
     ///
     /// </remarks>
     /// <param name="mapId">The unique identifier of the map.</param>
     /// <param name="celestialObjectId">The unique identifier of the celestial object to add.</param>
     /// <returns>A message indicating if the celestial object was added or not.</returns>
     [MapToApiVersion(1)]
-    [HttpPost("{mapId}/add/{celestialObjectId}")]
+    [HttpPut("{mapId}/add/{celestialObjectId}")]
+    [Authorize(Roles = "Member, Administrator")]
     [ProducesResponseType<string>(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
     [ProducesResponseType<string>(StatusCodes.Status403Forbidden)]
@@ -509,6 +602,7 @@ public class MapController : ControllerBase
     /// <returns>A message indicating if the celestial object was removed or not.</returns>
     [MapToApiVersion(1)]
     [HttpDelete("{mapId}/remove/{celestialObjectId}")]
+    [Authorize(Roles = "Member, Administrator")]
     [ProducesResponseType<string>(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
     [ProducesResponseType<string>(StatusCodes.Status403Forbidden)]

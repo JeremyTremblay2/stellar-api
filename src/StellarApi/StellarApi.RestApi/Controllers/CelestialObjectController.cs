@@ -11,6 +11,7 @@ using StellarApi.DTOtoModel.Exceptions;
 using System.ComponentModel;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using StellarApi.Helpers;
 
 namespace StellarApi.RestApi.Controllers
 {
@@ -77,13 +78,13 @@ namespace StellarApi.RestApi.Controllers
             _logger.LogInformation($"Fetching celestial object data for celestial object n°{id}.");
             try
             {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                int? parsedUserId = null;
-                if (userId != null && int.TryParse(userId, out var tempUserId))
+                var userId = ClaimsParsingHelper.ParseUserId(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                if (userId is null)
                 {
-                    parsedUserId = tempUserId;
+                    _logger.LogError("The user ID of the connected user could not be found in the claims.");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
                 }
-                var result = await _service.GetCelestialObject(id, parsedUserId);
+                var result = await _service.GetCelestialObject(id, userId.Value);
                 if (result == null)
                 {
                     _logger.LogInformation($"Celestial object n°{id} was not found.");
@@ -156,13 +157,13 @@ namespace StellarApi.RestApi.Controllers
 
             try
             {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = ClaimsParsingHelper.ParseUserId(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 if (userId is null)
                 {
                     _logger.LogError("The user ID of the connected user could not be found in the claims.");
                     return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
                 }
-                var objects = (await _service.GetCelestialObjects(int.Parse(userId), page, pageSize)).ToDTO();
+                var objects = (await _service.GetCelestialObjects(userId.Value, page, pageSize)).ToDTO();
                 _logger.LogInformation($"Personnal Celestial object data for page {page} with {pageSize} items per page was fetched successfully.");
                 return Ok(objects);
             }
@@ -317,14 +318,14 @@ namespace StellarApi.RestApi.Controllers
             {
                 CelestialObject userObject = celestialObject.ToModel();
 
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = ClaimsParsingHelper.ParseUserId(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 if (userId is null)
                 {
                     _logger.LogError("The user ID of the connected user could not be found in the claims.");
                     return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
                 }
 
-                userObject.UserAuthorId = int.Parse(userId);
+                userObject.UserAuthorId = userId.Value;
                 var wasAdded = await _service.PostCelestialObject(userObject);
                 if (wasAdded)
                 {
@@ -449,14 +450,14 @@ namespace StellarApi.RestApi.Controllers
             {
                 CelestialObject userObject = celestialObject.ToModel();
 
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = ClaimsParsingHelper.ParseUserId(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 if (userId is null)
                 {
                     _logger.LogError("The user ID of the connected user could not be found in the claims.");
                     return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
                 }
 
-                userObject.UserAuthorId = int.Parse(userId);
+                userObject.UserAuthorId = userId.Value;
 
                 var wasEdited = await _service.PutCelestialObject(id, userObject);
                 if (wasEdited)
@@ -534,14 +535,14 @@ namespace StellarApi.RestApi.Controllers
             _logger.LogInformation($"Deleting celestial object data for celestial object n°{id}.");
             try
             {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = ClaimsParsingHelper.ParseUserId(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 if (userId is null)
                 {
                     _logger.LogError("The user ID of the connected user could not be found in the claims.");
                     return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
                 }
 
-                if (await _service.DeleteCelestialObject(id, int.Parse(userId)))
+                if (await _service.DeleteCelestialObject(id, userId.Value))
                 {
                     _logger.LogInformation($"The celestial object n°{id} was successfully deleted.");
                     return Ok($"The Celestial object n°{id} was successfully deleted.");

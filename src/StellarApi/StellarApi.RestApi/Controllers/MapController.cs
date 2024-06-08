@@ -8,6 +8,7 @@ using StellarApi.DTOtoModel;
 using StellarApi.Repository.Exceptions;
 using System.Security.Claims;
 using StellarApi.Business.Exceptions;
+using StellarApi.Helpers;
 
 namespace StellarApi.RestApi.Controllers;
 
@@ -73,13 +74,13 @@ public class MapController : ControllerBase
         _logger.LogInformation($"Getting map n°{id}.");
         try
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            int? parsedUserId = null;
-            if (userId != null && int.TryParse(userId, out var tempUserId))
+            var userId = ClaimsParsingHelper.ParseUserId(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (userId is null)
             {
-                parsedUserId = tempUserId;
+                _logger.LogError("The user ID of the connected user could not be found in the claims.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
             }
-            var result = await _service.GetMap(id, parsedUserId);
+            var result = await _service.GetMap(id, userId.Value);
             if (result == null)
             {
                 _logger.LogWarning($"Map n°{id} was not found.");
@@ -154,13 +155,13 @@ public class MapController : ControllerBase
 
         try
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = ClaimsParsingHelper.ParseUserId(User.FindFirstValue(ClaimTypes.NameIdentifier));
             if (userId is null)
             {
                 _logger.LogError("The user ID of the connected user could not be found in the claims.");
                 return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
             }
-            var maps = (await _service.GetMaps(int.Parse(userId), page, pageSize)).ToDTO();
+            var maps = (await _service.GetMaps(userId.Value, page, pageSize)).ToDTO();
             _logger.LogInformation($"Personnal Maps from page {page} with a page size of {pageSize} were fetched successfully.");
             return Ok(maps);
         }
@@ -277,14 +278,14 @@ public class MapController : ControllerBase
         {
             Map newMap = map.ToModel();
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = ClaimsParsingHelper.ParseUserId(User.FindFirstValue(ClaimTypes.NameIdentifier));
             if (userId is null)
             {
                 _logger.LogError("The user ID of the connected user could not be found in the claims.");
                 return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
             }
 
-            newMap.UserAuthorId = int.Parse(userId);
+            newMap.UserAuthorId = userId.Value;
 
             var wasAdded = await _service.PostMap(newMap);
             if (wasAdded)
@@ -363,14 +364,14 @@ public class MapController : ControllerBase
         {
             Map updatedMap = map.ToModel();
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = ClaimsParsingHelper.ParseUserId(User.FindFirstValue(ClaimTypes.NameIdentifier));
             if (userId is null)
             {
                 _logger.LogError("The user ID of the connected user could not be found in the claims.");
                 return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
             }
 
-            updatedMap.UserAuthorId = int.Parse(userId);
+            updatedMap.UserAuthorId = userId.Value;
 
             var wasUpdated = await _service.PutMap(id, updatedMap);
 
@@ -449,14 +450,14 @@ public class MapController : ControllerBase
         _logger.LogInformation($"Delete request for map n°{id}.");
         try
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = ClaimsParsingHelper.ParseUserId(User.FindFirstValue(ClaimTypes.NameIdentifier));
             if (userId is null)
             {
                 _logger.LogError("The user ID of the connected user could not be found in the claims.");
                 return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
             }
 
-            if (await _service.DeleteMap(id, int.Parse(userId)))
+            if (await _service.DeleteMap(id, userId.Value))
             {
                 _logger.LogInformation($"The Map n°{id} was successfully deleted.");
                 return Ok($"The Map object n°{id} was successfully deleted.");
@@ -526,14 +527,14 @@ public class MapController : ControllerBase
         _logger.LogInformation($"Add celestial object request for map n°{mapId} and celestial object n°{celestialObjectId}.");
         try
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = ClaimsParsingHelper.ParseUserId(User.FindFirstValue(ClaimTypes.NameIdentifier));
             if (userId is null)
             {
                 _logger.LogError("The user ID of the connected user could not be found in the claims.");
                 return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
             }
 
-            if (await _service.AddCelestialObject(mapId, celestialObjectId, int.Parse(userId)))
+            if (await _service.AddCelestialObject(mapId, celestialObjectId, userId.Value))
             {
                 _logger.LogInformation($"The Celestial Object n°{celestialObjectId} was successfully added to the Map n°{mapId}.");
                 return Ok($"The Celestial Object n°{celestialObjectId} was successfully added to the Map n°{mapId}.");
@@ -614,13 +615,13 @@ public class MapController : ControllerBase
         _logger.LogInformation($"Remove celestial object request for map n°{mapId} and celestial object n°{celestialObjectId}.");
         try
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = ClaimsParsingHelper.ParseUserId(User.FindFirstValue(ClaimTypes.NameIdentifier));
             if (userId is null)
             {
                 _logger.LogError("The user ID of the connected user could not be found in the claims.");
                 return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
             }
-            if (await _service.RemoveCelestialObject(mapId, celestialObjectId, int.Parse(userId)))
+            if (await _service.RemoveCelestialObject(mapId, celestialObjectId, userId.Value))
             {
                 _logger.LogInformation($"The Celestial Object n°{celestialObjectId} was successfully removed from the Map n°{mapId}.");
                 return Ok($"The Celestial Object n°{celestialObjectId} was successfully removed from the Map n°{mapId}.");

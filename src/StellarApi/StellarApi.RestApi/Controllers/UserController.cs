@@ -11,6 +11,7 @@ using StellarApi.Business.Exceptions;
 using StellarApi.Repository.Exceptions;
 using System.Security.Claims;
 using StellarApi.Model.Space;
+using StellarApi.Helpers;
 
 namespace StellarApi.RestApi.Controllers
 {
@@ -82,13 +83,13 @@ namespace StellarApi.RestApi.Controllers
             _logger.LogInformation($"Fetching complete user data for connected user.");
             try
             {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = ClaimsParsingHelper.ParseUserId(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 if (userId is null)
                 {
                     _logger.LogError("The user ID of the connected user could not be found in the claims.");
                     return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
                 }
-                var result = await _service.GetUserById(int.Parse(userId));
+                var result = await _service.GetUserById(userId.Value);
                 if (result == null)
                 {
                     _logger.LogInformation($"The connected user n°{userId} could not be found.");
@@ -457,13 +458,13 @@ namespace StellarApi.RestApi.Controllers
             User userObject = user.ToModel();
             try
             {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = ClaimsParsingHelper.ParseUserId(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 if (userId is null)
                 {
                     _logger.LogError("The user ID of the connected user could not be found in the claims.");
                     return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
                 }
-                var wasEdited = await _service.PutUser(id, userObject, int.Parse(userId), true);
+                var wasEdited = await _service.PutUser(id, userObject, userId.Value, true);
                 if (wasEdited)
                 {
                     _logger.LogInformation($"User n°{id} edited successfully.");
@@ -544,13 +545,13 @@ namespace StellarApi.RestApi.Controllers
             _logger.LogInformation($"Deleting user data for user n°{id}.");
             try
             {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = ClaimsParsingHelper.ParseUserId(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 if (userId is null)
                 {
                     _logger.LogError("The user ID of the connected user could not be found in the claims.");
                     return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
                 }
-                if (await _service.DeleteUser(id, int.Parse(userId)))
+                if (await _service.DeleteUser(id, userId.Value))
                 {
                     _logger.LogInformation($"User n°{id} deleted successfully.");
                     return Ok($"The User n°{id} was successfully deleted.");

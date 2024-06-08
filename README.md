@@ -6,13 +6,13 @@ If you have a creative mind, this API is for you ! 🎨👩‍🎨👨‍🎨
 
 ## 🚀 Features
 
-- [ x ] 🆔 Create your own account with your personal information and authenticate you to start using all the features.  
-- [ x ] From here, you will be able to: 
-  - [ x ] 🌟 Create, edit, delete and manage stars.
-  - [ x ] 🌍 Create, edit, delete and manage planets.
-  - [ x ] 🗺️ Create, edit, delete and manage maps.
-  - [ x ] ...and more !
-- [ x ] 🌐 Make your creations public or not if you want to let other see your work.
+- [x] 🆔 Create your own account with your personal information and authenticate you to start using all the features.  
+- [x] From here, you will be able to: 
+  - [x] 🌟 Create, edit, delete and manage stars.
+  - [x] 🌍 Create, edit, delete and manage planets.
+  - [x] 🗺️ Create, edit, delete and manage maps.
+  - [x] ...and more !
+- [x] 🌐 Make your creations public or not if you want to let other see your work.
 
 ## 📱 Application
 

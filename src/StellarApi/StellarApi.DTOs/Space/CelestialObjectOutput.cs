@@ -107,7 +107,7 @@ namespace StellarApi.DTOs.Space
         public double? Brightness { get; set; }
 
         /// <summary>
-        /// Gets or sets the unique identifier of the celestial object.
+        /// Gets or sets the unique identifier of the map.
         /// </summary>
         [SwaggerSchema(Description = "The unique identifier of the map.", Nullable = true)]
         public int? MapId { get; set; }

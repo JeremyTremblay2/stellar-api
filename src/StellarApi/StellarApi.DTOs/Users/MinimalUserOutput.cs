@@ -6,7 +6,7 @@ namespace StellarApi.DTOs.Users
     /// <summary>
     /// Ouput data transfer object for a user with public and no-sensitive information.
     /// </summary>
-    [SwaggerSchema("The miniùam output data transfer object for a user, used when a user is returned by the server, containing basic and no private information about him.", ReadOnly = true)]
+    [SwaggerSchema("The minimum output data transfer object for a user, used when a user is returned by the server, containing basic and no private information about him.", ReadOnly = true)]
     public class MinimalUserOutput
     {
         /// <summary>

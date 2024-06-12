@@ -14,10 +14,10 @@ namespace StellarApi.ApiUnitTests
         public async Task AddCelestialObject_ShouldReturnTrue_WhenSuccessful()
         {
             // Arrange
-            var celestialObject = new Star(1, "Sun", "The Sun is the star at the center of the Solar System.", "image",
+            /*var celestialObject = new Star(1, "Sun", "The Sun is the star at the center of the Solar System.", "image",
                 new Model.Geometry.Position(0, 0, 0), 1.989 * Math.Pow(10, 30), 5778, 696340, 70000, StarType.YellowDwarf, DateTime.Now, DateTime.Now);
             var mockSet = new Mock<DbSet<CelestialObjectEntity>>();
-            var mockContext = new Mock<SpaceDbContext>();
+            var mockContext = new Mock<SpaceDbContext>();*/
 
             //var repository = new CelestialObjectRepository();
 

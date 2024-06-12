@@ -23,7 +23,7 @@ namespace StellarApi.EntityToModel
                     ? result
                     : PlanetType.Undefined;
                 return new Planet(entity.Id, entity.Name, entity.Description, entity.Image, PositionExtensions.ToModel(entity.Position), entity.Mass,
-                    entity.Temperature, entity.Radius, (bool)entity.IsWater, (bool)entity.IsLife, planetType, entity.CreationDate, entity.ModificationDate, entity.MapId);
+                    entity.Temperature, entity.Radius, entity.UserAuthorId, (bool)entity.IsWater, (bool)entity.IsLife, planetType, entity.IsPublic, entity.CreationDate, entity.ModificationDate, entity.MapId);
             }
             else if (entity.Type.Equals("Star"))
             {
@@ -31,7 +31,7 @@ namespace StellarApi.EntityToModel
                     ? result
                     : StarType.Undefined;
                 return new Star(entity.Id, entity.Name, entity.Description, entity.Image, PositionExtensions.ToModel(entity.Position),
-                    entity.Mass, entity.Temperature, entity.Radius, (double)entity.Brightness, starType, entity.CreationDate, entity.ModificationDate, entity.MapId);
+                    entity.Mass, entity.Temperature, entity.Radius, entity.UserAuthorId, (double)entity.Brightness, starType, entity.IsPublic, entity.CreationDate, entity.ModificationDate, entity.MapId);
             }
             else
             {
@@ -68,6 +68,8 @@ namespace StellarApi.EntityToModel
                 Mass = model.Mass,
                 Temperature = model.Temperature,
                 Radius = model.Radius,
+                UserAuthorId = model.UserAuthorId,
+                IsPublic = model.IsPublic,
                 CreationDate = model.CreationDate,
                 ModificationDate = model.ModificationDate,
                 Type = model switch

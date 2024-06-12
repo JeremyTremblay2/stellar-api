@@ -97,6 +97,12 @@ namespace StellarApi.DTOs.Space
         public int? MapId { get; set; }
 
         /// <summary>
+        /// Gets or sets the public status of the celestial object.
+        /// </summary>
+        [SwaggerSchema(Description = "A value indicating if the celestial object is visible by everyone or not.", Nullable = true)]
+        public bool IsPublic { get; set; } = false;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CelestialObjectInput"/> class with specified properties.
         /// </summary>
         /// <param name="name">The name of the celestial object.</param>
@@ -107,6 +113,7 @@ namespace StellarApi.DTOs.Space
         /// <param name="image">The image path of the celestial object.</param>
         /// <param name="position">The position of the celestial object.</param>
         /// <param name="type">The type of the celestial object.</param>
+        /// <param name="isPublic">The public status of the celestial object.</param>
         /// <param name="mapId">The unique identifier of the map.</param>
         /// <param name="planetType">The type of the planet.</param>
         /// <param name="isWater">The possibility of water on the celestial object.</param>
@@ -114,7 +121,7 @@ namespace StellarApi.DTOs.Space
         /// <param name="starType">The type of the star.</param>
         /// <param name="brightness">The brightness of the celestial object.</param>
         public CelestialObjectInput(string name, string description, Position? position, double mass, double temperature, double radius,
-            string image, string type, int? mapId = null, string? planetType = null, bool? isWater = null, bool? isLife = null, string? starType = null, double? brightness = null)
+            string image, string type, bool isPublic, int? mapId = null, string? planetType = null, bool? isWater = null, bool? isLife = null, string? starType = null, double? brightness = null)
         {
             Name = name;
             Description = description;
@@ -124,6 +131,7 @@ namespace StellarApi.DTOs.Space
             Radius = radius;
             Image = image;
             Type = type;
+            IsPublic = isPublic;
             MapId = mapId;
             PlanetType = planetType;
             IsWater = isWater;

@@ -32,14 +32,17 @@ namespace StellarApi.Model.Space
         /// <param name="mass">The mass of the planet.</param>
         /// <param name="temperature">The temperature of the planet.</param>
         /// <param name="radius">The radius of the planet.</param>
+        /// <param name="userAuthorId">The user author identifier of the planet.</param>
         /// <param name="isWater">A value indicating whether the planet has water.</param>
         /// <param name="isLife">A value indicating whether the planet supports life.</param>
         /// <param name="planetType">The type of the planet.</param>
+        /// <param name="isPublic">A value indicating whether the planet is public.</param>
         /// <param name="creationDate">The creation date of the planet.</param>
         /// <param name="modificationDate">The last modification date of the planet.</param>
+        /// <param name="mapId">The unique identifier of the map.</param>
         public Planet(int id, string name, string description, string image, Position? position, double mass, double temperature, 
-            double radius, bool isWater, bool isLife, PlanetType planetType, DateTime? creationDate = null, DateTime? modificationDate = null, int? mapId = null)
-            : base(id, name, description, image, position, mass, temperature, radius, creationDate, modificationDate, mapId)
+            double radius, int userAuthorId, bool isWater, bool isLife, PlanetType planetType, bool isPublic, DateTime? creationDate = null, DateTime? modificationDate = null, int? mapId = null)
+            : base(id, name, description, image, position, mass, temperature, radius, userAuthorId, isPublic, creationDate, modificationDate, mapId)
         {
             IsWater = isWater;
             IsLife = isLife;
@@ -48,8 +51,6 @@ namespace StellarApi.Model.Space
 
         /// <inheritdoc/>
         public override string ToString()
-        {
-            return $"{Id} - Planet {Name}, (Description: {Description}), Mass: {Mass}, Position: {Position}, Temperature: {Temperature}, Radius: {Radius}, Image: {Image}, CreationDate: {CreationDate}, ModificationDate: {ModificationDate}, IsWater: {IsWater}, IsLife: {IsLife}, PlanetType: {PlanetType}";
-        }
+            => $"{Id} - Planet {Name}, (Description: {Description}), Mass: {Mass}, Position: {Position}, Temperature: {Temperature}, Radius: {Radius}, Image: {Image}, CreationDate: {CreationDate}, ModificationDate: {ModificationDate}, IsWater: {IsWater}, IsLife: {IsLife}, PlanetType: {PlanetType} - {(IsPublic ? "Public" : "Private")}";
     }
 }

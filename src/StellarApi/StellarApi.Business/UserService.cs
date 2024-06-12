@@ -66,37 +66,46 @@ namespace StellarApi.Business
         {
             user.CreationDate = DateTime.Now;
             user.ModificationDate = DateTime.Now;
-            await CheckUserData(0, user);
+            await CheckUserData(0, user, 0, false);
             return await _repository.AddUser(user);
         }
 
         /// <inheritdoc/>
-        public async Task<bool> PutUser(int id, User user, bool shouldUpdateModificationDate)
+        public async Task<bool> PutUser(int id, User user, int userAuthorId, bool shouldUpdateModificationDate)
         {
             if (shouldUpdateModificationDate)
             {
                 user.ModificationDate = DateTime.Now;
+                await CheckUserData(id, user, userAuthorId, true);
             }
-            await CheckUserData(id, user);
             return await _repository.EditUser(id, user);
         }
 
         /// <inheritdoc/>
-        public async Task<bool> DeleteUser(int id)
+        public async Task<bool> DeleteUser(int id, int userAuthorId)
         {
+            var user = await _repository.GetUserById(userAuthorId);
+            if (user != null && user.Id != id && user.Role != Role.Administrator)
+            {
+                throw new UnauthorizedAccessException("The user is not an administrator and cannot delete another user.");
+            }
             return await _repository.RemoveUser(id);
         }
 
         /// <summary>
         /// Checks if the user data is valid.
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="id">The unique identifier of the user.</param>
+        /// <param name="user">The user to check.</param>
+        /// <param name="userAuthorId">The unique identifier of the user who is editing.</param>
+        /// <param name="isEditing">A boolean indicating whether the user is being edited.</param>
         /// <exception cref="ArgumentNullException">If the user is null.</exception>
         /// <exception cref="ArgumentException">If the email or username or password is null or empty.</exception>
         /// <exception cref="InvalidEmailFormatException">If the email format is invalid.</exception>
         /// <exception cref="InvalidFieldLengthException">If the email or username is greater than the maximum length.</exception>
         /// <exception cref="DuplicateUserException">If the email is already used.</exception>
-        private async Task CheckUserData(int id, User user)
+        /// <exception cref="UnauthorizedAccessException">If the user is not an administrator and tries to edit another user.</exception>"
+        private async Task CheckUserData(int id, User user, int userAuthorId, bool isEditing)
         {
             if (user == null)
             {
@@ -128,9 +137,13 @@ namespace StellarApi.Business
                 throw new ArgumentException("The password cannot be null or empty.", nameof(user.Password));
             }
             var existingUser = await _repository.GetUserByEmail(user.Email);
+            if (isEditing && existingUser != null && user.Id != userAuthorId && user.Role != Role.Administrator)
+            {
+                throw new UnauthorizedAccessException("The user is not an administrator and cannot edit another user.");
+            }
             if (existingUser != null && existingUser.Id != id)
             {
-                _logger.LogTrace($"The email address {user.Email} is already used bu user n°{existingUser.Id} and cannot be edited for user n°{user.Id}.");
+                _logger.LogTrace($"The email address {user.Email} is already used by user n°{existingUser.Id} and cannot be edited for user n°{user.Id}.");
                 throw new DuplicateUserException("The email address is already used.");
             }
         }

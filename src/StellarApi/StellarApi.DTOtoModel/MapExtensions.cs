@@ -15,7 +15,7 @@ public static class MapExtensions
     /// <param name="dto">The DTO to transform.</param>
     /// <returns>The new Map object.</returns>
     public static Map ToModel(this MapInput? dto)
-        => dto is null ? null : new Map(0, dto.Name);
+        => dto is null ? null : new Map(0, dto.Name, 0, dto.IsPublic);
 
     /// <summary>
     /// Converts a <see cref="Map"/> to a <see cref="MapOutput"/>.
@@ -25,7 +25,7 @@ public static class MapExtensions
     public static MapOutput ToDTO(this Map? model)
         => model is null
             ? null
-            : new MapOutput(model.Id, model.Name, model.CelestialObjects.ToDTO(), model.CreationDate,
+            : new MapOutput(model.Id, model.Name, model.IsPublic, model.UserAuthorId, model.CelestialObjects.ToDTO(), model.CreationDate,
                 model.ModificationDate);
 
     /// <summary>

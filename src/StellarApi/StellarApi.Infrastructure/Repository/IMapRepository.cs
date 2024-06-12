@@ -15,12 +15,21 @@ public interface IMapRepository
     Task<Map> GetMap(int id);
 
     /// <summary>
-    /// Retrieves a collection of maps with pagination.
+    /// Retrieves a collection of private maps for the specified user with pagination.
+    /// </summary>
+    /// <param name="userId">The unique identifier of the user.</param>
+    /// <param name="page">The page number.</param>
+    /// <param name="pageSize">The number of items per page.</param>
+    /// <returns>A task that represents the asynchronous operation and returns the collection of maps.</returns>
+    Task<IEnumerable<Map>> GetMaps(int userId, int page, int pageSize);
+
+    /// <summary>
+    /// Retrieves a collection of public maps with pagination.
     /// </summary>
     /// <param name="page">The page number.</param>
     /// <param name="pageSize">The number of items per page.</param>
     /// <returns>A task that represents the asynchronous operation and returns the collection of maps.</returns>
-    Task<IEnumerable<Map>> GetMaps(int page, int pageSize);
+    Task<IEnumerable<Map>> GetPublicMaps(int page, int pageSize);
 
     /// <summary>
     /// Adds a new map to the data store.

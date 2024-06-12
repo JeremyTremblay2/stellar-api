@@ -106,5 +106,21 @@ namespace StellarApi.Entities
         /// </summary>
         [ForeignKey("MapId")]
         public MapEntity? Map { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user author identifier of the celestial object.
+        /// </summary>
+        public int UserAuthorId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user author of the celestial object.
+        /// </summary>
+        [ForeignKey("UserAuthorId")]
+        public UserEntity? UserAuthor { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the celestial object is public or not.
+        /// </summary>
+        public bool IsPublic { get; set; }
     }
 }

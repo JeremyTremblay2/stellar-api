@@ -28,13 +28,6 @@ namespace StellarApi.RestApi.Auth
         public DateTime? RefreshTokenExpirationTime { get; set; }
 
         /// <summary>
-        /// Gets or sets the email of the user.
-        /// </summary>
-        [EmailAddress]
-        [SwaggerSchema(Description = "The email adress of the user.", Nullable = false)]
-        public string Email { get; set; }
-
-        /// <summary>
         /// Gets or sets the username of the user.
         /// </summary>
         [SwaggerSchema(Description = "The username of the user.", Nullable = false)]

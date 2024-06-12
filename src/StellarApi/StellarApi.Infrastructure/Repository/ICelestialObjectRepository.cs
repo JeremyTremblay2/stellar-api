@@ -15,12 +15,21 @@ namespace StellarApi.Infrastructure.Repository
         Task<CelestialObject?> GetCelestialObject(int id);
 
         /// <summary>
-        /// Retrieves a collection of celestial objects with pagination.
+        /// Retrieves a collection of private celestial objects from the specified user with pagination.
+        /// </summary>
+        /// <param name="userId">The unique identifier of the user.</param>
+        /// <param name="page">The page number.</param>
+        /// <param name="pageSize">The number of items per page.</param>
+        /// <returns>A task that represents the asynchronous operation and returns the collection ofprivate  celestial objects.</returns>
+        Task<IEnumerable<CelestialObject>> GetCelestialObjects(int userId, int page, int pageSize);
+
+        /// <summary>
+        /// Retrieves a collection of public celestial objects with pagination.
         /// </summary>
         /// <param name="page">The page number.</param>
         /// <param name="pageSize">The number of items per page.</param>
-        /// <returns>A task that represents the asynchronous operation and returns the collection of celestial objects.</returns>
-        Task<IEnumerable<CelestialObject>> GetCelestialObjects(int page, int pageSize);
+        /// <returns>A task that represents the asynchronous operation and returns the collection of public celestial objects.</returns>
+        Task<IEnumerable<CelestialObject>> GetPublicCelestialObjects(int page, int pageSize);
 
         /// <summary>
         /// Adds a new celestial object to the data store.

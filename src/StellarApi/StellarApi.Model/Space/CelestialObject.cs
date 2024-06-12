@@ -66,14 +66,24 @@ namespace StellarApi.Model.Space
         public DateTime CreationDate { get; set; }
 
         /// <summary>
-        /// Gets the last modification date of the celestial object.
+        /// Gets or sets the last modification date of the celestial object.
         /// </summary>
         public DateTime ModificationDate { get; set; }
 
         /// <summary>
-        /// Gets the unique identifier of the map.
+        /// Gets or sets the unique identifier of the map.
         /// </summary>
-        public int? MapId { get; set; }
+        public int? MapId { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the unique identifier of the author.
+        /// </summary>
+        public int UserAuthorId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the public status of the celestial object.
+        /// </summary>
+        public bool IsPublic { get; set; } = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CelestialObject"/> class with specified properties.
@@ -86,13 +96,15 @@ namespace StellarApi.Model.Space
         /// <param name="mass">The mass of the celestial object.</param>
         /// <param name="temperature">The temperature of the celestial object.</param>
         /// <param name="radius">The radius of the celestial object.</param>
+        /// <param name="userAuthorId">The user author identifier of the celestial object.</param>
+        /// <param name="isPublic">The public status of the celestial object.</param>
         /// <param name="creationDate">The creation date of the celestial object.</param>
         /// <param name="modificationDate">The last modification date of the celestial object.</param>
         /// <param name="mapId">The unique identifier of the map.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="name"/> is null or empty.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="radius"/> or <paramref name="mass"/> is less than or equal to 0 or when <paramref name="creationDate"/> or <paramref name="modificationDate"/> is in the future or invalid.</exception>
         public CelestialObject(int id, string name, string description, string? image, Position? position, double mass, 
-            double temperature, double radius, DateTime? creationDate = null, DateTime? modificationDate = null, int? mapId = null)
+            double temperature, double radius, int userAuthorId, bool isPublic = false, DateTime? creationDate = null, DateTime? modificationDate = null, int? mapId = null)
         {
             Id = id;
             Name = name;
@@ -102,6 +114,8 @@ namespace StellarApi.Model.Space
             Mass = mass;
             Temperature = temperature;
             Radius = radius;
+            UserAuthorId = userAuthorId;
+            IsPublic = isPublic;
             CreationDate = creationDate ?? DateTime.Now;
             ModificationDate = modificationDate ?? DateTime.Now;
             MapId = mapId;
@@ -146,7 +160,7 @@ namespace StellarApi.Model.Space
         /// <inheritdoc/>
         public override string ToString()
         {
-            return $"{Id} - {Name}, (Description: {Description}), Position: {Position}, Mass: {Mass}, Temperature: {Temperature}, Radius: {Radius}, Image: {Image}, CreationDate: {CreationDate}, ModificationDate: {ModificationDate}";
+            return $"{Id} - CelestialObject {Name}, (Description: {Description}), Mass: {Mass}, Position: {Position}, Temperature: {Temperature}, Radius: {Radius}, Image: {Image}, CreationDate: {CreationDate}, ModificationDate: {ModificationDate} - {(IsPublic ? "Public" : "Private")}";
         }
     }
 }

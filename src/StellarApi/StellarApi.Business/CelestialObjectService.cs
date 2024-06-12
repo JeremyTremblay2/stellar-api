@@ -3,6 +3,7 @@ using StellarApi.Business.Exceptions;
 using StellarApi.Infrastructure.Business;
 using StellarApi.Infrastructure.Repository;
 using StellarApi.Model.Space;
+using StellarApi.Repository.Exceptions;
 
 namespace StellarApi.Business
 {
@@ -48,38 +49,59 @@ namespace StellarApi.Business
         }
 
         /// <inheritdoc/>
-        public Task<CelestialObject?> GetCelestialObject(int id)
+        public async Task<CelestialObject?> GetCelestialObject(int id, int? userRequestId)
         {
-            return _repository.GetCelestialObject(id);
+            var celestialObject = await _repository.GetCelestialObject(id);
+            if (celestialObject != null && (!celestialObject.IsPublic && (userRequestId == null || celestialObject.UserAuthorId != userRequestId)))
+            {
+                throw new UnauthorizedAccessException($"You are not allowed to access the celestial object n°{id} because this is not yours.");
+            }
+            return celestialObject;
         }
 
         /// <inheritdoc/>
-        public Task<IEnumerable<CelestialObject>> GetCelestialObjects(int page, int pageSize)
+        public Task<IEnumerable<CelestialObject>> GetCelestialObjects(int userId, int page, int pageSize)
         {
-            return _repository.GetCelestialObjects(page, pageSize);
+            return _repository.GetCelestialObjects(userId, page, pageSize);
         }
 
         /// <inheritdoc/>
-        public Task<bool> PostCelestialObject(CelestialObject celestialObject)
+        public Task<IEnumerable<CelestialObject>> GetPublicCelestialObjects(int page, int pageSize)
         {
-            CheckCelestialObjectData(celestialObject);
+            return _repository.GetPublicCelestialObjects(page, pageSize);
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> PostCelestialObject(CelestialObject celestialObject)
+        {
+            await CheckCelestialObjectData(celestialObject);
             celestialObject.CreationDate = DateTime.Now;
             celestialObject.ModificationDate = DateTime.Now;
-            return _repository.AddCelestialObject(celestialObject);
+            return await _repository.AddCelestialObject(celestialObject);
         }
 
         /// <inheritdoc/>
-        public Task<bool> PutCelestialObject(int id, CelestialObject celestialObject)
+        public async Task<bool> PutCelestialObject(int id, CelestialObject celestialObject)
         {
-            CheckCelestialObjectData(celestialObject);
+            var existingCelestialObject = await _repository.GetCelestialObject(id);
+            if (existingCelestialObject != null && existingCelestialObject.UserAuthorId != celestialObject.UserAuthorId)
+            {
+                throw new UnauthorizedAccessException($"You are not allowed to modify the celestial object n°{id} because this is not yours.");
+            }
+            await CheckCelestialObjectData(celestialObject);
             celestialObject.ModificationDate = DateTime.Now;
-            return _repository.EditCelestialObject(id, celestialObject);
+            return await _repository.EditCelestialObject(id, celestialObject);
         }
 
         /// <inheritdoc/>
-        public Task<bool> DeleteCelestialObject(int id)
+        public async Task<bool> DeleteCelestialObject(int celestialObjectId, int userAuthorId)
         {
-            return _repository.RemoveCelestialObject(id);
+            var existingCelestialObject = await _repository.GetCelestialObject(celestialObjectId);
+            if (existingCelestialObject != null && existingCelestialObject.UserAuthorId != userAuthorId)
+            {
+                throw new UnauthorizedAccessException($"You are not allowed to delete the celestial object n°{celestialObjectId} because this is not yours.");
+            }
+            return await _repository.RemoveCelestialObject(celestialObjectId);
         }
 
         /// <summary>
@@ -89,7 +111,7 @@ namespace StellarApi.Business
         /// <exception cref="ArgumentNullException">If the celestial object is null.</exception>
         /// <exception cref="ArgumentException">If any of the fields are invalid.</exception>
         /// <exception cref="InvalidFieldLengthException">If any of the fields are too long.</exception>
-        private void CheckCelestialObjectData(CelestialObject celestialObject)
+        private async Task CheckCelestialObjectData(CelestialObject celestialObject)
         {
             if (celestialObject == null)
             {
@@ -134,6 +156,18 @@ namespace StellarApi.Business
             if (celestialObject.MapId == null && celestialObject.Position is not null)
             {
                 throw new ArgumentException("The celestial object cannot have a position without a map.", nameof(celestialObject.Position));
+            }
+            if (celestialObject.MapId != null)
+            {
+                var map = await _mapRepository.GetMap(celestialObject.MapId.Value);
+                if (map == null)
+                {
+                    throw new EntityNotFoundException(celestialObject.MapId.Value.ToString(), "The provided map was not found.");
+                }
+                if (map.UserAuthorId != celestialObject.UserAuthorId)
+                {
+                    throw new UnauthorizedAccessException($"You are not allowed to add a celestial object to the map n°{celestialObject.MapId} because this map is not yours.");
+                }
             }
         }
     }

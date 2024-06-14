@@ -6,8 +6,8 @@ If you have a creative mind, this API is for you ! 🎨👩‍🎨👨‍🎨
 
 ## 🚀 Features
 
-- [x] 🆔 Create your own account with your personal information and authenticate you to start using all the features.  
-- [x] From here, you will be able to: 
+- [x] 🆔 Create your own account with your personal information and authenticate you to start using all the features.
+- [x] From here, you will be able to:
   - [x] 🌟 Create, edit, delete and manage stars.
   - [x] 🌍 Create, edit, delete and manage planets.
   - [x] 🗺️ Create, edit, delete and manage maps.
@@ -16,7 +16,7 @@ If you have a creative mind, this API is for you ! 🎨👩‍🎨👨‍🎨
 
 ## 📱 Application
 
-This simple API is used to manage and provide space data for various applications. Here you can see a visual of a part of the available routes of the API: 
+This simple API is used to manage and provide space data for various applications. Here you can see a visual of a part of the available routes of the API:
 
 <p align="center">
     <img src="./doc/images/swagger_preview.png" width="800px"/>
@@ -27,21 +27,21 @@ This simple API is used to manage and provide space data for various application
     </i>
 </p>
 
-This API be used in many small projects to make a simple but working application or for search related works. 🕵️‍♀️🕵️‍♂️
+This API may be used in many small projects to make a simple but working application or for search related works. 🕵️‍♀️🕵️‍♂️
 
 ## 💻 Languages and Technologies Used
 
-* 🟦 [.NET Core 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0).
-* 🟩 [Docker](https://www.docker.com/)
-* 🟨 [Microsoft Azure](https://azure.microsoft.com/)
+- 🟦 [.NET Core 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0).
+- 🟩 [Docker](https://www.docker.com/)
+- 🟨 [Microsoft Azure](https://azure.microsoft.com/)
 
 ## 📚 Prerequisites
 
 Currently the API is not completely deploy to Azure, so you must install the following tools below if you want to run it locally.
 
-* [.NET Core 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0).
-* [Visual Studio](https://visualstudio.microsoft.com/)
-* [EF Core](https://learn.microsoft.com/en-us/ef/core/)
+- [.NET Core 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0).
+- [Visual Studio](https://visualstudio.microsoft.com/)
+- [EF Core](https://learn.microsoft.com/en-us/ef/core/)
 
 ## 🏃‍♂️ How to Run the API
 
@@ -51,7 +51,7 @@ Currently the API is not completely deploy to Azure, so you must install the fol
 
 ### Locally With Docker
 
-> 🚧 Currently, the Docker image is available online but it is not working as well because of the same problem. You can try it but will receive error response for requests that need to access the database.  
+> 🚧 Currently, the Docker image is available online but it is not working as well because of the same problem. You can try it but will receive error response for requests that need to access the database.
 
 You can install Docker and pull the last image and run it using the following commands:
 
@@ -71,7 +71,7 @@ After this, you can go on https://localhost:8080/swagger/index.html and will hav
 
 1. 📥 Clone the repository.
 2. 📁 Open the solution file under `src/StellarApi/StellarApi.sln` on Visual Studio or your prefer IDE.
-3. 📦 Make sure you have Entity Framework installed (globally or not) on your computer, and then at the `src/StellarApi/StellarApi.sln` folder, run the following commands:
+3. 📦 Make sure you have Entity Framework installed (globally or not) on your computer, and then at the `src/StellarApi/` folder, run the following commands:
 
 ```shell
 
@@ -82,11 +82,13 @@ dotnet ef --startup-project .\StellarApi.RestApi\ --project .\StellarApi.Reposit
 dotnet ef database update --startup-project .\StellarApi.RestApi\ --project StellarApi.Repository --context SpaceDbContextSeed
 
 ```
+
 4. 🚀 You can build and run the solution, this will be executed locally. If you see a prompt appearing, please **trust** certificates or you will not able to run the project.
 5. 🌟 The swagger will be available at the following address: https://localhost:7023/swagger/index.html. You can start creating an account and trying the routes.
 
 ## 📖 Documentation
-You can find the API documentation here. 📚
+
+You can find the API documentation on the `doc/` folder of this repository. 📚
 
 A few class diagrams are present, some screenshots as well. 📸
 
@@ -104,17 +106,17 @@ If you need a connection string or something Azure or Docker related, please con
 
 **TREMBLAY Jérémy**
 
-* Github: [@JeremyTremblay2](https://github.com/JeremyTremblay2)
-* LinkedIn: [@Jérémy Tremlay](https://fr.linkedin.com/in/j%C3%A9r%C3%A9my-tremblay2)
+- Github: [@JeremyTremblay2](https://github.com/JeremyTremblay2)
+- LinkedIn: [@Jérémy Tremlay](https://fr.linkedin.com/in/j%C3%A9r%C3%A9my-tremblay2)
 
 **CROISIER Maxime**
 
-* Github: [@Emixam309](https://github.com/Emixam309)
-* LinkedIn: [@Maxime Croisier](https://www.linkedin.com/in/maxime-croisier-425131220/)
+- Github: [@Emixam309](https://github.com/Emixam309)
+- LinkedIn: [@Maxime Croisier](https://www.linkedin.com/in/maxime-croisier-425131220/)
 
 ## 📝 License
 
-I want to leave the possibility to other people to work on this project, to improve it and to make it grow, that's why we decided to place it under MIT license.
+We want to leave the possibility to other people to work on this project, to improve it and to make it grow, that's why we decided to place it under MIT license.
 
 > Read more about the [MIT licence](https://opensource.org/licenses/MIT).
 

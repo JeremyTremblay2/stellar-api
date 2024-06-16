@@ -39,13 +39,13 @@ namespace StellarApi.Model.Space
         /// <param name="image">The image url of the space image.</param>
         /// <param name="shootingDate">The shooting date of the space image.</param>
         /// <exception cref="ArgumentException">Thrown when the <paramref name="title"/> or <paramref name="image"/> is null or empty.</exception>
-        public SpaceImage(string title, string description, string image, DateTime shootingDate, int id)
+        public SpaceImage(int id, string title, string description, string image, DateTime shootingDate)
         {
+            Id = id;
             Title = title;
             Description = description;
             Image = image;
             ShootingDate = shootingDate;
-            Id = id;
         }
 
         /// <inheritdoc/>
@@ -72,18 +72,15 @@ namespace StellarApi.Model.Space
         public int CompareTo(object? obj)
         {
             if (obj == null) return 1;
-            if (obj is not SpaceImage)
+            if (obj is not SpaceImage image)
                 throw new ArgumentException("Object is not a Space Image", nameof(obj));
-            return CompareTo((SpaceImage)obj);
+            return CompareTo(image);
         }
 
         /// <inheritdoc/>
         public int CompareTo(SpaceImage? other)
         {
-            if (other == null) return 1;
-
-            return string.Compare(Title, other.Title, StringComparison.OrdinalIgnoreCase);
+            return other == null ? 1 : string.Compare(Title, other.Title, StringComparison.OrdinalIgnoreCase);
         }
-
     }
 }

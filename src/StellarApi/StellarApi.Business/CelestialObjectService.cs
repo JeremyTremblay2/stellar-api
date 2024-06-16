@@ -40,7 +40,9 @@ namespace StellarApi.Business
         /// <summary>
         /// Initializes a new instance of the <see cref="CelestialObjectService"/> class.
         /// </summary>
+        /// <param name="logger">The logger used by this service.</param>
         /// <param name="repository">The repository used for accessing celestial objects.</param>
+        /// <param name="mapRepository">The repository used for accessing maps.</param>
         public CelestialObjectService(ILogger<CelestialObjectService> logger, ICelestialObjectRepository repository, IMapRepository mapRepository)
         {
             _logger = logger;

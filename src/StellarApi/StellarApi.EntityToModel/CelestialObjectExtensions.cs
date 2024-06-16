@@ -5,42 +5,48 @@ using StellarApi.Model.Space;
 namespace StellarApi.EntityToModel
 {
     /// <summary>
-    /// Provides extension methods for converting between CelestialObjectEntity and CelestialObject.
+    /// Provides extension methods for converting between <see cref="CelestialObjectEntity"/> and <see cref="CelestialObject"/>.
     /// </summary>
     public static class CelestialObjectExtensions
     {
         /// <summary>
-        /// Converts a CelestialObjectEntity to a CelestialObject.
+        /// Converts a <see cref="CelestialObjectEntity"/> to a <see cref="CelestialObject"/>.
         /// </summary>
         /// <param name="entity">The entity to transform.</param>
         /// <returns>A model representing the entity object.</returns>
         public static CelestialObject ToModel(this CelestialObjectEntity? entity)
         {
             if (entity is null) return null;
-            if (entity.Type.Equals("Planet"))
+            switch (entity.Type)
             {
-                var planetType = ValueParserHelpers.TryParseValue<PlanetType>(entity.PlanetType, out var result)
-                    ? result
-                    : PlanetType.Undefined;
-                return new Planet(entity.Id, entity.Name, entity.Description, entity.Image, PositionExtensions.ToModel(entity.Position), entity.Mass,
-                    entity.Temperature, entity.Radius, entity.UserAuthorId, (bool)entity.IsWater, (bool)entity.IsLife, planetType, entity.IsPublic, entity.CreationDate, entity.ModificationDate, entity.MapId);
-            }
-            else if (entity.Type.Equals("Star"))
-            {
-                var starType = ValueParserHelpers.TryParseValue<StarType>(entity.StarType, out var result)
-                    ? result
-                    : StarType.Undefined;
-                return new Star(entity.Id, entity.Name, entity.Description, entity.Image, PositionExtensions.ToModel(entity.Position),
-                    entity.Mass, entity.Temperature, entity.Radius, entity.UserAuthorId, (double)entity.Brightness, starType, entity.IsPublic, entity.CreationDate, entity.ModificationDate, entity.MapId);
-            }
-            else
-            {
-                throw new ArgumentException("The celestial object type is not supported.", nameof(entity.Type));
+                case "Planet":
+                {
+                    var planetType = ValueParserHelpers.TryParseValue<PlanetType>(entity.PlanetType, out var result)
+                        ? result
+                        : PlanetType.Undefined;
+                    return new Planet(entity.Id, entity.Name, entity.Description, entity.Image,
+                        PositionExtensions.ToModel(entity.Position), entity.Mass,
+                        entity.Temperature, entity.Radius, entity.UserAuthorId, (bool)entity.IsWater,
+                        (bool)entity.IsLife, planetType, entity.IsPublic, entity.CreationDate, entity.ModificationDate,
+                        entity.MapId);
+                }
+                case "Star":
+                {
+                    var starType = ValueParserHelpers.TryParseValue<StarType>(entity.StarType, out var result)
+                        ? result
+                        : StarType.Undefined;
+                    return new Star(entity.Id, entity.Name, entity.Description, entity.Image,
+                        PositionExtensions.ToModel(entity.Position),
+                        entity.Mass, entity.Temperature, entity.Radius, entity.UserAuthorId, (double)entity.Brightness,
+                        starType, entity.IsPublic, entity.CreationDate, entity.ModificationDate, entity.MapId);
+                }
+                default:
+                    throw new ArgumentException("The celestial object type is not supported.", nameof(entity.Type));
             }
         }
 
         /// <summary>
-        /// Converts a collection of CelestialObjectEntities to CelestialObjects.
+        /// Converts a collection of <see cref="CelestialObjectEntity"/> to <see cref="CelestialObject"/>.
         /// </summary>
         /// <param name="entities">The collection of CelestialObjectEntity to convert.</param>
         /// <returns>The converted collection of CelestialObjects.</returns>
@@ -50,7 +56,7 @@ namespace StellarApi.EntityToModel
         }
 
         /// <summary>
-        /// Converts a CelestialObject to a CelestialObjectEntity.
+        /// Converts a <see cref="CelestialObject"/> to a <see cref="CelestialObjectEntity"/>.
         /// </summary>
         /// <param name="model">The model to transform.</param>
         /// <returns>An entity representing the model object.</returns>
@@ -88,7 +94,7 @@ namespace StellarApi.EntityToModel
         }
 
         /// <summary>
-        /// Converts a collection of CelestialObjects to CelestialObjectEntity.
+        /// Converts a collection of <see cref="CelestialObject"/> to <see cref="CelestialObjectEntity"/>.
         /// </summary>
         /// <param name="models">The collection of CelestialObjects to convert.</param>
         /// <returns>The converted collection of CelestialObjectEntity.</returns>

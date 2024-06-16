@@ -47,11 +47,18 @@ public static partial class Program
     /// </summary>
     private static void ConfigureServices(WebApplicationBuilder builder)
     {
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAllOrigin",
+                policy =>
+                {
+                    policy.AllowAnyOrigin();
+                    policy.AllowAnyHeader();
+                });
+        });
+
         builder.Services.AddControllers()
-            .AddJsonOptions(opt =>
-            {
-                opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-            });
+            .AddJsonOptions(opt => { opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); });
 
         builder.Services.AddEndpointsApiExplorer();
 
@@ -84,12 +91,16 @@ public static partial class Program
         builder.Services.AddScoped<ICelestialObjectService, CelestialObjectService>();
         builder.Services.AddScoped<IMapService, MapService>();
         builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<ISpaceImageService, SpaceImageService>();
 
         builder.Services.AddScoped<ICelestialObjectRepository, CelestialObjectRepository>();
         builder.Services.AddScoped<IMapRepository, MapRepository>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<ISpaceImageRepository, SpaceImageRepository>();
+        builder.Services.AddScoped<IHttpSpaceImageRepository, HttpSpaceImageRepository>();
 
-        builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+        builder.Services.AddApplicationInsightsTelemetry(
+            builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
     }
 
     /// <summary>
@@ -100,11 +111,13 @@ public static partial class Program
     {
         builder.Services.AddSwaggerGen(option =>
         {
-            option.SwaggerDoc("v1", 
-                new OpenApiInfo { 
-                    Title = "Stellar API", 
+            option.SwaggerDoc("v1",
+                new OpenApiInfo
+                {
+                    Title = "Stellar API",
                     Version = "v1",
-                    Description = "Stellar API is an API to manage space data and allows users to create space map with no limitations.",
+                    Description =
+                        "Stellar API is an API to manage space data and allows users to create space map with no limitations.",
                     Contact = new OpenApiContact()
                     {
                         Name = "Jérémy Tremblay",
@@ -131,19 +144,19 @@ public static partial class Program
                 Scheme = "Bearer"
             });
             option.AddSecurityRequirement(new OpenApiSecurityRequirement
-        {
             {
-                new OpenApiSecurityScheme
                 {
-                    Reference = new OpenApiReference
+                    new OpenApiSecurityScheme
                     {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer"
-                    }
-                },
-                new string[]{}
-            }
-        });
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] { }
+                }
+            });
         });
     }
 
@@ -158,26 +171,26 @@ public static partial class Program
         var symmetricSecurityKey = builder.Configuration.GetValue<string>("JwtTokenSettings:SymmetricSecurityKey");
 
         builder.Services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
-        .AddJwtBearer(options =>
-        {
-            options.IncludeErrorDetails = true;
-            options.TokenValidationParameters = new TokenValidationParameters()
             {
-                ClockSkew = TimeSpan.Zero,
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = validIssuer,
-                ValidAudience = validAudience,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(symmetricSecurityKey))
-            };
-        });
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.IncludeErrorDetails = true;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ClockSkew = TimeSpan.Zero,
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = validIssuer,
+                    ValidAudience = validAudience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(symmetricSecurityKey))
+                };
+            });
     }
 
     /// <summary>
@@ -214,10 +227,11 @@ public static partial class Program
         app.UseSwagger();
         app.UseSwaggerUI();
 
+        app.UseCors("AllowAllOrigin");
+
         app.UseAuthorization();
 
         app.MapControllers();
         app.MapGet("/", () => "Hello World !");
     }
 }
-

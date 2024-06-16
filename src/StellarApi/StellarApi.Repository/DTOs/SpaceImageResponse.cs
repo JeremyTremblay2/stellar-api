@@ -1,7 +1,10 @@
 using System.Text.Json.Serialization;
 
-namespace StellarApi.Model.Space;
+namespace StellarApi.Repository.DTOs;
 
+/// <summary>
+/// Represents a space image response from an API.
+/// </summary>
 public class SpaceImageResponse
 {
     /// <summary>
@@ -38,11 +41,11 @@ public class SpaceImageResponse
     /// <summary>
     /// Initializes a new instance of the <see cref="SpaceImageResponse"/> class with specified properties.
     /// </summary>
-    /// <param name="title"></param>
-    /// <param name="explanation"></param>
-    /// <param name="url"></param>
-    /// <param name="hdUrl"></param>
-    /// <param name="date"></param>
+    /// <param name="title">The title of the space image.</param>
+    /// <param name="explanation">The description of the space image.</param>
+    /// <param name="url">The image url of the space image.</param>
+    /// <param name="hdUrl">The high definition image url of the space image.</param>
+    /// <param name="date">The date of the space image.</param>
     public SpaceImageResponse(string title, string explanation, string url, string hdUrl, DateTime date)
     {
         Title = title;

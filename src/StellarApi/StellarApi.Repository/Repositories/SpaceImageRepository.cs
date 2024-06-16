@@ -43,6 +43,15 @@ public class SpaceImageRepository : ISpaceImageRepository
     }
 
     /// <inheritdoc/>
+    public async Task<SpaceImage?> GetSpaceImageByDate(DateTime date)
+    {
+        if (_context.SpaceImages is null) throw new UnavailableDatabaseException();
+        return (await _context.SpaceImages
+            .Where(s => s.ShootingDate.Date == date.Date)
+            .FirstOrDefaultAsync()).ToModel();
+    }
+
+    /// <inheritdoc/>
     public async Task<bool> AddSpaceImage(SpaceImage spaceImage)
     {
         if (_context.SpaceImages is null) throw new UnavailableDatabaseException();
@@ -51,11 +60,11 @@ public class SpaceImageRepository : ISpaceImageRepository
     }
 
     /// <inheritdoc/>
-    public async Task<SpaceImage> GetSpaceImageOfTheDay()
+    public async Task<SpaceImage?> GetSpaceImageOfTheDay()
     {
         if (_context.SpaceImages is null) throw new UnavailableDatabaseException();
         return (await _context.SpaceImages
-                .Where(s => s.ShootingDate == DateTime.Today)
+                .Where(s => s.ShootingDate.Date == DateTime.Now.Date)
                 .FirstOrDefaultAsync())
             .ToModel();
     }

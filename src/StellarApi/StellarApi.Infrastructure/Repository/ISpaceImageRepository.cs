@@ -23,6 +23,13 @@ public interface ISpaceImageRepository
     Task<IEnumerable<SpaceImage>> GetSpaceImages(int page, int pageSize);
 
     /// <summary>
+    /// Retrieves a space image by its shooting date.
+    /// </summary>
+    /// <param name="date">The shooting date of the space image.</param>
+    /// <returns>A task that represents the asynchronous operation and returns the retrieved space image, or null if not found.</returns>
+    Task<SpaceImage?> GetSpaceImageByDate(DateTime date);
+
+    /// <summary>
     /// Adds a new space image to the database.
     /// </summary>
     /// <param name="spaceImage"></param>
@@ -33,5 +40,5 @@ public interface ISpaceImageRepository
     /// Retrieves the space image of the day.
     /// </summary>
     /// <returns>A task that represents the asynchronous operation and returns the space image of the day.</returns>
-    Task<SpaceImage> GetSpaceImageOfTheDay();
+    Task<SpaceImage?> GetSpaceImageOfTheDay();
 }

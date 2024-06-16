@@ -49,7 +49,7 @@ public class MapService : IMapService
         var map = await _repository.GetMap(id);
         if (map != null && !map.IsPublic && (userRequestId == null || map.UserAuthorId != userRequestId))
         {
-            throw new UnauthorizedAccessException($"You are not allowed to access the map n°{id} because this is not yours.");
+            throw new UnauthorizedAccessException($"You are not allowed to access the map nï¿½{id} because this is not yours.");
         }
         if (map != null && map.UserAuthorId != userRequestId)
         {
@@ -86,7 +86,7 @@ public class MapService : IMapService
         var existingMap = await _repository.GetMap(id);
         if (existingMap != null && existingMap.UserAuthorId != map.UserAuthorId)
         {
-            throw new UnauthorizedAccessException($"You are not allowed to modify the map n°{id} because this is not yours.");
+            throw new UnauthorizedAccessException($"You are not allowed to modify the map nï¿½{id} because this is not yours.");
         }
         CheckMapData(map);
         map.ModificationDate = DateTime.Now;
@@ -99,7 +99,7 @@ public class MapService : IMapService
         var existingMap = await _repository.GetMap(mapId);
         if (existingMap != null && existingMap.UserAuthorId != userAuthorId)
         {
-            throw new UnauthorizedAccessException($"You are not allowed to delete the map n°{mapId} because this is not yours.");
+            throw new UnauthorizedAccessException($"You are not allowed to delete the map nï¿½{mapId} because this is not yours.");
         }
         return await _repository.RemoveMap(mapId);
     }
@@ -166,19 +166,19 @@ public class MapService : IMapService
         }
         if (existingCelestialObject.UserAuthorId != userAuthorId)
         {
-            throw new UnauthorizedAccessException($"You are not allowed to add the celestial object n°{celestialObjectId} to the map n°{mapId} because this celestial object is not yours.");
+            throw new UnauthorizedAccessException($"You are not allowed to add the celestial object nï¿½{celestialObjectId} to the map nï¿½{mapId} because this celestial object is not yours.");
         }
         if (existingMap.UserAuthorId != userAuthorId)
         {
-            throw new UnauthorizedAccessException($"You are not allowed to add a celestial object to the map n°{mapId} because this map is not yours.");
+            throw new UnauthorizedAccessException($"You are not allowed to add a celestial object to the map nï¿½{mapId} because this map is not yours.");
         }
         if (toBeAdded && existingMap.CelestialObjects.Contains(existingCelestialObject))
         {
-            throw new CelestialObjectAlreadyInMapException($"The celestial object n°{celestialObjectId} is already in the map n°{mapId} and cannot be linked to it.");
+            throw new CelestialObjectAlreadyInMapException($"The celestial object nï¿½{celestialObjectId} is already in the map nï¿½{mapId} and cannot be linked to it.");
         }
         if (!toBeAdded && !existingMap.CelestialObjects.Contains(existingCelestialObject))
         {
-            throw new CelestialObjectNotInMapException($"The celestial object n°{celestialObjectId} is not in the map n°{mapId} and cannot be removed from it.");
+            throw new CelestialObjectNotInMapException($"The celestial object nï¿½{celestialObjectId} is not in the map nï¿½{mapId} and cannot be removed from it.");
         }
     }
 }

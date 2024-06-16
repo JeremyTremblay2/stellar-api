@@ -137,7 +137,7 @@ public class MapController : ControllerBase
     [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
     [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
-    public async Task<ActionResult<IEnumerable<MapOutput>>> GetPersonnalMaps(int page, int pageSize)
+    public async Task<ActionResult<IEnumerable<MapOutput>>> GetPersonnalMaps(int page = 1, int pageSize = 10)
     {
         _logger.LogInformation($"Getting personnal maps from page {page} with a page size of {pageSize}.");
 
@@ -206,7 +206,7 @@ public class MapController : ControllerBase
     [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
     [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
-    public async Task<ActionResult<IEnumerable<MapOutput>>> GetPublicMaps(int page, int pageSize)
+    public async Task<ActionResult<IEnumerable<MapOutput>>> GetPublicMaps(int page = 1, int pageSize = 10)
     {
         _logger.LogInformation($"Getting public maps from page {page} with a page size of {pageSize}.");
 

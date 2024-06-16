@@ -189,7 +189,7 @@ namespace StellarApi.RestApi.Controllers
         [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]
         [ProducesResponseType<string>(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType<string>(StatusCodes.Status503ServiceUnavailable)]
-        public async Task<ActionResult<IEnumerable<MinimalUserOutput>>> GetUsers(int page, int pageSize)
+        public async Task<ActionResult<IEnumerable<MinimalUserOutput>>> GetUsers(int page = 1, int pageSize = 10)
         {
             _logger.LogInformation($"Fetching user data for page {page} with {pageSize} users per page.");
 

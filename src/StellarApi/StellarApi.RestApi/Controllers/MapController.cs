@@ -595,14 +595,14 @@ public class MapController : ControllerBase
     ///
     /// Sample request:
     ///
-    ///     DELETE /api/v1/maps/1/remove/1
+    ///     PUT /api/v1/maps/1/remove/1
     ///
     /// </remarks>
     /// <param name="mapId">The unique identifier of the map.</param>
     /// <param name="celestialObjectId">The unique identifier of the celestial object to remove.</param>
     /// <returns>A message indicating if the celestial object was removed or not.</returns>
     [MapToApiVersion(1)]
-    [HttpDelete("{mapId}/remove/{celestialObjectId}")]
+    [HttpPut("{mapId}/remove/{celestialObjectId}")]
     [Authorize(Roles = "Member, Administrator")]
     [ProducesResponseType<string>(StatusCodes.Status200OK)]
     [ProducesResponseType<string>(StatusCodes.Status400BadRequest)]

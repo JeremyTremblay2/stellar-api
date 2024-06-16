@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using StellarApi.EntityToModel;
 using StellarApi.Infrastructure.Repository;
 using StellarApi.Model.Users;
@@ -12,20 +12,6 @@ namespace StellarApi.Repository.Repositories
     /// </summary>
     public class UserRepository : IUserRepository
     {
-        /// <summary>
-        /// Represents the database context for managing user data.
-        /// </summary>
-        private readonly SpaceDbContext _context;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserRepository"/> class.
-        /// </summary>
-        /// <param name="context">The database context for managing user data.</param>
-        public UserRepository(SpaceDbContext context)
-        {
-            _context = context;
-        }
-
         /// <summary>
         /// Adds a new user to the repository.
         /// </summary>
@@ -59,8 +45,8 @@ namespace StellarApi.Repository.Repositories
             existingUser.RefreshToken = entity.RefreshToken;
             existingUser.RefreshTokenExpiryTime = entity.RefreshTokenExpiryTime;
             existingUser.ModificationDate = entity.ModificationDate;
-            _context.Users.Update(existingUser);
-            return await _context.SaveChangesAsync() == 1;
+            context.Users.Update(existingUser);
+            return await context.SaveChangesAsync() == 1;
         }
 
         /// <summary>

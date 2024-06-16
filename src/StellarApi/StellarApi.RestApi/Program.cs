@@ -16,36 +16,36 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 
-/// <summary>
-/// Represents the main entry point for the application.
-/// </summary>
-public static partial class Program
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+builder.Services.AddControllers()
+.AddJsonOptions(opt =>
 {
-    /// <summary>
-    /// The main entry point for the application.
-    /// </summary>
-    /// <param name="args">The arguments for the application.</param>
-    public static void Main(string[] args)
-    {
-        var builder = WebApplication.CreateBuilder(args);
+    opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-        ConfigureServices(builder);
-        ConfigureSwagger(builder);
-        ConfigureAuthentication(builder);
-        ConfigureLogging(builder);
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1);
+    options.ReportApiVersions = true;
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ApiVersionReader = ApiVersionReader.Combine(
+        new UrlSegmentApiVersionReader(),
+        new HeaderApiVersionReader("X-Api-Version"));
+}).AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'V";
+    options.SubstituteApiVersionInUrl = true;
+});
 
-        var app = builder.Build();
-
-        ConfigureMiddleware(app);
-
-        app.Run();
-    }
-
-    /// <summary>
-    /// Configures the services for the application.
-    /// <param name="builder">The builder for the application.</param>
-    /// </summary>
-    private static void ConfigureServices(WebApplicationBuilder builder)
+builder.Services.AddSwaggerGen(option =>
+{
+    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Stellar API", Version = "v1" });
+    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         builder.Services.AddCors(options =>
         {
@@ -110,7 +110,6 @@ public static partial class Program
     /// </summary>
     private static void ConfigureSwagger(WebApplicationBuilder builder)
     {
-        builder.Services.AddSwaggerGen(option =>
         {
             option.SwaggerDoc("v1",
                 new OpenApiInfo
@@ -121,7 +120,7 @@ public static partial class Program
                         "Stellar API is an API to manage space data and allows users to create space map with no limitations.",
                     Contact = new OpenApiContact()
                     {
-                        Name = "Jérémy Tremblay",
+                        Name = "Jï¿½rï¿½my Tremblay",
                         Email = "jeremy-tremblay@outlook.fr",
                     }
                 });
@@ -161,15 +160,9 @@ public static partial class Program
         });
     }
 
-    /// <summary>
-    /// Configures the authentication for the application.
-    /// <param name="builder">The builder for the application.</param>
-    /// </summary>
-    private static void ConfigureAuthentication(WebApplicationBuilder builder)
-    {
-        var validIssuer = builder.Configuration.GetValue<string>("JwtTokenSettings:ValidIssuer");
-        var validAudience = builder.Configuration.GetValue<string>("JwtTokenSettings:ValidAudience");
-        var symmetricSecurityKey = builder.Configuration.GetValue<string>("JwtTokenSettings:SymmetricSecurityKey");
+var validIssuer = builder.Configuration.GetValue<string>("JwtTokenSettings:ValidIssuer");
+var validAudience = builder.Configuration.GetValue<string>("JwtTokenSettings:ValidAudience");
+var symmetricSecurityKey = builder.Configuration.GetValue<string>("JwtTokenSettings:SymmetricSecurityKey");
 
         builder.Services.AddAuthentication(options =>
             {
@@ -200,33 +193,32 @@ public static partial class Program
     /// <param name="builder">The builder for the application.</param>
     private static void ConfigureLogging(WebApplicationBuilder builder)
     {
-        if (builder.Environment.IsDevelopment())
+        options.IncludeErrorDetails = true;
+        options.TokenValidationParameters = new TokenValidationParameters()
         {
-            builder.Logging.AddConsole();
-            builder.Logging.AddDebug();
-        }
-        else
-        {
-            builder.Logging.AddConsole();
-            builder.Logging.AddDebug();
-            /*builder.Logging.AddApplicationInsights(
-            configureTelemetryConfiguration: (config) =>
-                config.ConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"],
-                configureApplicationInsightsLoggerOptions: (options) => { }
-            );*/
-        }
+            ClockSkew = TimeSpan.Zero,
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = validIssuer,
+            ValidAudience = validAudience,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(symmetricSecurityKey)
+            ),
+        };
+    });
 
-        builder.Logging.AddFilter("", LogLevel.Trace);
-    }
+builder.Services.AddDbContext<SpaceDbContextSeed>(options => 
+    options.UseSqlite(builder.Configuration["ConnectionStrings:DatabaseLocalPath"])
+);
 
-    /// <summary>
-    /// Configures the middleware for the application.
-    /// </summary>
-    /// <param name="app">The application to configure.</param>
-    static void ConfigureMiddleware(WebApplication app)
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddTransient<ICelestialObjectService, CelestialObjectService>();
+builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<ICelestialObjectRepository, CelestialObjectRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 
         app.UseCors("AllowAllOrigin");
 

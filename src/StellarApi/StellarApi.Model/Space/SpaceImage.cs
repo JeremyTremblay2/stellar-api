@@ -1,34 +1,34 @@
-namespace StellarApi.Model.Space
+namespace StellarApi.Model.Space;
+
+/// <summary>
+/// Represents a Space Image.
+/// </summary>
+public class SpaceImage : IEquatable<SpaceImage>, IComparable<SpaceImage>, IComparable
 {
     /// <summary>
-    /// Represents a Space Image.
+    /// The unique identifier of the space image.
     /// </summary>
-    public class SpaceImage : IEquatable<SpaceImage>, IComparable<SpaceImage>, IComparable
-    {
-        /// <summary>
-        /// The unique identifier of the space image.
-        /// </summary>
-        public int Id { get; private set; }
+    public int Id { get; private set; }
 
-        /// <summary>
-        /// The title of the space image.
-        /// </summary>
-        public string Title { get; set; }
+    /// <summary>
+    /// The title of the space image.
+    /// </summary>
+    public string Title { get; set; }
 
-        /// <summary>
-        /// The description of the space image.
-        /// </summary>
-        public string Description { get; set; }
+    /// <summary>
+    /// The description of the space image.
+    /// </summary>
+    public string Description { get; set; }
 
-        /// <summary>
-        /// The image url of the space image.
-        /// </summary>
-        public string Image { get; set; }
+    /// <summary>
+    /// The image url of the space image.
+    /// </summary>
+    public string Image { get; set; }
 
-        /// <summary>
-        /// The shooting date of the space image.
-        /// </summary>
-        public DateTime ShootingDate { get; set; }
+    /// <summary>
+    /// The shooting date of the space image.
+    /// </summary>
+    public DateTime ShootingDate { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpaceImage"/> class with specified properties.
@@ -48,25 +48,25 @@ namespace StellarApi.Model.Space
             ShootingDate = shootingDate;
         }
 
-        /// <inheritdoc/>
-        public override int GetHashCode() => Id.GetHashCode();
+    /// <inheritdoc/>
+    public override int GetHashCode() => Id.GetHashCode();
 
-        /// <inheritdoc/>
-        public override bool Equals(object? obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == typeof(SpaceImage) && Equals((SpaceImage)obj);
-        }
+    /// <inheritdoc/>
+    public override bool Equals(object? obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        return obj.GetType() == typeof(SpaceImage) && Equals((SpaceImage)obj);
+    }
 
-        /// <inheritdoc/>
-        public bool Equals(SpaceImage? other)
-        {
-            if (other == null)
-                return false;
+    /// <inheritdoc/>
+    public bool Equals(SpaceImage? other)
+    {
+        if (other == null)
+            return false;
 
-            return Id == other.Id;
-        }
+        return Id == other.Id;
+    }
 
         /// <inheritdoc/>
         public int CompareTo(object? obj)
@@ -83,4 +83,5 @@ namespace StellarApi.Model.Space
             return other == null ? 1 : string.Compare(Title, other.Title, StringComparison.OrdinalIgnoreCase);
         }
     }
+
 }

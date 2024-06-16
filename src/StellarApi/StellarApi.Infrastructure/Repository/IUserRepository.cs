@@ -28,6 +28,12 @@ namespace StellarApi.Infrastructure.Repository
         /// <param name="pageSize">The size of the page where to search.</param>
         /// <returns>A task that represents the asynchronous operation and a list of users based on the specified page and page size.</returns>
         Task<IEnumerable<User>> GetUsers(int page, int pageSize);
+
+        /// <summary>
+        /// Gets the total number of users.
+        /// </summary>
+        /// <returns>A task that represents the asynchronous operation and the total number of users.</returns>
+        Task<int> GetUsersCount();
         
         /// <summary>
         /// Adds a new user.

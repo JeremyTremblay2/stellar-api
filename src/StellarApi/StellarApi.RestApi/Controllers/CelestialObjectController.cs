@@ -11,6 +11,7 @@ using StellarApi.DTOtoModel.Exceptions;
 using System.ComponentModel;
 using System.Security.Claims;
 using StellarApi.Helpers;
+using System.Net.Http.Headers;
 
 namespace StellarApi.RestApi.Controllers
 {
@@ -181,6 +182,10 @@ namespace StellarApi.RestApi.Controllers
                 }
 
                 var objects = (await _service.GetCelestialObjects(userId.Value, page, pageSize)).ToDTO();
+                var totalCelestialObjects = await _service.GetCelestialObjectsCount(userId.Value);
+                var firstItemIndex = (page - 1) * pageSize;
+                var lastItemIndex = firstItemIndex + objects.Count() - 1;
+                Response.Headers["Content-Range"] = $"celestial-objects {firstItemIndex}-{lastItemIndex}/{totalCelestialObjects}";
                 _logger.LogInformation(
                     $"Personnal Celestial object data for page {page} with {pageSize} items per page was fetched successfully.");
                 return Ok(objects);
@@ -256,6 +261,10 @@ namespace StellarApi.RestApi.Controllers
             try
             {
                 var objects = (await _service.GetPublicCelestialObjects(page, pageSize)).ToDTO();
+                var totalCelestialObjects = await _service.GetPublicCelestialObjectsCount();
+                var firstItemIndex = (page - 1) * pageSize;
+                var lastItemIndex = firstItemIndex + objects.Count() - 1;
+                Response.Headers["Content-Range"] = $"celestial-objects {firstItemIndex}-{lastItemIndex}/{totalCelestialObjects}";
                 _logger.LogInformation(
                     $"Public Celestial object data for page {page} with {pageSize} items per page was fetched successfully.");
                 return Ok(objects);

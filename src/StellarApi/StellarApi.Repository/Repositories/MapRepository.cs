@@ -50,6 +50,15 @@ public class MapRepository : IMapRepository
     }
 
     /// <inheritdoc/>
+    public async Task<int> GetMapsCount(int userId)
+    {
+        if (_context.Maps is null) throw new UnavailableDatabaseException();
+        return await _context.Maps
+            .Where(m => m.UserAuthorId == userId)
+            .CountAsync();
+    }
+
+    /// <inheritdoc/>
     public async Task<IEnumerable<Map>> GetPublicMaps(int page, int pageSize)
     {
         if (_context.Maps is null) throw new UnavailableDatabaseException();
@@ -61,6 +70,15 @@ public class MapRepository : IMapRepository
                 .Take(pageSize)
                 .ToListAsync())
             .ToModel();
+    }
+
+    /// <inheritdoc/>
+    public async Task<int> GetPublicMapsCount()
+    {
+        if (_context.Maps is null) throw new UnavailableDatabaseException();
+        return await _context.Maps
+            .Where(m => m.IsPublic)
+            .CountAsync();
     }
 
     /// <inheritdoc/>

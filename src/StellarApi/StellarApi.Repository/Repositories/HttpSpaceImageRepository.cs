@@ -71,7 +71,7 @@ public class HttpSpaceImageRepository : IHttpSpaceImageRepository
         }
 
         var spaceImage = new SpaceImage(0, spaceImageResponse.Title, spaceImageResponse.Explanation,
-            spaceImageResponse.HdUrl, DateTime.Today);
+            spaceImageResponse.HdUrl is null ? spaceImageResponse.Url : spaceImageResponse.HdUrl, DateTime.Today);
 
         if (spaceImage is null) throw new Exception("The space image could not be created.");
 

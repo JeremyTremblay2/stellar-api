@@ -32,6 +32,18 @@ namespace StellarApi.Infrastructure.Repository
         Task<IEnumerable<CelestialObject>> GetPublicCelestialObjects(int page, int pageSize);
 
         /// <summary>
+        /// Retrieves the total number of private celestial objects from the specified user.
+        /// </summary>
+        /// <returns>A task that represents the asynchronous operation and returns the total number of private celestial objects.</returns>
+        Task<int> GetCelestialObjectsCount(int userId);
+
+        /// <summary>
+        /// Retrieves the total number of public celestial objects.
+        /// </summary>
+        /// <returns>A task that represents the asynchronous operation and returns the total number of public celestial objects.</returns>
+        Task<int> GetPublicCelestialObjectsCount();
+
+        /// <summary>
         /// Adds a new celestial object to the data store.
         /// </summary>
         /// <param name="celestialObject">The celestial object to add.</param>

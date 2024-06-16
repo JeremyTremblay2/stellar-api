@@ -62,6 +62,12 @@ namespace StellarApi.Business
         }
 
         /// <inheritdoc/>
+        public async Task<int> GetUsersCount()
+        {
+            return await _repository.GetUsersCount();
+        }
+
+        /// <inheritdoc/>
         public async Task<bool> PostUser(User user)
         {
             user.CreationDate = DateTime.Now;

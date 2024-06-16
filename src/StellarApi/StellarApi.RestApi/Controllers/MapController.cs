@@ -9,6 +9,7 @@ using StellarApi.Repository.Exceptions;
 using System.Security.Claims;
 using StellarApi.Business.Exceptions;
 using StellarApi.Helpers;
+using System.Net.Http.Headers;
 
 namespace StellarApi.RestApi.Controllers;
 
@@ -162,6 +163,10 @@ public class MapController : ControllerBase
                 return StatusCode(StatusCodes.Status500InternalServerError, "The user ID of the connected user could not be found in the claims, please retry to log in.");
             }
             var maps = (await _service.GetMaps(userId.Value, page, pageSize)).ToDTO();
+            var totalMaps = await _service.GetMapsCount(userId.Value);
+            var firstItemIndex = (page - 1) * pageSize;
+            var lastItemIndex = firstItemIndex + maps.Count() - 1;
+            Response.Headers["Content-Range"] = $"maps {firstItemIndex}-{lastItemIndex}/{totalMaps}";
             _logger.LogInformation($"Personnal Maps from page {page} with a page size of {pageSize} were fetched successfully.");
             return Ok(maps);
         }
@@ -225,6 +230,10 @@ public class MapController : ControllerBase
         try
         {
             var maps = (await _service.GetMaps(page, pageSize)).ToDTO();
+            var totalMaps = await _service.GetPublicMapsCount();
+            var firstItemIndex = (page - 1) * pageSize;
+            var lastItemIndex = firstItemIndex + maps.Count() - 1;
+            Response.Headers["Content-Range"] = $"maps {firstItemIndex}-{lastItemIndex}/{totalMaps}";
             _logger.LogInformation($"Public Maps from page {page} with a page size of {pageSize} were fetched successfully.");
             return Ok(maps);
         }

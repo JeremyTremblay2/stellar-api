@@ -5,6 +5,7 @@ using StellarApi.DTOtoModel;
 using StellarApi.Infrastructure.Business;
 using StellarApi.Model.Space;
 using StellarApi.Repository.Exceptions;
+using System.Net.Http.Headers;
 
 namespace StellarApi.RestApi.Controllers;
 
@@ -135,6 +136,10 @@ public class SpaceImageController : ControllerBase
         try
         {
             var spaceImages = (await _service.GetSpaceImages(page, pageSize)).ToDTO();
+            var totalSpaceImages = await _service.GetSpaceImageCount();
+            var firstItemIndex = (page - 1) * pageSize;
+            var lastItemIndex = firstItemIndex + spaceImages.Count() - 1;
+            Response.Headers["Content-Range"] = $"space-images {firstItemIndex}-{lastItemIndex}/{totalSpaceImages}";
             _logger.LogInformation(
                 $"The space images from page {page} with a page size of {pageSize} were fetched successfully.");
             return Ok(spaceImages);

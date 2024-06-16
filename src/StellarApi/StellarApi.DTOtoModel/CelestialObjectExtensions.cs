@@ -12,7 +12,7 @@ namespace StellarApi.DTOtoModel
     public static class CelestialObjectExtensions
     {
         /// <summary>
-        /// Converts a CelestialObjectInput to a CelestialObject.
+        /// Converts a <see cref="CelestialObjectInput"/> to a <see cref="CelestialObject"/>.
         /// </summary>
         /// <param name="dto">The CelestialObjectInput to convert.</param>
         /// <returns>The converted CelestialObject.</returns>
@@ -22,33 +22,42 @@ namespace StellarApi.DTOtoModel
             {
                 throw new ArgumentException("The type cannot be null or empty.", nameof(dto.Type));
             }
-            else if (dto.Type.Equals("Planet"))
-            {
-                if (!Enum.TryParse(dto.PlanetType ?? "Undefined", out PlanetType planetType))
-                {
-                    throw new InvalidEnumArgumentException($"The planet type {dto.PlanetType} is not supported.");
-                }
-                return new Planet(0, dto.Name, dto.Description, dto.Image, PositionExtensions.ToModel(dto.Position), dto.Mass,
-                    dto.Temperature, dto.Radius, 0, dto.IsWater ?? false, dto.IsLife ?? false, planetType, dto.IsPublic, null, null, dto.MapId);
-                
-            }
-            else if (dto.Type.Equals("Star"))
-            {
-                if (!Enum.TryParse(dto.StarType ?? "Undefined", out StarType starType))
-                {
-                    throw new InvalidEnumArgumentException($"The star type {dto.StarType} is not supported.");
-                }
-                return new Star(0, dto.Name, dto.Description, dto.Image, PositionExtensions.ToModel(dto.Position),
-                    dto.Mass, dto.Temperature, dto.Radius, 0, dto.Brightness ?? 0, starType, dto.IsPublic, null, null, dto.MapId);
-            }
             else
-            {
-                throw new WrongCelestialObjectTypeException(nameof(dto.Type), "The celestial object type is not supported.");
-            }
+                switch (dto.Type)
+                {
+                    case "Planet":
+                    {
+                        if (!Enum.TryParse(dto.PlanetType ?? "Undefined", out PlanetType planetType))
+                        {
+                            throw new InvalidEnumArgumentException(
+                                $"The planet type {dto.PlanetType} is not supported.");
+                        }
+
+                        return new Planet(0, dto.Name, dto.Description, dto.Image,
+                            PositionExtensions.ToModel(dto.Position), dto.Mass,
+                            dto.Temperature, dto.Radius, 0, dto.IsWater ?? false, dto.IsLife ?? false, planetType,
+                            dto.IsPublic, null, null, dto.MapId);
+                    }
+                    case "Star":
+                    {
+                        if (!Enum.TryParse(dto.StarType ?? "Undefined", out StarType starType))
+                        {
+                            throw new InvalidEnumArgumentException($"The star type {dto.StarType} is not supported.");
+                        }
+
+                        return new Star(0, dto.Name, dto.Description, dto.Image,
+                            PositionExtensions.ToModel(dto.Position),
+                            dto.Mass, dto.Temperature, dto.Radius, 0, dto.Brightness ?? 0, starType, dto.IsPublic, null,
+                            null, dto.MapId);
+                    }
+                    default:
+                        throw new WrongCelestialObjectTypeException(nameof(dto.Type),
+                            "The celestial object type is not supported.");
+                }
         }
 
         /// <summary>
-        /// Converts a collection of CelestialObjectInput to CelestialObjects.
+        /// Converts a collection of <see cref="CelestialObjectInput"/> to <see cref="CelestialObject"/>.
         /// </summary>
         /// <param name="dtos">The collection of CelestialObjectInput to convert.</param>
         /// <returns>The converted collection of CelestialObjects.</returns>
@@ -58,7 +67,7 @@ namespace StellarApi.DTOtoModel
         }
 
         /// <summary>
-        /// Converts a CelestialObject to a CelestialObjectOutput.
+        /// Converts a <see cref="CelestialObject"/> to a <see cref="CelestialObjectOutput"/>.
         /// </summary>
         /// <param name="model">The CelestialObject to convert.</param>
         /// <returns>The converted CelestialObjectOutput.</returns>
@@ -91,7 +100,7 @@ namespace StellarApi.DTOtoModel
         }
 
         /// <summary>
-        /// Converts a collection of CelestialObjects to CelestialObjectOutput.
+        /// Converts a collection of <see cref="CelestialObject"/> to <see cref="CelestialObjectOutput"/>.
         /// </summary>
         /// <param name="models">The collection of CelestialObjects to convert.</param>
         /// <returns>The converted collection of CelestialObjectOutput.</returns>

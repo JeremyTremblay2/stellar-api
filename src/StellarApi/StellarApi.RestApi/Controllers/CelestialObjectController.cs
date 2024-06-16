@@ -10,7 +10,6 @@ using StellarApi.Business.Exceptions;
 using StellarApi.DTOtoModel.Exceptions;
 using System.ComponentModel;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Identity;
 using StellarApi.Helpers;
 
 namespace StellarApi.RestApi.Controllers

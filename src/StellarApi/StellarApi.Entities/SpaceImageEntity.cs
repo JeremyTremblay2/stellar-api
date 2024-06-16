@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace StellarApi.Entities
 {
     /// <summary>
     /// Entity representing a Space Image.
     /// </summary>
+    [Index(nameof(ShootingDate))]
     public class SpaceImageEntity
     {
         /// <summary>
@@ -13,7 +15,7 @@ namespace StellarApi.Entities
         /// </summary>
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; private set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the title of the space image.

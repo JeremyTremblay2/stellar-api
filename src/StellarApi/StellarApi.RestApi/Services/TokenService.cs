@@ -15,7 +15,7 @@ namespace StellarApi.RestApi.Auth
         /// <summary>
         /// The expiration time of the token, in minutes.
         /// </summary>
-        private const int ExpirationMinutes = 1;
+        private const int ExpirationMinutes = 30;
 
         /// <summary>
         /// A logger used to store API calls.
@@ -31,6 +31,7 @@ namespace StellarApi.RestApi.Auth
         /// Initializes a new instance of the <see cref="TokenService"/> class.
         /// </summary>
         /// <param name="logger">The logger instance.</param>
+        /// <param name="configuration">The configuration settings for the application.</param>
         public TokenService(IConfiguration configuration, ILogger<TokenService> logger)
         {
             _logger = logger;
@@ -48,7 +49,7 @@ namespace StellarApi.RestApi.Auth
             );
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            _logger.LogInformation($"JWT Token created for user: {user}");
+            _logger.LogTrace($"JWT Token created for user: {user.Id}");
 
             return tokenHandler.WriteToken(token);
         }
@@ -87,7 +88,9 @@ namespace StellarApi.RestApi.Auth
 
             var jwtSecurityToken = securityToken as JwtSecurityToken;
             if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            {
                 throw new SecurityTokenException("Invalid token");
+            }
             return principal;
         }
 
@@ -120,19 +123,20 @@ namespace StellarApi.RestApi.Auth
             {
                 var claims = new List<Claim>
                     {
-                        new Claim(JwtRegisteredClaimNames.Sub, jwtSub),
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString()),
+                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                         new Claim(ClaimTypes.Name, user.Username),
                         new Claim(ClaimTypes.Email, user.Email),
-                        new Claim(ClaimTypes.Role, user.Role.ToString())
+                        new Claim(ClaimTypes.Role, user.Role.ToString()),
+                        new Claim(JwtRegisteredClaimNames.Sub, jwtSub),
+                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                        new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString())                        
                     };
 
                 return claims;
             }
             catch (Exception e)
             {
-                _logger.LogError(e.Message);
+                _logger.LogError($"Error creating claims for user: {user.Id}. {e.Message}");
                 throw;
             }
         }

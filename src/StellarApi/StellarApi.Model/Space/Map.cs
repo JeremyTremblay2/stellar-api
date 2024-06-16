@@ -1,7 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Text;
-using StellarApi.Helpers;
 
 namespace StellarApi.Model.Space;
 
@@ -36,46 +35,114 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
     /// <summary>
     /// The creation date of the map.
     /// </summary>
-    public DateTime CreationDate { get; private set; }
+    public DateTime CreationDate { get; set; }
 
     /// <summary>
     /// The modification date of the map.
     /// </summary>
-    public DateTime ModificationDate { get; private set; }
+    public DateTime ModificationDate { get; set; }
+
+    /// <summary>
+    /// The user author identifier of the map.
+    /// </summary>
+    public int UserAuthorId { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the map is public or not.
+    /// </summary>
+    public bool IsPublic { get; set; } 
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Map"/> class with specified properties.
     /// </summary>
     /// <param name="id">The unique identifier of the map.</param>
     /// <param name="name">The name of the map.</param>
+    /// <param name="userAuthorId">The user author identifier of the map.</param>
+    /// <param name="isPublic">The public status of the map.</param>
     /// <param name="creationDate">The creation date of the map.</param>
     /// <param name="modificationDate">The last modification date of the map.</param>
     /// <exception cref="ArgumentNullException">Throw when the name of the object is null or empty.</exception>
     /// <exception cref="ArgumentException">Thrown when the <paramref name="modificationDate"/> is in the future or before the <paramref name="creationDate"/>.</exception>
-    public Map(int id, string name, DateTime? creationDate = null, DateTime? modificationDate = null)
+    public Map(int id, string name, int userAuthorId, bool isPublic = false, DateTime? creationDate = null, DateTime? modificationDate = null)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentNullException(nameof(name), "The name of the object cannot be null or empty.");
 
-        (CreationDate, ModificationDate) = DateHelper.CheckDates(creationDate, modificationDate);
-
         Id = id;
         Name = name;
+        UserAuthorId = userAuthorId;
+        IsPublic = isPublic;
         CelestialObjects = new ReadOnlyCollection<CelestialObject>(celestialObjects);
+        CreationDate = creationDate ?? DateTime.Now;
+        ModificationDate = modificationDate ?? DateTime.Now;
     }
-    
-    public Map(int id, string name, IEnumerable<CelestialObject> celestialObject, DateTime? creationDate = null, DateTime? modificationDate = null)
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Map"/> class with specified properties.
+    /// </summary>
+    /// <param name="id">The unique identifier of the map.</param>
+    /// <param name="name">The name of the map.</param>
+    /// <param name="userAuthorId">The user author identifier of the map.</param>
+    /// <param name="celestialObject">The celestial objects in the map.</param>
+    /// <param name="isPublic">The public status of the map.</param>
+    /// <param name="creationDate">The creation date of the map.</param>
+    /// <param name="modificationDate">The last modification date of the map.</param>
+    /// <exception cref="ArgumentNullException">Throw when the name of the object is null or empty.</exception>
+    /// <exception cref="ArgumentException">Thrown when the <paramref name="modificationDate"/> is in the future or before the <paramref name="creationDate"/>.</exception>
+    public Map(int id, string name, int userAuthorId, IEnumerable<CelestialObject> celestialObject, bool isPublic = false, DateTime? creationDate = null, DateTime? modificationDate = null)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentNullException(nameof(name), "The name of the object cannot be null or empty.");
 
-        (CreationDate, ModificationDate) = DateHelper.CheckDates(creationDate, modificationDate);
-
         Id = id;
         Name = name;
+        UserAuthorId = userAuthorId;
         CelestialObjects = new ReadOnlyCollection<CelestialObject>(celestialObjects);
+        IsPublic = isPublic;
         celestialObjects.AddRange(celestialObject);
+        CreationDate = creationDate ?? DateTime.Now;
+        ModificationDate = modificationDate ?? DateTime.Now;
     } 
+
+    /// <summary>
+    /// Adds a celestial object to the map.
+    /// </summary>
+    /// <param name="celestialObject">The celestial object to add.</param>
+    public void AddCelestialObject(CelestialObject celestialObject)
+    {
+        celestialObjects.Add(celestialObject);
+    }
+
+    /// <summary>
+    /// Removes a celestial object from the map.
+    /// </summary>
+    /// <param name="celestialObject">The celestial object to remove.</param>
+    /// <returns>A value indicating whether the removal was successful.</returns>
+    public bool RemoveCelestialObject(CelestialObject celestialObject)
+    {
+        return celestialObjects.Remove(celestialObject);
+    }
+
+    /// <summary>
+    /// Adds a collection of celestial objects to the map.
+    /// </summary>
+    /// <param name="celestialObjects">The collection of celestial objects to add.</param>
+    public void AddCelestialObjects(IEnumerable<CelestialObject> celestialObjects)
+    {
+        this.celestialObjects.AddRange(celestialObjects);
+    }
+
+    /// <summary>
+    /// Removes a collection of celestial objects from the map.
+    /// </summary>
+    /// <param name="celestialObjects">The collection of celestial objects to remove.</param>
+    public void RemoveCelestialObjects(IEnumerable<CelestialObject> celestialObjects)
+    {
+        foreach (var celestialObject in celestialObjects)
+        {
+            this.celestialObjects.Remove(celestialObject);
+        }
+    }
 
     /// <inheritdoc/>
     public override int GetHashCode() => Id.GetHashCode();
@@ -112,37 +179,6 @@ public class Map : IEquatable<Map>, IComparable<Map>, IComparable
         if (other == null) return 1;
 
         return string.Compare(Name, other.Name, StringComparison.OrdinalIgnoreCase);
-    }
-
-    /// <summary>
-    /// Adds a celestial object to the map.
-    /// </summary>
-    /// <param name="celestialObject">The celestial object to add to the map.</param>
-    public bool AddCelestialObject(CelestialObject? celestialObject)
-    {
-        if (celestialObject == null)
-            return false;
-
-        if (CelestialObjects.Contains(celestialObject))
-            return false;
-
-        celestialObjects.Add(celestialObject);
-        return true;
-    }
-
-    /// <summary>
-    /// Removes a celestial object from the map.
-    /// </summary>
-    /// <param name="celestialObject">The celestial object to remove from the map.</param>
-    public bool RemoveCelestialObject(CelestialObject? celestialObject)
-    {
-        if (celestialObject == null)
-            return false;
-
-        if (!CelestialObjects.Contains(celestialObject))
-            return false;
-
-        return celestialObjects.Remove(celestialObject);
     }
 
     /// <inheritdoc/>

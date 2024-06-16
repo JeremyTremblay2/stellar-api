@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Sqlite.Infrastructure.Internal;
 using StellarApi.Entities;
 
 namespace StellarApi.Repository.Context
@@ -9,17 +10,11 @@ namespace StellarApi.Repository.Context
     public class SpaceDbContextSeed : SpaceDbContext
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SpaceDbContextSeed"/> class.
-        /// </summary>
-        public SpaceDbContextSeed() { }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SpaceDbContextSeed"/> class with the specified options.
         /// </summary>
         /// <param name="options">The options for configuring the context.</param>
-        public SpaceDbContextSeed(DbContextOptions<SpaceDbContext> options) : base(options)
+        public SpaceDbContextSeed(DbContextOptions<SpaceDbContextSeed> options) : base(options)
         {
-
         }
 
         /// <inheritdoc/>
@@ -92,7 +87,6 @@ namespace StellarApi.Repository.Context
                     ModificationDate = DateTime.Parse("08/18/2019 07:22:16"),
                 }
             );
-
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -12,7 +12,7 @@ namespace StellarApi.Infrastructure.Repository
         /// </summary>
         /// <param name="id">The unique identifier of the user.</param>
         /// <returns>A task that represents the asynchronous operation and the user with the specified unique identifier.</returns>
-        Task<User> GetUserById(int id);
+        Task<User?> GetUserById(int id);
 
         /// <summary>
         /// Gets a user by its email.
@@ -28,6 +28,12 @@ namespace StellarApi.Infrastructure.Repository
         /// <param name="pageSize">The size of the page where to search.</param>
         /// <returns>A task that represents the asynchronous operation and a list of users based on the specified page and page size.</returns>
         Task<IEnumerable<User>> GetUsers(int page, int pageSize);
+
+        /// <summary>
+        /// Gets the total number of users.
+        /// </summary>
+        /// <returns>A task that represents the asynchronous operation and the total number of users.</returns>
+        Task<int> GetUsersCount();
         
         /// <summary>
         /// Adds a new user.
@@ -39,9 +45,10 @@ namespace StellarApi.Infrastructure.Repository
         /// <summary>
         /// Updates an existing user.
         /// </summary>
+        /// <param name="id">The unique identifier of the user to update.</param>
         /// <param name="user">The user to update.</param>
         /// <returns>A task that represents the asynchronous operation and true if the user was successfully updated, false otherwise.</returns>
-        Task<bool> EditUser(User user);
+        Task<bool> EditUser(int id, User user);
         
         /// <summary>
         /// Deletes a user.

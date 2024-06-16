@@ -12,7 +12,7 @@ namespace StellarApi.Infrastructure.Business
         /// </summary>
         /// <param name="id">The unique identifier of the user.</param>
         /// <returns>A task that represents the asynchronous operation and the user with the specified unique identifier.</returns>
-        Task<User> GetUserById(int id);
+        Task<User?> GetUserById(int id);
 
         /// <summary>
         /// Gets a user by its email.
@@ -30,6 +30,12 @@ namespace StellarApi.Infrastructure.Business
         Task<IEnumerable<User>> GetUsers(int page, int pageSize);
 
         /// <summary>
+        /// Gets the total number of users.
+        /// </summary>
+        /// <returns>A task that represents the asynchronous operation and the total number of users.</returns>
+        Task<int> GetUsersCount();
+
+        /// <summary>
         /// Adds a new user.
         /// </summary>
         /// <param name="user">The user to add.</param>
@@ -39,15 +45,19 @@ namespace StellarApi.Infrastructure.Business
         /// <summary>
         /// Updates an existing user.
         /// </summary>
+        /// <param name="id">The unique identifier of the user to update.</param>
         /// <param name="user">The user to update.</param>
+        /// <param name="userAuthorId">The unique identifier of the user who is updating the user.</param>
+        /// <param name="shouldUpdateModificationDate">A boolean indicating whether the modification date should be updated.</param>
         /// <returns>A task that represents the asynchronous operation and true if the user was successfully updated, false otherwise.</returns>
-        Task<bool> PutUser(User user);
+        Task<bool> PutUser(int id, User user, int userAuthorId, bool shouldUpdateModificationDate);
 
         /// <summary>
         /// Deletes a user.
         /// </summary>
         /// <param name="id">The unique identifier of the user to delete.</param>
+        /// <param name="userAuthorId">The unique identifier of the user who is deleting the user.</param>
         /// <returns>A task that represents the asynchronous operation and true if the user was successfully deleted, false otherwise.</returns>
-        Task<bool> DeleteUser(int id);
+        Task<bool> DeleteUser(int id, int userAuthorId);
     }
 }

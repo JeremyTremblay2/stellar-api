@@ -27,7 +27,7 @@ namespace StellarApi.Entities
         /// Gets or sets the name of the celestial object.
         /// </summary>
         [Required(AllowEmptyStrings = false, ErrorMessage = "The name cannot be empty.")]
-        [MaxLength(50, ErrorMessage = "The name should be less than 50 caracters.")]
+        [MaxLength(100, ErrorMessage = "The name should be less than 50 caracters.")]
         public required string Name { get; set; }
 
         /// <summary>
@@ -95,5 +95,32 @@ namespace StellarApi.Entities
         /// Gets or sets the type of a star.
         /// </summary>
         public string? StarType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the map id this celestial object belongs to.
+        /// </summary>
+        public int? MapId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the map this celestial object belongs to.
+        /// </summary>
+        [ForeignKey("MapId")]
+        public MapEntity? Map { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user author identifier of the celestial object.
+        /// </summary>
+        public int UserAuthorId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user author of the celestial object.
+        /// </summary>
+        [ForeignKey("UserAuthorId")]
+        public UserEntity? UserAuthor { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the celestial object is public or not.
+        /// </summary>
+        public bool IsPublic { get; set; }
     }
 }

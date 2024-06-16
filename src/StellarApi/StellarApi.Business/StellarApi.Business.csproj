@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\StellarApi.Helpers\StellarApi.Helpers.csproj" />
     <ProjectReference Include="..\StellarApi.Infrastructure\StellarApi.Infrastructure.csproj" />
     <ProjectReference Include="..\StellarApi.Model\StellarApi.Model.csproj" />
     <ProjectReference Include="..\StellarApi.Repository\StellarApi.Repository.csproj" />

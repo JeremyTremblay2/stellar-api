@@ -3,6 +3,7 @@ using StellarApi.EntityToModel;
 using StellarApi.Infrastructure.Repository;
 using StellarApi.Model.Users;
 using StellarApi.Repository.Context;
+using StellarApi.Repository.Exceptions;
 
 namespace StellarApi.Repository.Repositories
 {
@@ -12,42 +13,54 @@ namespace StellarApi.Repository.Repositories
     public class UserRepository : IUserRepository
     {
         /// <summary>
+        /// Represents the database context for managing user data.
+        /// </summary>
+        private readonly SpaceDbContext _context;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserRepository"/> class.
+        /// </summary>
+        /// <param name="context">The database context for managing user data.</param>
+        public UserRepository(SpaceDbContext context)
+        {
+            _context = context;
+        }
+
+        /// <summary>
         /// Adds a new user to the repository.
         /// </summary>
         /// <param name="user">The user to add.</param>
         /// <returns>A boolean indicating whether the user was successfully added.</returns>
+        /// <exception cref="UnavailableDatabaseException">Thrown when the database is not available.</exception>
         public async Task<bool> AddUser(User user)
         {
-            using SpaceDbContext context = new();
-            if (context.Users is null) return false;
-
-            await context.Users.AddAsync(user.ToEntity());
-            return await context.SaveChangesAsync() == 1;
+            if (_context.Users is null) throw new UnavailableDatabaseException();
+            await _context.Users.AddAsync(user.ToEntity());
+            return await _context.SaveChangesAsync() == 1;
         }
 
         /// <summary>
         /// Edits an existing user in the repository.
         /// </summary>
+        /// <param name="id">The ID of the user to edit.</param>
         /// <param name="user">The user to edit.</param>
         /// <returns>A boolean indicating whether the user was successfully edited.</returns>
-        public async Task<bool> EditUser(User user)
+        /// <exception cref="EntityNotFoundException">Thrown when the user is not found.</exception>
+        /// <exception cref="UnavailableDatabaseException">Thrown when the database is not available.</exception>
+        public async Task<bool> EditUser(int id, User user)
         {
-            using SpaceDbContext context = new();
-            if (context.Users is null) return false;
-            var existingUser = await context.Users.FindAsync(user.Id);
-            if (existingUser == null)
-                return false;
+            if (_context.Users is null) throw new UnavailableDatabaseException();
+            var existingUser = await _context.Users.FindAsync(id);
+            if (existingUser == null) throw new EntityNotFoundException(id.ToString(), "The user was not found.");
             var entity = user.ToEntity();
             existingUser.Email = entity.Email;
             existingUser.Username = entity.Username;
             existingUser.Password = entity.Password;
-            existingUser.Role = entity.Role;
             existingUser.RefreshToken = entity.RefreshToken;
             existingUser.RefreshTokenExpiryTime = entity.RefreshTokenExpiryTime;
-            existingUser.CreationDate = entity.CreationDate;
             existingUser.ModificationDate = entity.ModificationDate;
-            context.Users.Update(existingUser);
-            return await context.SaveChangesAsync() == 1;
+            _context.Users.Update(existingUser);
+            return await _context.SaveChangesAsync() == 1;
         }
 
         /// <summary>
@@ -55,11 +68,11 @@ namespace StellarApi.Repository.Repositories
         /// </summary>
         /// <param name="id">The ID of the user to retrieve.</param>
         /// <returns>The user with the specified ID, or null if not found.</returns>
-        public async Task<User> GetUserById(int id)
+        /// <exception cref="UnavailableDatabaseException">Thrown when the database is not available.</exception>
+        public async Task<User?> GetUserById(int id)
         {
-            using SpaceDbContext context = new();
-            if (context.Users is null) return null;
-            return (await context.Users.FindAsync(id)).ToModel();
+            if (_context.Users is null) throw new UnavailableDatabaseException();
+            return (await _context.Users.FindAsync(id)).ToModel();
         }
 
         /// <summary>
@@ -67,12 +80,11 @@ namespace StellarApi.Repository.Repositories
         /// </summary>
         /// <param name="email">The email of the user to retrieve.</param>
         /// <returns>The user with the specified email, or null if not found.</returns>
+        /// <exception cref="UnavailableDatabaseException">Thrown when the database is not available.</exception>
         public async Task<User?> GetUserByEmail(string email)
         {
-            using SpaceDbContext context = new();
-            if (context.Users is null) return null;
-
-            return context.Users.FirstOrDefault(u => u.Email == email)?.ToModel();
+            if (_context.Users is null) throw new UnavailableDatabaseException();
+            return (await _context.Users.FirstOrDefaultAsync(u => u.Email.Equals(email)))?.ToModel();
         }
 
         /// <summary>
@@ -81,15 +93,26 @@ namespace StellarApi.Repository.Repositories
         /// <param name="page">The page number.</param>
         /// <param name="pageSize">The number of users per page.</param>
         /// <returns>A paged list of users.</returns>
+        /// <exception cref="UnavailableDatabaseException">Thrown when the database is not available.</exception>
         public async Task<IEnumerable<User>> GetUsers(int page, int pageSize)
         {
-            using SpaceDbContext context = new();
-            if (context.Users is null) return new List<User>();
-            return (await context.Users
-                .Skip(page * pageSize)
+            if (_context.Users is null) throw new UnavailableDatabaseException();
+            return (await _context.Users
+                .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .Select(u => u.ToModel())
                 .ToListAsync());
+        }
+
+        /// <summary>
+        /// Retrieves the total number of users from the repository.
+        /// </summary>
+        /// <returns>A task that represents the asynchronous operation and returns the total number of users.</returns>
+        /// <exception cref="UnavailableDatabaseException">If the database is not available.</exception>
+        public async Task<int> GetUsersCount()
+        {
+            if (_context.Users is null) throw new UnavailableDatabaseException();
+            return await _context.Users.CountAsync();
         }
 
         /// <summary>
@@ -97,15 +120,15 @@ namespace StellarApi.Repository.Repositories
         /// </summary>
         /// <param name="id">The ID of the user to remove.</param>
         /// <returns>A boolean indicating whether the user was successfully removed.</returns>
+        /// <exception cref="EntityNotFoundException">Thrown when the user is not found.</exception>
+        /// <exception cref="UnavailableDatabaseException">Thrown when the database is not available.</exception>
         public async Task<bool> RemoveUser(int id)
         {
-            using SpaceDbContext context = new();
-            if (context.Users is null) return false;
-            var user = await context.Users.FindAsync(id);
-            if (user == null)
-                return false;
-            context.Users.Remove(user);
-            return await context.SaveChangesAsync() == 1;
+            if (_context.Users is null) throw new UnavailableDatabaseException();
+            var user = await _context.Users.FindAsync(id);
+            if (user == null) throw new EntityNotFoundException(id.ToString(), "The user was not found.");
+            _context.Users.Remove(user);
+            return await _context.SaveChangesAsync() == 1;
         }
     }
 }

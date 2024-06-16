@@ -80,7 +80,9 @@
         /// </summary>
         public static bool operator ==(Position? left, Position? right)
         {
-            return left != null && right != null && left.X == right.X && left.Y == right.Y && left.Z == right.Z;
+            if (ReferenceEquals(left, right)) return true;
+            if (left is null || right is null) return false;
+            return left.X == right.X && left.Y == right.Y && left.Z == right.Z;
         }
 
         /// <summary>

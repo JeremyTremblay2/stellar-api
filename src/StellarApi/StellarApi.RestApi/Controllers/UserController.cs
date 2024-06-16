@@ -57,7 +57,7 @@ namespace StellarApi.RestApi.Controllers
         }
 
         /// <summary>
-        /// Retrieves complete data of the connected user.
+        /// (Needs Auth) Retrieves complete data of the connected user.
         /// </summary>
         /// <remarks>
         /// 

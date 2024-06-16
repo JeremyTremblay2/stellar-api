@@ -74,6 +74,18 @@ namespace StellarApi.Business
         }
 
         /// <inheritdoc/>
+        public Task<int> GetCelestialObjectsCount(int userId)
+        {
+            return _repository.GetCelestialObjectsCount(userId);
+        }
+
+        /// <inheritdoc/>
+        public Task<int> GetPublicCelestialObjectsCount()
+        {
+            return _repository.GetPublicCelestialObjectsCount();
+        }
+
+        /// <inheritdoc/>
         public async Task<bool> PostCelestialObject(CelestialObject celestialObject)
         {
             await CheckCelestialObjectData(celestialObject);

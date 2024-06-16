@@ -105,6 +105,17 @@ namespace StellarApi.Repository.Repositories
         }
 
         /// <summary>
+        /// Retrieves the total number of users from the repository.
+        /// </summary>
+        /// <returns>A task that represents the asynchronous operation and returns the total number of users.</returns>
+        /// <exception cref="UnavailableDatabaseException">If the database is not available.</exception>
+        public async Task<int> GetUsersCount()
+        {
+            if (_context.Users is null) throw new UnavailableDatabaseException();
+            return await _context.Users.CountAsync();
+        }
+
+        /// <summary>
         /// Removes a user from the repository.
         /// </summary>
         /// <param name="id">The ID of the user to remove.</param>

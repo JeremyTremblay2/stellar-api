@@ -58,6 +58,20 @@ namespace StellarApi.Repository.Repositories
         }
 
         /// <summary>
+        /// Retrieves the total number of private celestial objects from the specified user id from the database.
+        /// </summary>
+        /// <param name="userId">The unique identifier of the user.</param>
+        /// <returns>A task that represents the asynchronous operation and returns the total number of private celestial objects.</returns>
+        /// <exception cref="UnavailableDatabaseException">Thrown when the database is not available.</exception>
+        public async Task<int> GetCelestialObjectsCount(int userId)
+        {
+            if (_context.CelestialObjects is null) throw new UnavailableDatabaseException();
+            return await _context.CelestialObjects
+                .Where(c => c.UserAuthorId == userId)
+                .CountAsync();
+        }
+
+        /// <summary>
         /// Retrieves a public collection of celestial objects with pagination from the database.
         /// </summary>
         /// <param name="page">The page number.</param>
@@ -73,6 +87,19 @@ namespace StellarApi.Repository.Repositories
                 .Take(pageSize)
                 .ToListAsync())
                 .ToModel();
+        }
+
+        /// <summary>
+        /// Retrieves the total number of public celestial objects from the database.
+        /// </summary>
+        /// <returns>A task that represents the asynchronous operation and returns the total number of public celestial objects.</returns>
+        /// <exception cref="UnavailableDatabaseException">Thrown when the database is not available.</exception>
+        public async Task<int> GetPublicCelestialObjectsCount()
+        {
+            if (_context.CelestialObjects is null) throw new UnavailableDatabaseException();
+            return await _context.CelestialObjects
+                .Where(c => c.IsPublic)
+                .CountAsync();
         }
 
         /// <summary>

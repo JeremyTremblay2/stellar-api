@@ -43,6 +43,13 @@ public class SpaceImageRepository : ISpaceImageRepository
     }
 
     /// <inheritdoc/>
+    public async Task<int> GetSpaceImagesCount()
+    {
+        if (_context.SpaceImages is null) throw new UnavailableDatabaseException();
+        return await _context.SpaceImages.CountAsync();
+    }
+
+    /// <inheritdoc/>
     public async Task<SpaceImage?> GetSpaceImageByDate(DateTime date)
     {
         if (_context.SpaceImages is null) throw new UnavailableDatabaseException();

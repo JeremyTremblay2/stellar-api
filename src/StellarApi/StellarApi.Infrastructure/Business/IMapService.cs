@@ -33,6 +33,19 @@ public interface IMapService
     Task<IEnumerable<Map>> GetMaps(int page, int pageSize);
 
     /// <summary>
+    /// Retrieves the total number of maps for the specified user.
+    /// </summary>
+    /// <param name="userId">The unique identifier of the user.</param>
+    /// <returns>A task that represents the asynchronous operation and returns the total number of maps.</returns>
+    Task<int> GetMapsCount(int userId);
+
+    /// <summary>
+    /// Retrieves the total number of maps.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation and returns the total number of maps.</returns>
+    Task<int> GetPublicMapsCount();
+
+    /// <summary>
     /// Adds a new map.
     /// </summary>
     /// <param name="map">The map to add.</param>

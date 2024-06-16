@@ -54,6 +54,7 @@ public static partial class Program
                 {
                     policy.AllowAnyOrigin();
                     policy.AllowAnyHeader();
+                    policy.AllowAnyMethod();
                 });
         });
 

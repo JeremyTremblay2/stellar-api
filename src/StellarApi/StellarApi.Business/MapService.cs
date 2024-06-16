@@ -66,6 +66,18 @@ public class MapService : IMapService
     }
 
     /// <inheritdoc/>
+    public async Task<int> GetMapsCount(int userId)
+    {
+        return await _repository.GetMapsCount(userId);
+    }
+
+    /// <inheritdoc/>
+    public async Task<int> GetPublicMapsCount()
+    {
+        return await _repository.GetPublicMapsCount();
+    }
+
+    /// <inheritdoc/>
     public Task<IEnumerable<Map>> GetMaps(int page, int pageSize)
     {
         return _repository.GetPublicMaps(page, pageSize);

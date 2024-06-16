@@ -10,8 +10,8 @@ using StellarApi.DTOs.Users;
 using StellarApi.Business.Exceptions;
 using StellarApi.Repository.Exceptions;
 using System.Security.Claims;
-using StellarApi.Model.Space;
 using StellarApi.Helpers;
+using System.Net.Http.Headers;
 
 namespace StellarApi.RestApi.Controllers
 {
@@ -207,6 +207,10 @@ namespace StellarApi.RestApi.Controllers
             try
             {
                 var users = (await _service.GetUsers(page, pageSize)).ToMinimalDTO();
+                var totalUsers = await _service.GetUsersCount();
+                var firstItemIndex = (page - 1) * pageSize;
+                var lastItemIndex = firstItemIndex + users.Count() - 1;
+                Response.Headers["Content-Range"] = $"users {firstItemIndex}-{lastItemIndex}/{totalUsers}";
                 _logger.LogInformation($"User data fetched successfully.");
                 return Ok(users);
             }

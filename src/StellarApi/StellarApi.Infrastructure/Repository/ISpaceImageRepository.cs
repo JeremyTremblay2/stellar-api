@@ -23,6 +23,13 @@ public interface ISpaceImageRepository
     Task<IEnumerable<SpaceImage>> GetSpaceImages(int page, int pageSize);
 
     /// <summary>
+    /// Retrieves the total number of space images in the database.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation and returns the total number of space images.</returns>
+    /// <exception cref="UnavailableDatabaseException">If the database is not available.</exception>
+    Task<int> GetSpaceImagesCount();
+
+    /// <summary>
     /// Retrieves a space image by its shooting date.
     /// </summary>
     /// <param name="date">The shooting date of the space image.</param>

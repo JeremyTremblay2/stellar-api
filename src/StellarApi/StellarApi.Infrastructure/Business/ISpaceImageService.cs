@@ -28,4 +28,10 @@ public interface ISpaceImageService
     /// <param name="pageSize">The number of items per page.</param>
     /// <returns>A task that represents the asynchronous operation and returns the collection of space images.</returns>
     Task<IEnumerable<SpaceImage>> GetSpaceImages(int page, int pageSize);
+
+    /// <summary>
+    /// Retrieves the total number of space images in the database.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation and returns the total number of space images.</returns>
+    Task<int> GetSpaceImageCount();
 }

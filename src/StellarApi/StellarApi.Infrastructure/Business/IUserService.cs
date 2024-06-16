@@ -30,6 +30,12 @@ namespace StellarApi.Infrastructure.Business
         Task<IEnumerable<User>> GetUsers(int page, int pageSize);
 
         /// <summary>
+        /// Gets the total number of users.
+        /// </summary>
+        /// <returns>A task that represents the asynchronous operation and the total number of users.</returns>
+        Task<int> GetUsersCount();
+
+        /// <summary>
         /// Adds a new user.
         /// </summary>
         /// <param name="user">The user to add.</param>

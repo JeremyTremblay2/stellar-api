@@ -53,6 +53,12 @@ public class SpaceImageService : ISpaceImageService
     }
 
     /// <inheritdoc/>
+    public async Task<int> GetSpaceImageCount()
+    {
+        return await _repository.GetSpaceImagesCount();
+    }
+
+    /// <inheritdoc/>
     public async Task<SpaceImage?> GetSpaceImage(DateTime? date)
     {
         if (date is null) return await GetSpaceImage();
